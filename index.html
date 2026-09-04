@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>수업내용 확인하기! — 산과 염기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #10161d;
+    --panel: #1a2430;
+    --panel-2: #212d3b;
+    --line: #2c3946;
+    --text: #f1ede4;
+    --muted: #8fa0ad;
+    --accent: #4fb6a8;
+    --accent-dim: #2c4a46;
+    --ok: #6fbf73;
+    --bad: #d5566b;
+    --warn: #e3a23d;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(1200px 700px at 15% -10%, #182230 0%, transparent 60%),
+      radial-gradient(1000px 600px at 110% 10%, #1a1210 0%, transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Noto Sans KR', sans-serif;
+    min-height:100vh;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .num{ font-family:'Space Grotesk', 'Noto Sans KR', sans-serif; }
+
+  main#app{ max-width:720px; margin:0 auto; padding:14px 14px 60px; }
+
+  header.top{ position:sticky; top:0; z-index:20; background:linear-gradient(180deg, var(--bg) 78%, transparent); padding:8px 0 4px; }
+  .brand{ display:flex; align-items:flex-start; gap:8px; margin-bottom:4px; justify-content:space-between; flex-wrap:nowrap; }
+  .brand-left{ display:flex; flex-direction:column; gap:2px; min-width:0; flex:1 1 auto; }
+  .brand h1{ font-size:19px; margin:0; letter-spacing:.2px; font-weight:900; line-height:1.3; }
+  .brand h1 .sub{ color:var(--accent); font-size:13px; font-weight:700; margin-left:6px; white-space:nowrap; }
+  .brand-right{ display:flex; flex-direction:column; align-items:flex-end; gap:4px; flex:0 0 auto; }
+  .teacher-toggle{
+    font-size:11.5px; font-weight:700; padding:6px 10px; border-radius:999px;
+    background:var(--panel-2); border:1px solid var(--line); color:var(--muted); cursor:pointer;
+    white-space:nowrap;
+  }
+  .teacher-toggle:hover{ color:var(--text); border-color:var(--accent); }
+
+  .conn-row{ display:flex; justify-content:flex-end; align-items:center; gap:4px; flex-wrap:nowrap; }
+  .conn-badge{ display:inline-flex; align-items:center; gap:3px; font-size:8.5px; padding:2px 6px; border-radius:999px; white-space:nowrap; }
+  .conn-badge i{ width:5px; height:5px; border-radius:50%; display:inline-block; }
+  .conn-badge.conn-checking{ color:var(--muted); background:var(--panel-2); }
+  .conn-badge.conn-checking i{ background:var(--muted); animation:pulse 1.2s infinite; }
+  .conn-badge.conn-ok{ color:var(--ok); background:rgba(111,191,115,.12); }
+  .conn-badge.conn-ok i{ background:var(--ok); }
+  .conn-badge.conn-bad{ color:var(--bad); background:rgba(213,86,107,.12); }
+  .conn-badge.conn-bad i{ background:var(--bad); }
+  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:.3;} }
+  .conn-detail{
+    text-align:right; font-family:'Space Grotesk', monospace; font-size:10px; color:var(--bad);
+    background:rgba(213,86,107,.08); border:1px solid rgba(213,86,107,.3); border-radius:8px;
+    padding:6px 10px; margin:-2px 0 8px; word-break:break-all; line-height:1.5;
+  }
+  .conn-detail.hidden{ display:none; }
+
+  .progress-row{ display:flex; align-items:center; gap:10px; margin-top:2px; }
+  .progress-track{ flex:1; height:8px; border-radius:6px; background:var(--panel-2); overflow:hidden; border:1px solid var(--line); }
+  .progress-fill{ height:100%; width:0%; background:linear-gradient(90deg, var(--accent-dim), var(--accent)); transition:width .35s ease; }
+  .progress-label{ font-size:11.5px; color:var(--muted); white-space:nowrap; }
+
+  .screen{ display:none; }
+  .screen.on{ display:block; animation:fadein .25s ease; }
+  @keyframes fadein{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;} }
+
+  .card{
+    background: linear-gradient(180deg, var(--panel), var(--panel-2));
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:20px;
+    margin-top:14px;
+  }
+  .card h2{ font-size:16px; margin:0 0 4px; }
+  .card p.desc{ color:var(--muted); font-size:13px; line-height:1.6; margin:0 0 14px; }
+
+  label.field-label{ display:block; font-size:12.5px; color:var(--muted); margin:14px 0 6px; font-weight:700; }
+  select, input[type=text], textarea{
+    width:100%; background:var(--panel-2); border:1px solid var(--line); color:var(--text);
+    border-radius:10px; padding:12px 12px; font-size:15px; font-family:inherit;
+  }
+  select:focus, input[type=text]:focus, textarea:focus{ outline:2px solid var(--accent); }
+  textarea{ resize:vertical; min-height:110px; line-height:1.6; }
+  .row2{ display:flex; gap:10px; }
+  .row2 > *{ flex:1; }
+  .row3{ display:flex; gap:8px; }
+  .row3 .in-class-select{ flex:0 0 84px; }
+  .row3 input{ flex:1; min-width:0; }
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:6px;
+    padding:13px 18px; border-radius:12px; border:1px solid var(--line);
+    background:var(--panel-2); color:var(--text); font-size:15px; font-weight:700;
+    cursor:pointer; -webkit-appearance:none; appearance:none;
+  }
+  .btn.primary{ background:linear-gradient(180deg, var(--accent), #3a9184); border-color:transparent; color:#08211d; }
+  .btn.primary:disabled{ opacity:.45; cursor:not-allowed; }
+  .btn.ghost{ background:transparent; }
+  .btn.danger{ background:rgba(213,86,107,.16); color:var(--bad); border-color:rgba(213,86,107,.4); }
+  .btn:disabled{ opacity:.4; cursor:not-allowed; }
+  .btn.loading{ opacity:.75; cursor:progress; position:relative; }
+  @keyframes btn-spin{ from{ transform:rotate(0deg); } to{ transform:rotate(360deg); } }
+  #btn-teacher-refresh.loading::before{
+    content:""; display:inline-block; width:11px; height:11px; margin-right:6px;
+    border:2px solid currentColor; border-right-color:transparent; border-radius:50%;
+    animation:btn-spin .6s linear infinite; vertical-align:-1px;
+  }
+  .btnrow{ display:flex; gap:10px; margin-top:18px; }
+  .btnrow .btn{ flex:1; }
+
+  .qmeta{ display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+  .qtag{ font-size:11px; font-weight:700; letter-spacing:.4px; color:var(--accent); text-transform:uppercase; }
+  .qnum{ font-size:12px; color:var(--muted); }
+
+  .qnote{
+    background:var(--panel-2); border:1px solid var(--line); border-radius:12px;
+    padding:12px 14px; margin:10px 0; font-size:14px; color:var(--text); line-height:1.7;
+    white-space:pre-wrap;
+  }
+  .qtext{ font-size:17px; font-weight:700; line-height:1.6; margin:6px 0 4px; }
+  .qimg-wrap{ margin:12px 0; text-align:center; }
+  .qimg-wrap img{ max-width:100%; border-radius:10px; border:1px solid var(--line); background:#fff; }
+  .qimg-wrap.small img{ max-width:100%; }
+
+  .choices{ display:flex; flex-wrap:wrap; gap:10px; margin-top:14px; }
+  .choice-btn{
+    flex:1 1 auto; min-width:70px; padding:14px 10px; border-radius:12px; border:1.5px solid var(--line);
+    background:var(--panel-2); color:var(--text); font-size:15px; font-weight:700; cursor:pointer; text-align:center;
+  }
+  .choice-btn.picked{ border-color:var(--accent); background:var(--accent-dim); color:var(--accent); }
+  /* 단순 ①~⑤ 숫자 선택형 — 한 줄에 5개가 다 들어가도록 폭을 줄인 배치 */
+  .choices.five-col{ flex-wrap:nowrap; gap:6px; }
+  .choices.five-col .choice-btn{ flex:1 1 0; min-width:0; padding:12px 2px; font-size:14px; }
+
+  .conn-status-inline{ font-size:12px; color:var(--muted); margin-top:14px; text-align:center; }
+
+  /* ---------- 접속 게이트 오버레이 ---------- */
+  #gate-overlay{
+    position:fixed; inset:0; z-index:200; background:var(--bg);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px;
+    text-align:center; padding:24px;
+  }
+  #gate-overlay.hidden{ display:none; }
+  #gate-overlay .gate-spinner{
+    width:34px; height:34px; border:3px solid var(--line); border-top-color:var(--accent);
+    border-radius:50%; animation:btn-spin .8s linear infinite;
+  }
+  #gate-overlay .gate-msg{ font-size:15px; color:var(--muted); line-height:1.6; }
+  main#app.hidden{ display:none !important; }
+
+  /* ---------- teacher panel ---------- */
+  .modal-backdrop{
+    position:fixed; inset:0; background:rgba(6,9,13,.72); display:flex; align-items:center; justify-content:center;
+    z-index:100; padding:16px;
+  }
+  .modal-backdrop.hidden{ display:none; }
+  .modal-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:24px; width:100%; max-width:320px; text-align:center;
+  }
+  .modal-card .micon{ font-size:30px; margin-bottom:8px; }
+  .modal-card h3{ margin:0 0 14px; font-size:16px; }
+  .modal-card input{ text-align:center; letter-spacing:4px; font-size:20px; }
+  .modal-btns{ display:flex; gap:10px; margin-top:16px; }
+  .modal-btns .btn{ flex:1; }
+
+  .teacher-panel{ position:fixed; inset:0; background:var(--bg); z-index:90; overflow-y:auto; display:none; }
+  .teacher-panel.on{ display:block; }
+  .teacher-inner{ max-width:900px; margin:0 auto; padding:0 16px 60px; }
+
+  /* 선생님보기 메인 화면 — 탭·반 정보·버튼·닫기를 한 줄에 압축 */
+  .teacher-topbar{
+    display:flex; align-items:center; gap:8px; flex-wrap:wrap;
+    max-width:900px; margin:0 auto; padding:14px 16px 12px;
+    position:sticky; top:0; background:var(--bg); z-index:5;
+  }
+  .teacher-topbar .spacer{ flex:1; }
+  .pill-tab{
+    padding:8px 16px; border-radius:999px; border:1px solid var(--line);
+    background:var(--panel-2); color:var(--muted); font-weight:700; font-size:13px; cursor:pointer;
+    white-space:nowrap;
+  }
+  .pill-tab.active{ background:var(--accent); color:#08211d; border-color:transparent; }
+  .class-label{ font-size:12.5px; color:var(--muted); white-space:nowrap; }
+  .teacher-topbar .btn{ padding:8px 13px; font-size:12.5px; white-space:nowrap; }
+  .last-updated{ font-size:11px; color:var(--muted); white-space:nowrap; }
+  .last-updated.fresh{ color:var(--ok); }
+
+  /* 교사 접속 스위치 버튼 */
+  .gate-btn{ font-weight:800; padding:8px 14px; font-size:12.5px; white-space:nowrap; }
+  .gate-btn.state-unknown{ opacity:.6; }
+  .gate-btn.state-closed{ background:rgba(213,86,107,.16); color:var(--bad); border-color:rgba(213,86,107,.4); }
+  .gate-btn.state-open{ background:var(--accent-dim); color:var(--accent); border-color:var(--accent); }
+  .gate-btn.state-confirm{ background:rgba(213,86,107,.35); color:var(--bad); border-color:var(--bad); }
+
+  #teacher-class-picker{ position:relative; min-height:calc(100vh - 60px); }
+  .class-picker-card{
+    max-width:480px; width:calc(100% - 40px); background:var(--panel); border:1px solid var(--line);
+    border-radius:20px; padding:44px 40px;
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  }
+  .class-picker-card p.desc{ font-size:19px; margin-bottom:24px; }
+  .class-picker-card select{ width:100%; margin-bottom:24px; font-size:19px; padding:14px 16px; border-radius:12px; }
+  .class-picker-card .btn{ display:block; margin:0 auto; font-size:18px; padding:14px 40px; }
+
+  /* 1번 화면 — 학생 진행 상황: 이름 + 진행률 바 + 문항 수 + 정답률 */
+  .stu-grid{ display:flex; flex-direction:column; gap:8px; max-width:900px; margin:0 auto; }
+  .stu-row{ display:flex; align-items:center; gap:14px; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:12px 16px; }
+  .stu-name{ font-weight:700; flex:0 0 auto; min-width:100px; }
+  .stu-progress-track{ flex:1; height:8px; border-radius:6px; background:var(--panel-2); overflow:hidden; border:1px solid var(--line); min-width:60px; }
+  .stu-progress-fill{ height:100%; background:linear-gradient(90deg, var(--accent), var(--warn)); transition:width .3s ease; }
+  .stu-count{ font-size:13px; color:var(--text); font-weight:700; white-space:nowrap; flex:0 0 auto; }
+  .stu-accuracy{ font-size:13px; color:var(--accent); font-weight:700; white-space:nowrap; flex:0 0 auto; min-width:64px; text-align:right; }
+  .stu-empty, .storage-warning{ color:var(--muted); text-align:center; padding:30px 10px; }
+  .storage-warning{ color:var(--bad); }
+
+  .tq-nav{ display:flex; align-items:center; justify-content:space-between; gap:10px; max-width:900px; margin:0 auto 10px; }
+  .tq-nav .btn{ flex:0 0 auto; }
+  .tq-count{ font-size:13px; color:var(--muted); font-weight:700; }
+
+  .tq-card{ max-width:900px; margin:0 auto; background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:22px; }
+  #tq-image{ width:65%; display:block; margin:14px auto; border-radius:10px; border:1px solid var(--line); background:#fff; }
+  #tq-image.q-image-small{ width:40%; }
+  #tq-text{ font-size:20px; font-weight:700; line-height:1.6; }
+  #tq-note{ font-size:16.5px; white-space:pre-wrap; background:var(--panel-2); border:1px solid var(--line); border-radius:12px; padding:14px 16px; margin:12px 0; line-height:1.7; }
+
+  .reveal-gate{ text-align:center; margin:18px 0; }
+  .result-tabs{ display:flex; gap:8px; margin:16px 0 12px; }
+  .result-tabs .btn{ flex:1; }
+  .result-tabs .btn.active{ background:var(--accent-dim); color:var(--accent); border-color:var(--accent); }
+
+  .pie-wrap{ display:flex; gap:22px; align-items:center; flex-wrap:wrap; justify-content:center; margin:14px 0; }
+  .pie{ width:180px; height:180px; border-radius:50%; flex:0 0 auto; }
+  .legend{ display:flex; flex-direction:column; gap:8px; }
+  .legend-item{ display:flex; align-items:center; gap:8px; font-size:14px; }
+  .legend-swatch{ width:12px; height:12px; border-radius:3px; flex:0 0 auto; }
+  .answer-big{ text-align:center; font-size:34px; font-weight:900; color:var(--accent); padding:26px 10px; }
+
+  .card-list{ display:flex; flex-direction:column; gap:8px; margin-top:10px; }
+  .ans-card{ background:var(--panel-2); border:1px solid var(--line); border-radius:12px; padding:12px 14px; cursor:pointer; font-size:14px; line-height:1.6; }
+  .ans-card:hover{ border-color:var(--accent); }
+
+  .spotlight-overlay{
+    position:fixed; inset:0; background:rgba(6,9,13,0); z-index:110; display:flex; align-items:center; justify-content:center; padding:24px;
+    opacity:0; transition:opacity .28s ease, background .28s ease;
+  }
+  .spotlight-overlay.show{ background:rgba(6,9,13,.85); opacity:1; }
+  .spotlight-box{
+    max-width:280px; width:100%; background:var(--panel); border:1px solid var(--line); border-radius:18px;
+    padding:30px; font-size:22px; line-height:1.7; text-align:center;
+    transform:scale(1); transform-origin:center; transition:transform .32s cubic-bezier(.22,1,.36,1);
+  }
+  .spotlight-overlay.show .spotlight-box{ transform:scale(2.5); }
+  .spotlight-close{ margin-top:20px; }
+
+  .hidden{ display:none !important; }
+
+</style>
+</head>
+<body>
+
+<!-- 접속 게이트 오버레이 (통과 전까지 화면을 가린다) -->
+<div id="gate-overlay">
+  <div class="gate-spinner"></div>
+  <div class="gate-msg" id="gate-message">수업 접속 상태를 확인하고 있어요…</div>
+</div>
+
+<main id="app" class="hidden">
+  <header class="top">
+    <div class="brand">
+      <div class="brand-left">
+        <h1>수업내용 확인하기!<span class="sub" id="topic-sub">산과 염기 (산성·염기성이 나타나는 까닭 / 중화 반응)</span></h1>
+      </div>
+      <div class="brand-right">
+        <div class="conn-row">
+          <div class="conn-badge conn-checking" id="net-status"><i></i>인터넷 확인 중…</div>
+          <div class="conn-badge conn-checking" id="conn-status"><i></i>연결 확인 중…</div>
+        </div>
+        <button class="teacher-toggle" id="btn-teacher-toggle">🧑‍🏫 선생님 보기</button>
+      </div>
+    </div>
+    <div class="conn-detail hidden" id="conn-detail"></div>
+    <div class="progress-row" id="progress-row" style="display:none;">
+      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+      <div class="progress-label" id="progress-label">0 / 0</div>
+    </div>
+  </header>
+
+  <!-- 인트로 화면 -->
+  <section class="screen" id="screen-intro">
+    <div class="card">
+      <h2>시작하기 전에</h2>
+      <p class="desc">반과 학번, 이름을 입력하면 오늘 활동을 시작할 수 있어요. 문항을 풀어도 정답은 바로 알려주지 않아요 — 선생님이 화면으로 같이 확인해요.</p>
+      <label class="field-label">반 · 학번 · 이름</label>
+      <div class="row3">
+        <select id="in-class" class="in-class-select">
+          <option value="">반</option>
+        </select>
+        <input type="text" id="in-num" placeholder="학번 (예: 10101)" inputmode="numeric">
+        <input type="text" id="in-name" placeholder="이름">
+      </div>
+      <div class="btnrow">
+        <button class="btn primary" id="btn-start" disabled>시작하기</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 문항 화면 -->
+  <section class="screen" id="screen-question">
+    <div class="card">
+      <div class="qmeta">
+        <span class="qtag" id="q-tag">문항</span>
+        <span class="qnum" id="q-num">1 / 33</span>
+      </div>
+      <div class="qtext" id="q-text"></div>
+      <div class="qnote hidden" id="q-note"></div>
+      <div class="qimg-wrap hidden" id="q-image-wrap"><img id="q-image" src="" alt=""></div>
+
+      <div class="choices hidden" id="q-choices"></div>
+      <input type="text" class="hidden" id="q-blank-input" placeholder="답을 입력하세요">
+      <textarea class="hidden" id="q-short-input" placeholder="생각을 자유롭게 적어보세요"></textarea>
+
+      <div class="btnrow">
+        <button class="btn ghost" id="btn-prev">◀ 이전 문항</button>
+        <button class="btn primary" id="btn-next">다음 ▶</button>
+      </div>
+      <div class="conn-status-inline" id="save-status-inline"></div>
+    </div>
+  </section>
+
+  <!-- 성찰 질문 화면 -->
+  <section class="screen" id="screen-reflect">
+    <div class="card">
+      <div class="qmeta">
+        <span class="qtag">성찰 질문</span>
+        <span class="qnum" id="reflect-num">1 / 3</span>
+      </div>
+      <div class="qtext" id="reflect-text"></div>
+      <textarea id="reflect-input" placeholder="자유롭게 적어보세요 (10자 이상)"></textarea>
+      <div class="btnrow">
+        <button class="btn ghost" id="btn-reflect-prev">◀ 이전</button>
+        <button class="btn primary" id="btn-reflect-next">다음 ▶</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 완료 화면 -->
+  <section class="screen" id="screen-done">
+    <div class="card" style="text-align:center;">
+      <div style="font-size:40px;">🎉</div>
+      <h2>고생했어요!</h2>
+      <p class="desc">오늘 활동과 방금 남긴 생각까지 선생님께 잘 전달됐어요. 정답은 선생님 화면에서 함께 확인해요.</p>
+    </div>
+  </section>
+</main>
+
+<!-- 선생님 암호 모달 -->
+<div class="modal-backdrop hidden" id="teacher-gate-modal">
+  <div class="modal-card">
+    <div class="micon">🔒</div>
+    <h3>선생님 암호</h3>
+    <input id="teacher-gate-input" type="password" inputmode="numeric" maxlength="8" placeholder="••••">
+    <div class="modal-btns">
+      <button class="btn ghost" id="teacher-gate-cancel">취소</button>
+      <button class="btn primary" id="teacher-gate-confirm">확인</button>
+    </div>
+  </div>
+</div>
+
+<!-- 선생님보기 패널 -->
+<div class="teacher-panel" id="teacher-panel">
+  <div class="teacher-inner">
+
+    <!-- 반 선택 -->
+    <div id="teacher-class-picker">
+      <div style="max-width:900px; margin:0 auto; padding:14px 16px 0; text-align:right;">
+        <button class="btn ghost" id="btn-teacher-close">닫기 ✕</button>
+      </div>
+      <div class="class-picker-card">
+        <p class="desc" style="text-align:center; margin-bottom:14px;">확인할 반을 선택하세요</p>
+        <select id="teacher-class-select"></select>
+        <button class="btn primary" id="btn-confirm-class">확인</button>
+      </div>
+    </div>
+
+    <!-- 반 선택 후 화면 -->
+    <div id="teacher-main" class="hidden">
+      <div class="teacher-topbar">
+        <button class="pill-tab active" id="tab-progress">진행 상황</button>
+        <button class="pill-tab" id="tab-results">문항별 결과</button>
+        <span class="spacer"></span>
+        <button class="btn gate-btn state-unknown" id="btn-gate-toggle">접속 확인 중…</button>
+        <span class="class-label" id="teacher-current-class"></span>
+        <button class="btn ghost" id="btn-change-class">반 변경</button>
+        <button class="btn ghost" id="btn-teacher-refresh">↻ 새로고침</button>
+        <button class="btn danger" id="btn-teacher-reset">🗑 전체 초기화</button>
+        <button class="btn ghost" id="btn-teacher-close2">✕</button>
+      </div>
+      <div style="max-width:900px; margin:-4px auto 10px; padding:0 16px; text-align:right;">
+        <span class="last-updated" id="teacher-last-updated"></span>
+      </div>
+
+      <!-- 1번 화면: 진행 상황 -->
+      <div id="view-progress">
+        <div class="stu-grid" id="teacher-progress-body"></div>
+      </div>
+
+      <!-- 2번 화면부터: 문항별 결과 -->
+      <div id="view-results" class="hidden">
+        <div class="tq-nav">
+          <button class="btn ghost" id="btn-tq-prev">◀ 이전 문항</button>
+          <span class="tq-count" id="tq-count">1 / 36</span>
+          <button class="btn ghost" id="btn-tq-next">다음 문항 ▶</button>
+        </div>
+        <div class="tq-card">
+          <div id="tq-image-wrap" class="hidden" style="text-align:center;"><img id="tq-image" src="" alt=""></div>
+          <div id="tq-text"></div>
+          <div id="tq-note" class="hidden"></div>
+
+          <div id="reveal-gate" class="reveal-gate">
+            <button class="btn primary" id="btn-reveal">결과 보기</button>
+          </div>
+
+          <div id="tq-result" class="hidden">
+            <div class="result-tabs" id="result-tabs"></div>
+            <div id="result-body"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 서답형 스포트라이트 -->
+<div class="spotlight-overlay hidden" id="spotlight-overlay">
+  <div class="spotlight-box">
+    <div id="spotlight-text"></div>
+    <button class="btn ghost spotlight-close" id="spotlight-close">닫기</button>
+  </div>
+</div>
+
+
+<script>
+/* ============================================================
+   GAS_URL — 접속 게이트에서도 써야 하므로 다른 모든 스크립트보다 먼저 선언한다.
+   활동마다 다른 구글 시트 + 다른 배포이므로 이 값도 활동마다 새로 받아서 넣는다.
+============================================================ */
+const GAS_URL = "https://script.google.com/macros/s/AKfycbw39b-ePyIxUAbs0zzT6La0MZwMXqn2V_n3dey7fwpHd5CSa5H3h5xMBcxi3X8O6w/exec";
+function gasConfigured(){
+  return !!GAS_URL && GAS_URL.indexOf("PASTE_YOUR_") !== 0;
+}
+</script>
+
+<script>
+/* ============================================================
+   접속 스위치 게이트 — 서버(구글 시트 "접속설정" A2)의 공통 스위치가
+   열려 있을 때만 학생 화면을 보여준다. 활동 중에도 5초마다 재확인하여
+   교사가 닫으면 즉시 구글로 내보낸다. 교사용 우회: URL 뒤에 ?t
+============================================================ */
+(function accessGate(){
+  const params = new URLSearchParams(window.location.search);
+  const teacherBypass = params.has('t');
+  const GATE_POLL_MS = 5000;
+
+  function revealApp(){
+    document.getElementById('gate-overlay').classList.add('hidden');
+    document.getElementById('app').classList.remove('hidden');
+  }
+  function blockAccess(message){
+    document.getElementById('gate-message').textContent = message;
+    alert(message);
+    window.location.href = 'https://www.google.com';
+  }
+
+  if(teacherBypass){ revealApp(); return; }
+
+  if(!gasConfigured()){
+    // 배포 주소가 아직 안 들어간 상태(미리보기 등)에서는 게이트를 통과시켜
+    // 화면 구조만 확인할 수 있게 한다. 실제 배포본에서는 GAS_URL이 채워지므로
+    // 아래 서버 확인 로직을 탄다.
+    revealApp();
+    return;
+  }
+
+  function fetchGateOpen(){
+    return fetch(GAS_URL + '?action=gateStatus', { method: 'GET' })
+      .then(res=>{ if(!res.ok) throw new Error('게이트 상태 응답 오류'); return res.json(); })
+      .then(data=> !!(data && data.open));
+  }
+
+  fetchGateOpen()
+    .then(open=>{
+      if(open){
+        revealApp();
+        setInterval(()=>{
+          fetchGateOpen().then(stillOpen=>{
+            if(!stillOpen) blockAccess('선생님이 접속을 닫았습니다.');
+          }).catch(()=>{ /* 일시적 오류는 무시하고 다음 주기에 재확인 */ });
+        }, GATE_POLL_MS);
+      } else {
+        blockAccess('현재는 수업 시간이 아닙니다.');
+      }
+    })
+    .catch(()=>{
+      blockAccess('접속 상태를 확인할 수 없어요. 선생님께 문의해 주세요.');
+    });
+})();
+</script>
+
+<script>
+/* ============================================================
+   설정
+============================================================ */
+// 선생님 보기 암호 — 구글 시트 "접속설정" 시트의 A4 칸 값으로 바꿀 수 있다.
+// 아래는 서버에서 값을 못 받아왔을 때 쓰는 기본값.
+let TEACHER_PASSCODE = "3699";
+const CLASS_COUNT = 10;
+
+/* ============================================================
+   문항 데이터 — 학습지 "1-2. HTML용" 에서 추출
+   (스스로 확인하기 → 깨알 개념 체크 문제 → 확인문제 → 기출문제 순서 그대로)
+============================================================ */
+const QUESTIONS = [
+  /* ===== [1] 산성·염기성이 나타나는 까닭 (교과서 48~49쪽) ===== */
+
+  // 스스로 확인하기
+  { id:"s1_sc1", type:"choice",
+    text:"산은 수용액에서 (        )을 내놓는 물질이다. — 알맞은 것을 고르세요.",
+    options:["수소 이온","수산화 이온"], correctAnswer:"수소 이온" },
+  { id:"s1_sc2", type:"choice",
+    text:"염기성은 수산화 이온 때문에 나타나는 성질이다.",
+    note:"옳으면 O, 옳지 않으면 X 를 고르세요.",
+    options:["O","X"], correctAnswer:"O" },
+
+  // 깨알 개념 체크 문제 (리트머스 종이 + 실 실험, O/X 5개 — 그림 공유)
+  { id:"s1_kk1", type:"choice", image:"images/s1-selfcheck.png",
+    note:"그림은 묽은 염산에서 산성을 띠게 하는 이온을 확인하는 실험이다. 전류를 흘려 준 후, 묽은 염산을 적신 실로부터 (−)극 쪽으로 푸른색 리트머스 종이가 붉게 변하였다.\n각 설명이 옳으면 O, 옳지 않으면 X 를 고르세요.",
+    text:"(1) 산성을 나타내는 이온은 수소 이온이다.",
+    options:["O","X"], correctAnswer:"O" },
+  { id:"s1_kk2", type:"choice", image:"images/s1-selfcheck.png",
+    note:"그림은 묽은 염산에서 산성을 띠게 하는 이온을 확인하는 실험이다. 전류를 흘려 준 후, 묽은 염산을 적신 실로부터 (−)극 쪽으로 푸른색 리트머스 종이가 붉게 변하였다.\n각 설명이 옳으면 O, 옳지 않으면 X 를 고르세요.",
+    text:"(2) 질산 칼륨은 전해질로 쓰였다.",
+    options:["O","X"], correctAnswer:"O" },
+  { id:"s1_kk3", type:"choice", image:"images/s1-selfcheck.png",
+    note:"그림은 묽은 염산에서 산성을 띠게 하는 이온을 확인하는 실험이다. 전류를 흘려 준 후, 묽은 염산을 적신 실로부터 (−)극 쪽으로 푸른색 리트머스 종이가 붉게 변하였다.\n각 설명이 옳으면 O, 옳지 않으면 X 를 고르세요.",
+    text:"(3) (−)극으로 이동하는 이온은 수소 이온뿐이다.",
+    options:["O","X"], correctAnswer:"X" },
+  { id:"s1_kk4", type:"choice", image:"images/s1-selfcheck.png",
+    note:"그림은 묽은 염산에서 산성을 띠게 하는 이온을 확인하는 실험이다. 전류를 흘려 준 후, 묽은 염산을 적신 실로부터 (−)극 쪽으로 푸른색 리트머스 종이가 붉게 변하였다.\n각 설명이 옳으면 O, 옳지 않으면 X 를 고르세요.",
+    text:"(4) 묽은 염산에 페놀프탈레인 용액을 떨어뜨리면 붉게 변한다.",
+    options:["O","X"], correctAnswer:"X" },
+  { id:"s1_kk5", type:"choice", image:"images/s1-selfcheck.png",
+    note:"그림은 묽은 염산에서 산성을 띠게 하는 이온을 확인하는 실험이다. 전류를 흘려 준 후, 묽은 염산을 적신 실로부터 (−)극 쪽으로 푸른색 리트머스 종이가 붉게 변하였다.\n각 설명이 옳으면 O, 옳지 않으면 X 를 고르세요.",
+    text:"(5) 묽은 염산 대신 아세트산으로 실험해도 리트머스 종이의 색 변화는 같다.",
+    options:["O","X"], correctAnswer:"O" },
+
+  // 확인문제
+  { id:"s1_c1", type:"choice", image:"images/s1-confirm-01.png",
+    text:"그림과 같이 질산 칼륨 수용액을 적신 붉은색 리트머스 종이 위에 ㉠을 적신 실을 올려놓고 전류를 흘려 주었더니 붉은색 리트머스 종이가 A극 쪽으로 푸른색으로 변했다. A극과 ㉠을 옳게 짝지은 것은?",
+    note:"①  A극 (−) / ㉠ 염산\n②  A극 (−) / ㉠ 수산화 나트륨 수용액\n③  A극 (+) / ㉠ 염산\n④  A극 (+) / ㉠ 아세트산 수용액\n⑤  A극 (+) / ㉠ 수산화 나트륨 수용액",
+    options:["①","②","③","④","⑤"], correctAnswer:"⑤" },
+  { id:"s1_c2", type:"choice",
+    text:"산과 염기의 이온화식을 옳게 나타낸 것은?",
+    note:"①  HCl → H⁻ + Cl⁺\n②  CH₃COOH → CH₃CO⁺ + OH⁻\n③  NaOH → H⁺ + NaO⁻\n④  NH₄OH → NH₄⁺ + OH⁻\n⑤  H₂CO₃ → H⁺ + CO₃²⁻",
+    options:["①","②","③","④","⑤"], correctAnswer:"④" },
+
+  // 기출문제 (문제 전체가 그림 안에 있음)
+  { id:"s1_p1", type:"choice", image:"images/s1-past-01.png", imageSize:"small",
+    text:"그림의 문제를 읽고 알맞은 답을 고르세요. (①~⑤)",
+    options:["①","②","③","④","⑤"], correctAnswer:"③" },
+  { id:"s1_p2", type:"choice", image:"images/s1-past-02.png", imageSize:"small",
+    text:"그림의 문제를 읽고 알맞은 답을 고르세요. (①~⑤)",
+    options:["①","②","③","④","⑤"], correctAnswer:"④" },
+  { id:"s1_p3", type:"choice", image:"images/s1-past-03.png", imageSize:"small",
+    text:"그림의 문제를 읽고 알맞은 답을 고르세요. (①~⑤)",
+    options:["①","②","③","④","⑤"], correctAnswer:"①" },
+
+  /* ===== [2] 중화 반응 (교과서 52~53쪽) ===== */
+
+  // 스스로 확인하기
+  { id:"s2_sc1", type:"blank",
+    text:"산의 수소 이온과 염기의 수산화 이온이 1:1의 개수비로 반응해 물을 생성하는 반응을 (        )이라고 한다.",
+    correctAnswer:"중화반응" },
+  { id:"s2_sc2", type:"choice",
+    text:"생선에 식초나 레몬즙을 뿌리면 비린내 성분을 중화할 수 있다.",
+    note:"옳으면 O, 옳지 않으면 X 를 고르세요.",
+    options:["O","X"], correctAnswer:"O" },
+
+  // 깨알 개념 체크 문제 A ((가)~(라) 중화 모형, O/X 5개 — 그림 공유)
+  { id:"s2_kkA1", type:"choice", image:"images/s2-selfcheckA.png",
+    note:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 가하는 중화 반응을 모형으로 나타낸 것이다. (단, 혼합 전 두 수용액의 온도와 농도는 같다.)\n각 설명이 옳으면 O, 옳지 않으면 X 를 고르세요.",
+    text:"(1) (가)와 (나)는 산성이다.",
+    options:["O","X"], correctAnswer:"O" },
+  { id:"s2_kkA2", type:"choice", image:"images/s2-selfcheckA.png",
+    note:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 가하는 중화 반응을 모형으로 나타낸 것이다. (단, 혼합 전 두 수용액의 온도와 농도는 같다.)\n각 설명이 옳으면 O, 옳지 않으면 X 를 고르세요.",
+    text:"(2) (다)와 (라)는 염기성이다.",
+    options:["O","X"], correctAnswer:"X" },
+  { id:"s2_kkA3", type:"choice", image:"images/s2-selfcheckA.png",
+    note:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 가하는 중화 반응을 모형으로 나타낸 것이다. (단, 혼합 전 두 수용액의 온도와 농도는 같다.)\n각 설명이 옳으면 O, 옳지 않으면 X 를 고르세요.",
+    text:"(3) (다)에 BTB 용액을 떨어뜨리면 녹색이 된다.",
+    options:["O","X"], correctAnswer:"O" },
+  { id:"s2_kkA4", type:"choice", image:"images/s2-selfcheckA.png",
+    note:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 가하는 중화 반응을 모형으로 나타낸 것이다. (단, 혼합 전 두 수용액의 온도와 농도는 같다.)\n각 설명이 옳으면 O, 옳지 않으면 X 를 고르세요.",
+    text:"(4) 온도가 가장 높은 것은 (다)이다.",
+    options:["O","X"], correctAnswer:"O" },
+  { id:"s2_kkA5", type:"choice", image:"images/s2-selfcheckA.png",
+    note:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 가하는 중화 반응을 모형으로 나타낸 것이다. (단, 혼합 전 두 수용액의 온도와 농도는 같다.)\n각 설명이 옳으면 O, 옳지 않으면 X 를 고르세요.",
+    text:"(5) (가)와 (라)를 혼합한 용액에 BTB 용액을 떨어뜨리면 녹색이 된다.",
+    options:["O","X"], correctAnswer:"X" },
+
+  // 깨알 개념 체크 문제 B (이온 수 변화 그래프, O/X 5개 — 그림 공유)
+  { id:"s2_kkB1", type:"choice", image:"images/s2-selfcheckB.png",
+    note:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 넣으며 반응시켰을 때, 넣어 준 NaOH 수용액의 부피에 따른 혼합 용액 속 이온 수 변화를 나타낸 것이다.\n각 설명이 옳으면 O, 옳지 않으면 X 를 고르세요.",
+    text:"(1) ㉠은 Cl⁻이고, ㉣은 OH⁻이다.",
+    options:["O","X"], correctAnswer:"X" },
+  { id:"s2_kkB2", type:"choice", image:"images/s2-selfcheckB.png",
+    note:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 넣으며 반응시켰을 때, 넣어 준 NaOH 수용액의 부피에 따른 혼합 용액 속 이온 수 변화를 나타낸 것이다.\n각 설명이 옳으면 O, 옳지 않으면 X 를 고르세요.",
+    text:"(2) ㉡은 H⁺이고, ㉢은 Na⁺이다.",
+    options:["O","X"], correctAnswer:"X" },
+  { id:"s2_kkB3", type:"choice", image:"images/s2-selfcheckB.png",
+    note:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 넣으며 반응시켰을 때, 넣어 준 NaOH 수용액의 부피에 따른 혼합 용액 속 이온 수 변화를 나타낸 것이다.\n각 설명이 옳으면 O, 옳지 않으면 X 를 고르세요.",
+    text:"(3) 혼합 용액의 액성이 산성일 때 가장 많이 존재하는 이온은 Cl⁻이다.",
+    options:["O","X"], correctAnswer:"O" },
+  { id:"s2_kkB4", type:"choice", image:"images/s2-selfcheckB.png",
+    note:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 넣으며 반응시켰을 때, 넣어 준 NaOH 수용액의 부피에 따른 혼합 용액 속 이온 수 변화를 나타낸 것이다.\n각 설명이 옳으면 O, 옳지 않으면 X 를 고르세요.",
+    text:"(4) 혼합 용액의 액성이 중성일 때 이온이 존재하지 않는다.",
+    options:["O","X"], correctAnswer:"X" },
+  { id:"s2_kkB5", type:"choice", image:"images/s2-selfcheckB.png",
+    note:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 넣으며 반응시켰을 때, 넣어 준 NaOH 수용액의 부피에 따른 혼합 용액 속 이온 수 변화를 나타낸 것이다.\n각 설명이 옳으면 O, 옳지 않으면 X 를 고르세요.",
+    text:"(5) 혼합 용액의 액성이 염기성일 때 가장 많이 존재하는 이온은 OH⁻이다.",
+    options:["O","X"], correctAnswer:"X" },
+
+  // 확인문제
+  { id:"s2_c1", type:"choice", image:"images/s2-confirm-01.png",
+    text:"그림은 염산에 수산화 나트륨 수용액을 넣을 때 수용액 속에 들어 있는 입자를 모형으로 나타낸 것이다. 염산과 수산화 나트륨 수용액의 혼합 용액에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?",
+    note:"<보기>\nㄱ. 전류가 흐르지 않는다.\nㄴ. 수산화 나트륨 수용액을 넣으면 중화 반응을 한다.\nㄷ. 페놀프탈레인 용액을 떨어뜨리면 붉은색으로 변한다.\n\n①  ㄴ      ②  ㄷ      ③  ㄱ, ㄴ      ④  ㄱ, ㄷ      ⑤  ㄱ, ㄴ, ㄷ",
+    options:["①","②","③","④","⑤"], correctAnswer:"①" },
+  { id:"s2_c2", type:"choice", image:"images/s2-confirm-02.png",
+    text:"그림은 농도와 온도가 같은 염산과 수산화 나트륨 수용액의 부피를 달리하여 혼합했을 때 혼합 용액의 최고 온도를 측정하여 나타낸 것이다. 이에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?",
+    note:"<보기>\nㄱ. A와 B를 섞으면 중화 반응을 한다.\nㄴ. C에는 2종류의 이온이 존재한다.\nㄷ. 생성된 물의 양은 D가 E보다 많다.\n\n①  ㄱ      ②  ㄴ      ③  ㄱ, ㄷ      ④  ㄴ, ㄷ      ⑤  ㄱ, ㄴ, ㄷ",
+    options:["①","②","③","④","⑤"], correctAnswer:"④" },
+  { id:"s2_c3", type:"choice",
+    text:"중화 반응을 이용하는 예로 옳지 않은 것은?",
+    note:"①  생선에 레몬즙을 뿌린다.\n②  산화 철에서 산소를 제거한다.\n③  산성화된 토양에 석회 가루를 뿌린다.\n④  위산 때문에 속이 쓰릴 때 제산제를 복용한다.\n⑤  벌레에 물렸을 때 암모니아수가 들어 있는 약을 바른다.",
+    options:["①","②","③","④","⑤"], correctAnswer:"②" },
+
+  // 기출문제 (문제 전체가 그림 안에 있음)
+  { id:"s2_p1", type:"choice", image:"images/s2-past-01.png", imageSize:"small",
+    text:"그림의 문제를 읽고 알맞은 답을 고르세요. (①~⑤)",
+    options:["①","②","③","④","⑤"], correctAnswer:"⑤" },
+  { id:"s2_p2", type:"choice", image:"images/s2-past-02.png", imageSize:"small",
+    text:"그림의 문제를 읽고 알맞은 답을 고르세요. (①~⑤)",
+    options:["①","②","③","④","⑤"], correctAnswer:"③" },
+  { id:"s2_p3", type:"choice", image:"images/s2-past-03.png", imageSize:"small",
+    text:"그림의 문제를 읽고 알맞은 답을 고르세요. (①~⑤)",
+    options:["①","②","③","④","⑤"], correctAnswer:"③" },
+  { id:"s2_p4", type:"choice", image:"images/s2-past-04.png", imageSize:"small",
+    text:"그림의 문제를 읽고 알맞은 답을 고르세요. (①~⑤)  [2023 3월 학평 17번]",
+    options:["①","②","③","④","⑤"], correctAnswer:"③" },
+  { id:"s2_p5", type:"choice", image:"images/s2-past-05.png", imageSize:"small",
+    text:"그림의 문제를 읽고 알맞은 답을 고르세요. (①~⑤)  [2023 11월 학평 18번]",
+    options:["①","②","③","④","⑤"], correctAnswer:"②" },
+  { id:"s2_p6", type:"choice", image:"images/s2-past-06.png", imageSize:"small",
+    text:"그림의 문제를 읽고 알맞은 답을 고르세요. (①~⑤)  [2023 3월 학평 14번]",
+    options:["①","②","③","④","⑤"], correctAnswer:"③" },
+];
+
+const REFLECT_QUESTIONS = [
+  "이번 소단원에서 가장 호기심이 생겼던 개념이나, 이해가 잘 되지 않아 막혔던 부분은 무엇인가요?",
+  "위에서 선택한 내용이 왜 그렇게 느껴졌는지 설명해 보세요. (예: 기존 알고 있던 내용과 달라서, 개념이 추상적이어서, 실생활 적용 사례가 궁금해서 등)",
+  "그 어려움이나 궁금증을 해결하기 위해 어떤 노력(추가 자료 탐색, 교사 질문, 관련 도서 검색 등)을 했거나 할 예정인가요?",
+];
+
+const HEADERS = QUESTIONS.map(q=>q.text).concat(REFLECT_QUESTIONS);
+const CORRECT_ANSWERS = QUESTIONS.map(q=> (q.type==="short") ? "" : (q.correctAnswer||"")).concat(["","",""]);
+
+// 선생님보기 "문항별 결과" 화면에서 넘겨볼 전체 목록 — 학생용 QUESTIONS 뒤에
+// 성찰 질문 3개도 서답형(정답 없음) 항목으로 이어 붙인다.
+const TEACHER_ITEMS = QUESTIONS.concat(REFLECT_QUESTIONS.map((text, i)=>({
+  id: "reflect"+(i+1), type: "short", tag: "성찰 질문", text: text
+})));
+
+/* ============================================================
+   상태
+============================================================ */
+const state = {
+  screen: "intro",
+  className: "",
+  studentName: "",
+  current: 0,
+  answers: new Array(QUESTIONS.length).fill(""),
+  reflectIdx: 0,
+  reflectAnswers: ["","",""],
+};
+
+function showScreen(name){
+  state.screen = name;
+  document.querySelectorAll("#app .screen").forEach(el=>el.classList.remove("on"));
+  const el = document.getElementById("screen-"+name);
+  if(el) el.classList.add("on");
+  const progRow = document.getElementById("progress-row");
+  if(name === "question" || name === "reflect"){
+    progRow.style.display = "flex";
+  } else {
+    progRow.style.display = "none";
+  }
+  updateProgressBar();
+}
+
+function updateProgressBar(){
+  const totalSteps = QUESTIONS.length + REFLECT_QUESTIONS.length;
+  let doneSteps = 0;
+  if(state.screen === "question") doneSteps = state.current;
+  else if(state.screen === "reflect") doneSteps = QUESTIONS.length + state.reflectIdx;
+  else if(state.screen === "done") doneSteps = totalSteps;
+  document.getElementById("progress-fill").style.width = Math.round(doneSteps/totalSteps*100)+"%";
+  document.getElementById("progress-label").textContent = doneSteps+" / "+totalSteps;
+}
+
+/* ============================================================
+   인트로 화면
+============================================================ */
+const classSelect = document.getElementById("in-class");
+for(let i=1;i<=CLASS_COUNT;i++){
+  const opt = document.createElement("option");
+  opt.value = i+"반"; opt.textContent = i+"반";
+  classSelect.appendChild(opt);
+}
+function checkIntroValid(){
+  const ok = classSelect.value && document.getElementById("in-num").value.trim() && document.getElementById("in-name").value.trim();
+  document.getElementById("btn-start").disabled = !ok;
+}
+classSelect.addEventListener("change", checkIntroValid);
+document.getElementById("in-num").addEventListener("input", checkIntroValid);
+document.getElementById("in-name").addEventListener("input", checkIntroValid);
+
+document.getElementById("btn-start").addEventListener("click", async ()=>{
+  state.className = classSelect.value;
+  const num = document.getElementById("in-num").value.trim();
+  const name = document.getElementById("in-name").value.trim();
+  state.studentName = num + " " + name;
+  state.current = 0;
+
+  const startBtn = document.getElementById("btn-start");
+  startBtn.disabled = true;
+  const prevAnswers = await fetchPreviousAnswers(state.className, sanitizeKey(state.studentName));
+  startBtn.disabled = false;
+  if(prevAnswers && prevAnswers.length){
+    const nQ = QUESTIONS.length;
+    for(let i=0; i<nQ; i++){
+      if(prevAnswers[i] !== undefined && prevAnswers[i] !== "") state.answers[i] = prevAnswers[i];
+    }
+    for(let j=0; j<REFLECT_QUESTIONS.length; j++){
+      const v = prevAnswers[nQ + j];
+      if(v !== undefined && v !== "") state.reflectAnswers[j] = v;
+    }
+  }
+
+  renderQuestion();
+  showScreen("question");
+  reportProgress();
+});
+
+/* ============================================================
+   문항 화면
+============================================================ */
+function renderQuestion(){
+  const q = QUESTIONS[state.current];
+  document.getElementById("q-tag").textContent = q.tag || "문항";
+  document.getElementById("q-num").textContent = (state.current+1)+" / "+QUESTIONS.length;
+  document.getElementById("q-text").textContent = q.text;
+
+  const noteEl = document.getElementById("q-note");
+  if(q.note){ noteEl.textContent = q.note; noteEl.classList.remove("hidden"); }
+  else noteEl.classList.add("hidden");
+
+  const imgWrap = document.getElementById("q-image-wrap");
+  const imgEl = document.getElementById("q-image");
+  if(q.image){
+    imgEl.src = q.image; imgEl.alt = q.text;
+    imgWrap.classList.remove("hidden");
+    imgWrap.classList.toggle("small", q.imageSize==="small");
+  } else imgWrap.classList.add("hidden");
+
+  const choicesEl = document.getElementById("q-choices");
+  const blankEl = document.getElementById("q-blank-input");
+  const shortEl = document.getElementById("q-short-input");
+  choicesEl.classList.add("hidden"); choicesEl.innerHTML = "";
+  blankEl.classList.add("hidden"); blankEl.value = "";
+  shortEl.classList.add("hidden"); shortEl.value = "";
+
+  const existing = state.answers[state.current] || "";
+
+  if(q.type === "choice"){
+    choicesEl.classList.remove("hidden");
+    const isPureNumberChoices = q.options.length === 5 && q.options.every(o => /^[①②③④⑤]$/.test(o));
+    choicesEl.classList.toggle("five-col", isPureNumberChoices);
+    q.options.forEach(opt=>{
+      const btn = document.createElement("button");
+      btn.className = "choice-btn" + (existing===opt ? " picked":"");
+      btn.textContent = opt;
+      btn.addEventListener("click", ()=>{
+        state.answers[state.current] = opt;
+        Array.from(choicesEl.children).forEach(c=>c.classList.remove("picked"));
+        btn.classList.add("picked");
+      });
+      choicesEl.appendChild(btn);
+    });
+  } else if(q.type === "blank"){
+    blankEl.classList.remove("hidden");
+    blankEl.value = existing;
+  } else if(q.type === "short"){
+    shortEl.classList.remove("hidden");
+    shortEl.value = existing;
+  }
+
+  document.getElementById("btn-prev").disabled = (state.current===0);
+}
+
+function captureCurrentAnswer(){
+  const q = QUESTIONS[state.current];
+  if(q.type === "blank"){
+    state.answers[state.current] = document.getElementById("q-blank-input").value.trim();
+  } else if(q.type === "short"){
+    state.answers[state.current] = document.getElementById("q-short-input").value.trim();
+  }
+}
+
+document.getElementById("btn-next").addEventListener("click", ()=>{
+  captureCurrentAnswer();
+  const currentAnswer = state.answers[state.current];
+  if(!currentAnswer || !String(currentAnswer).trim()){
+    alertInline("답을 선택하거나 입력해야 다음으로 넘어갈 수 있어요.");
+    return;
+  }
+  if(state.current < QUESTIONS.length-1){
+    state.current++;
+    renderQuestion();
+    updateProgressBar();
+  } else {
+    state.reflectIdx = 0;
+    renderReflect();
+    showScreen("reflect");
+  }
+  reportProgress();
+});
+
+document.getElementById("btn-prev").addEventListener("click", ()=>{
+  captureCurrentAnswer();
+  if(state.current > 0){
+    state.current--;
+    renderQuestion();
+    updateProgressBar();
+  }
+});
+
+/* ============================================================
+   성찰 질문 화면
+============================================================ */
+function renderReflect(){
+  document.getElementById("reflect-num").textContent = (state.reflectIdx+1)+" / "+REFLECT_QUESTIONS.length;
+  document.getElementById("reflect-text").textContent = REFLECT_QUESTIONS[state.reflectIdx];
+  document.getElementById("reflect-input").value = state.reflectAnswers[state.reflectIdx] || "";
+  document.getElementById("btn-reflect-prev").disabled = false;
+  updateProgressBar();
+}
+
+document.getElementById("btn-reflect-next").addEventListener("click", ()=>{
+  const val = document.getElementById("reflect-input").value.trim();
+  if(val.length < 10){
+    alertInline("조금 더 자세히 적어주세요 (10자 이상)");
+    return;
+  }
+  state.reflectAnswers[state.reflectIdx] = val;
+  if(state.reflectIdx < REFLECT_QUESTIONS.length-1){
+    state.reflectIdx++;
+    renderReflect();
+  } else {
+    showScreen("done");
+    reportProgress();
+  }
+});
+
+document.getElementById("btn-reflect-prev").addEventListener("click", ()=>{
+  state.reflectAnswers[state.reflectIdx] = document.getElementById("reflect-input").value.trim();
+  if(state.reflectIdx > 0){
+    state.reflectIdx--;
+    renderReflect();
+  } else {
+    state.current = QUESTIONS.length-1;
+    renderQuestion();
+    showScreen("question");
+  }
+});
+
+function alertInline(msg){
+  const el = document.getElementById("save-status-inline");
+  el.textContent = msg;
+  el.style.color = "var(--warn)";
+  setTimeout(()=>{ el.textContent=""; }, 2500);
+}
+
+/* ============================================================
+   Google Apps Script 연동 — 진행 상황 저장 (재시도 + 자동 만회)
+============================================================ */
+function sanitizeKey(name){
+  return name.trim().slice(0,20).replace(/[\/\\'"\s]/g, "_");
+}
+
+async function fetchPreviousAnswers(cls, key){
+  if(!gasConfigured() || !key) return null;
+  try{
+    const res = await fetch(GAS_URL + "?action=studentAnswers&class=" + encodeURIComponent(cls) + "&key=" + encodeURIComponent(key), { method: "GET" });
+    if(!res.ok) return null;
+    const data = await res.json();
+    return (data && Array.isArray(data.answers)) ? data.answers : null;
+  }catch(e){
+    return null;
+  }
+}
+
+let reportChain = Promise.resolve();
+let resyncTimer = null;
+function reportProgress(){
+  reportChain = reportChain.then(reportProgressInner).catch(()=>{});
+  return reportChain;
+}
+async function reportProgressInner(){
+  if(!state.studentName || !state.className) return;
+  if(!gasConfigured()) return;
+  const payload = {
+    key: sanitizeKey(state.studentName),
+    name: state.studentName,
+    class: state.className,
+    headers: HEADERS,
+    correctAnswers: CORRECT_ANSWERS,
+    answers: state.answers.concat(state.reflectAnswers),
+    updatedAt: Date.now(),
+  };
+  const body = JSON.stringify(payload);
+  const delays = [400, 1000, 2000];
+  for(let attempt=0; attempt<delays.length; attempt++){
+    try{
+      const res = await fetch(GAS_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body,
+      });
+      if(res.ok){
+        const j = await res.json().catch(()=>null);
+        if(j && j.ok){ clearTimeout(resyncTimer); setConnStatus("ok"); return; }
+      }
+    }catch(err){ /* 조용히 재시도 */ }
+    await new Promise(r=>setTimeout(r, delays[attempt]));
+  }
+  setConnStatus("bad", "저장에 실패했어요. 자동으로 다시 시도할게요.");
+  clearTimeout(resyncTimer);
+  resyncTimer = setTimeout(reportProgress, 5000);
+}
+
+function setConnStatus(kind, detail){
+  const el = document.getElementById("conn-status");
+  el.classList.remove("conn-checking","conn-ok","conn-bad");
+  if(kind==="ok"){ el.classList.add("conn-ok"); el.innerHTML = "<i></i> 실시간 연결됨"; }
+  else if(kind==="bad"){ el.classList.add("conn-bad"); el.innerHTML = "<i></i> 연결 안 됨"; }
+  else { el.classList.add("conn-checking"); el.innerHTML = "<i></i> 연결 확인 중…"; }
+  const detailEl = document.getElementById("conn-detail");
+  if(kind==="bad" && detail){ detailEl.textContent = "안내: " + detail; detailEl.classList.remove("hidden"); }
+  else { detailEl.classList.add("hidden"); }
+}
+async function runConnectionSelfTest(){
+  if(!gasConfigured()){ setConnStatus("bad", "아직 구글 시트 연결 주소가 설정되지 않았어요."); return; }
+  setConnStatus("checking");
+  try{
+    const res = await fetch(GAS_URL, { method: "GET" });
+    if(!res.ok){ setConnStatus("bad", "서버 응답 코드 " + res.status); return; }
+    const data = await res.json();
+    setConnStatus((data && typeof data === "object") ? "ok" : "bad");
+  }catch(e){ setConnStatus("bad", String(e && e.message ? e.message : e)); }
+}
+function setNetStatus(kind, detail){
+  const el = document.getElementById("net-status");
+  el.classList.remove("conn-checking","conn-ok","conn-bad");
+  if(kind==="ok"){ el.classList.add("conn-ok"); el.innerHTML = "<i></i> 인터넷 연결 정상"; }
+  else if(kind==="bad"){ el.classList.add("conn-bad"); el.innerHTML = "<i></i> 인터넷 연결 안 됨"; }
+  else { el.classList.add("conn-checking"); el.innerHTML = "<i></i> 인터넷 확인 중…"; }
+}
+async function runNetworkSelfTest(){
+  try{
+    const res = await fetch("https://jsonplaceholder.typicode.com/todos/1", { method: "GET" });
+    const data = await res.json();
+    setNetStatus(data && data.id ? "ok" : "bad");
+  }catch(e){ setNetStatus("bad", String(e && e.message ? e.message : e)); }
+}
+
+// 선생님 암호를 구글 시트 값으로 갱신 (실패해도 기본값 3699 유지)
+async function loadTeacherPass(){
+  if(!gasConfigured()) return;
+  try{
+    const res = await fetch(GAS_URL + "?action=teacherPass", { method: "GET" });
+    const data = await res.json();
+    if(data && data.pass) TEACHER_PASSCODE = String(data.pass).trim();
+  }catch(e){ /* 기본값 유지 */ }
+}
+
+runConnectionSelfTest();
+runNetworkSelfTest();
+loadTeacherPass();
+showScreen("intro");
+
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+</script>
+
+<script>
+/* ============================================================
+   선생님 보기 — 암호 게이트
+============================================================ */
+let teacherUnlocked = false;
+const gateModal = document.getElementById("teacher-gate-modal");
+const teacherPanel = document.getElementById("teacher-panel");
+
+document.getElementById("btn-teacher-toggle").addEventListener("click", ()=>{
+  teacherUnlocked ? openTeacherView() : openGateModal();
+});
+function openGateModal(){
+  document.getElementById("teacher-gate-input").value = "";
+  gateModal.classList.remove("hidden");
+  setTimeout(()=>document.getElementById("teacher-gate-input").focus(), 50);
+}
+document.getElementById("teacher-gate-cancel").addEventListener("click", ()=>{
+  gateModal.classList.add("hidden");
+});
+document.getElementById("teacher-gate-confirm").addEventListener("click", tryGateSubmit);
+document.getElementById("teacher-gate-input").addEventListener("keydown", (e)=>{
+  if(e.key === "Enter") tryGateSubmit();
+});
+function tryGateSubmit(){
+  const val = document.getElementById("teacher-gate-input").value;
+  if(val === TEACHER_PASSCODE){
+    teacherUnlocked = true;
+    gateModal.classList.add("hidden");
+    openTeacherView();
+  } else {
+    document.getElementById("teacher-gate-input").value = "";
+    document.getElementById("teacher-gate-input").placeholder = "암호가 틀렸어요";
+  }
+}
+document.getElementById("btn-teacher-close").addEventListener("click", ()=>{
+  teacherPanel.classList.remove("on");
+});
+document.getElementById("btn-teacher-close2").addEventListener("click", ()=>{
+  teacherPanel.classList.remove("on");
+});
+
+function openTeacherView(){
+  teacherPanel.classList.add("on");
+  document.getElementById("teacher-class-picker").classList.remove("hidden");
+  document.getElementById("teacher-main").classList.add("hidden");
+}
+
+/* ---------- 반 선택 ---------- */
+const teacherClassSelect = document.getElementById("teacher-class-select");
+let teacherClass = "";
+for(let i=1;i<=CLASS_COUNT;i++){
+  const opt = document.createElement("option");
+  opt.value = i+"반"; opt.textContent = i+"반";
+  teacherClassSelect.appendChild(opt);
+}
+document.getElementById("btn-confirm-class").addEventListener("click", ()=>{
+  selectTeacherClass(teacherClassSelect.value);
+});
+function selectTeacherClass(cls){
+  teacherClass = cls;
+  document.getElementById("teacher-current-class").textContent = cls;
+  document.getElementById("teacher-class-picker").classList.add("hidden");
+  document.getElementById("teacher-main").classList.remove("hidden");
+  switchTeacherTab("progress");
+  renderTeacherDashboard();
+  refreshGateButton();
+}
+document.getElementById("btn-change-class").addEventListener("click", ()=>{
+  document.getElementById("teacher-main").classList.add("hidden");
+  document.getElementById("teacher-class-picker").classList.remove("hidden");
+});
+
+/* ---------- 탭 전환 ---------- */
+let teacherTab = "progress";
+let tqIndex = 0;
+let tqRevealed = false;
+let latestTeacherData = null;
+
+function switchTeacherTab(tab){
+  teacherTab = tab;
+  document.getElementById("tab-progress").classList.toggle("active", tab==="progress");
+  document.getElementById("tab-results").classList.toggle("active", tab==="results");
+  document.getElementById("view-progress").classList.toggle("hidden", tab!=="progress");
+  document.getElementById("view-results").classList.toggle("hidden", tab!=="results");
+  if(tab==="results"){ tqRevealed = false; renderTeacherQuestionView(); }
+}
+document.getElementById("tab-progress").addEventListener("click", ()=>switchTeacherTab("progress"));
+document.getElementById("tab-results").addEventListener("click", ()=>switchTeacherTab("results"));
+
+/* ---------- 교사 접속 스위치 ---------- */
+let gateOpen = false;
+let gateConfirmArmed = false, gateConfirmTimer = null;
+const gateBtn = document.getElementById("btn-gate-toggle");
+
+function paintGateButton(){
+  gateBtn.classList.remove("state-unknown","state-open","state-closed","state-confirm");
+  if(gateConfirmArmed){
+    gateBtn.classList.add("state-confirm");
+    gateBtn.textContent = "정말 닫을까요? 다시 클릭";
+  } else if(gateOpen){
+    gateBtn.classList.add("state-open");
+    gateBtn.textContent = "🟢 접속 가능 (클릭하면 닫기)";
+  } else {
+    gateBtn.classList.add("state-closed");
+    gateBtn.textContent = "🔴 접속 불가능 (클릭하면 열기)";
+  }
+}
+async function refreshGateButton(){
+  if(!gasConfigured()) return;
+  try{
+    const res = await fetch(GAS_URL + "?action=gateStatus", { method:"GET" });
+    const data = await res.json();
+    gateOpen = !!(data && data.open);
+  }catch(e){ /* 다음 새로고침 때 다시 시도 */ }
+  gateConfirmArmed = false;
+  clearTimeout(gateConfirmTimer);
+  paintGateButton();
+}
+async function setGate(open){
+  gateBtn.disabled = true;
+  try{
+    if(gasConfigured()){
+      const res = await fetch(GAS_URL + "?action=setGate&value=" + (open ? "true" : "false"), { method:"GET" });
+      const data = await res.json();
+      gateOpen = !!(data && data.open);
+    }
+  }catch(e){ /* 실패하면 다음 조작 때 refreshGateButton으로 실제 상태 재반영 */ }
+  gateBtn.disabled = false;
+  gateConfirmArmed = false;
+  clearTimeout(gateConfirmTimer);
+  paintGateButton();
+}
+gateBtn.addEventListener("click", ()=>{
+  if(!gateOpen){ setGate(true); return; }
+  if(!gateConfirmArmed){
+    gateConfirmArmed = true;
+    paintGateButton();
+    clearTimeout(gateConfirmTimer);
+    gateConfirmTimer = setTimeout(()=>{ gateConfirmArmed = false; paintGateButton(); }, 4000);
+    return;
+  }
+  clearTimeout(gateConfirmTimer);
+  setGate(false);
+});
+
+/* ---------- 새로고침 / 초기화 ---------- */
+document.getElementById("btn-teacher-refresh").addEventListener("click", ()=>{
+  renderTeacherDashboard();
+  refreshGateButton();
+});
+
+let resetArmed = false, resetArmTimer = null;
+document.getElementById("btn-teacher-reset").addEventListener("click", ()=>{
+  const btn = document.getElementById("btn-teacher-reset");
+  if(!resetArmed){
+    resetArmed = true;
+    btn.textContent = "정말요? 다시 누르면 삭제";
+    clearTimeout(resetArmTimer);
+    resetArmTimer = setTimeout(()=>{ resetArmed=false; btn.textContent="🗑 전체 초기화"; }, 4000);
+    return;
+  }
+  clearTimeout(resetArmTimer);
+  resetArmed = false;
+  runResetAll();
+});
+async function runResetAll(){
+  const btn = document.getElementById("btn-teacher-reset");
+  btn.disabled = true; btn.textContent = "삭제 중…";
+  try{
+    if(gasConfigured()) await fetch(GAS_URL + "?action=reset&class=" + encodeURIComponent(teacherClass), { method: "GET" });
+  }catch(e){ /* 조용히 넘어가고 새로고침으로 현재 상태를 보여줌 */ }
+  btn.disabled = false; btn.textContent = "🗑 전체 초기화";
+  renderTeacherDashboard();
+}
+
+/* ---------- 1번 화면: 학생 진행 상황 (이름 보임) ---------- */
+function studentNumber(name){
+  const m = String(name).match(/\d+/);
+  return m ? parseInt(m[0],10) : Infinity;
+}
+
+async function fetchTeacherData(){
+  if(!gasConfigured()) return null;
+  let lastErr = null;
+  for(let i=0;i<2;i++){
+    try{
+      const res = await fetch(GAS_URL + "?class=" + encodeURIComponent(teacherClass), { method:"GET" });
+      const data = await res.json();
+      return data;
+    }catch(e){ lastErr = e; if(i===0) await new Promise(r=>setTimeout(r,600)); }
+  }
+  throw lastErr;
+}
+
+async function renderTeacherDashboard(){
+  const refreshBtn = document.getElementById("btn-teacher-refresh");
+  const stamp = document.getElementById("teacher-last-updated");
+  refreshBtn.classList.add("loading");
+  refreshBtn.disabled = true;
+  refreshBtn.textContent = "↻ 새로고침 중…";
+  const body = document.getElementById("teacher-progress-body");
+  if(!gasConfigured()){
+    body.innerHTML = '<div class="storage-warning">아직 구글 시트 연결 주소가 설정되지 않았어요.</div>';
+    refreshBtn.classList.remove("loading");
+    refreshBtn.disabled = false;
+    refreshBtn.textContent = "↻ 새로고침";
+    return;
+  }
+  try{
+    const data = await fetchTeacherData();
+    latestTeacherData = data;
+    const rows = (data && data.rows) || [];
+    if(rows.length===0){
+      body.innerHTML = '<div class="stu-empty">아직 접속한 학생이 없어요.</div>';
+    } else {
+      const sorted = rows.slice().sort((a,b)=> studentNumber(a.name)-studentNumber(b.name));
+      body.innerHTML = sorted.map(r=>{
+        const answered = (r.answers||[]).filter(v=>String(v).trim()!=="").length;
+        const pct = HEADERS.length ? Math.round(answered/HEADERS.length*100) : 0;
+        const acc = (r.accuracy === "" || r.accuracy === null || r.accuracy === undefined)
+          ? "정답률 -" : "정답률 "+r.accuracy+"%";
+        return '<div class="stu-row">'
+          + '<div class="stu-name">'+escapeHtml(String(r.name))+'</div>'
+          + '<div class="stu-progress-track"><div class="stu-progress-fill" style="width:'+pct+'%"></div></div>'
+          + '<div class="stu-count">'+answered+' / '+HEADERS.length+'</div>'
+          + '<div class="stu-accuracy">'+acc+'</div>'
+          + '</div>';
+      }).join("");
+    }
+    stamp.textContent = "방금 갱신함"; stamp.classList.add("fresh");
+    if(teacherTab === "results") renderTeacherQuestionView();
+  }catch(err){
+    const msg = String(err && err.message ? err.message : err);
+    body.innerHTML = '<div class="storage-warning">학생 목록을 불러오지 못했어요.<br><span style="font-family:monospace;font-size:10.5px;">안내: '+escapeHtml(msg)+'</span></div>';
+    stamp.textContent = "갱신 실패"; stamp.classList.remove("fresh");
+  }finally{
+    refreshBtn.classList.remove("loading");
+    refreshBtn.disabled = false;
+    refreshBtn.textContent = "↻ 새로고침";
+  }
+}
+
+/* ---------- 2번 화면부터: 문항별 결과 (이름 감춤) ---------- */
+document.getElementById("btn-tq-prev").addEventListener("click", ()=>{
+  if(tqIndex>0){ tqIndex--; tqRevealed=false; renderTeacherQuestionView(); }
+});
+document.getElementById("btn-tq-next").addEventListener("click", ()=>{
+  if(tqIndex<TEACHER_ITEMS.length-1){ tqIndex++; tqRevealed=false; renderTeacherQuestionView(); }
+});
+document.getElementById("btn-reveal").addEventListener("click", ()=>{
+  tqRevealed = true;
+  renderTeacherQuestionView();
+});
+
+let resultTab = "student";
+
+function renderTeacherQuestionView(){
+  const q = TEACHER_ITEMS[tqIndex];
+  document.getElementById("tq-count").textContent = (tqIndex+1)+" / "+TEACHER_ITEMS.length;
+  document.getElementById("btn-tq-prev").disabled = (tqIndex===0);
+  document.getElementById("btn-tq-next").disabled = (tqIndex===TEACHER_ITEMS.length-1);
+
+  document.getElementById("tq-text").textContent = q.text;
+  const noteEl = document.getElementById("tq-note");
+  if(q.note){ noteEl.textContent = q.note; noteEl.classList.remove("hidden"); } else noteEl.classList.add("hidden");
+
+  const imgWrap = document.getElementById("tq-image-wrap");
+  const imgEl = document.getElementById("tq-image");
+  if(q.image){
+    imgEl.src = q.image;
+    imgEl.className = q.imageSize==="small" ? "q-image-small" : "";
+    imgWrap.classList.remove("hidden");
+  } else imgWrap.classList.add("hidden");
+
+  document.getElementById("reveal-gate").classList.toggle("hidden", tqRevealed);
+  document.getElementById("tq-result").classList.toggle("hidden", !tqRevealed);
+  if(!tqRevealed) return;
+
+  resultTab = "student";
+  renderResultTabsAndBody(q);
+}
+
+function renderResultTabsAndBody(q){
+  const rows = (latestTeacherData && latestTeacherData.rows) || [];
+  const colIndex = tqIndex;
+  const tabsEl = document.getElementById("result-tabs");
+  const bodyEl = document.getElementById("result-body");
+
+  if(q.type === "short"){
+    if(q.sampleAnswer){
+      tabsEl.innerHTML = "";
+      tabsEl.classList.remove("hidden");
+      const t1 = mkTab("학생 정답", resultTab==="student", ()=>{ resultTab="student"; renderResultTabsAndBody(q); });
+      const t2 = mkTab("모범답안", resultTab==="answer", ()=>{ resultTab="answer"; renderResultTabsAndBody(q); });
+      tabsEl.appendChild(t1); tabsEl.appendChild(t2);
+      if(resultTab === "answer"){
+        bodyEl.innerHTML = '<div class="answer-big" style="font-size:18px; text-align:left; line-height:1.7;">'+escapeHtml(q.sampleAnswer)+'</div>';
+        return;
+      }
+    } else {
+      tabsEl.classList.add("hidden"); tabsEl.innerHTML = "";
+    }
+    renderShortAnswerCards(rows, colIndex);
+    return;
+  }
+
+  tabsEl.classList.remove("hidden");
+  tabsEl.innerHTML = "";
+  const t1 = mkTab("학생 정답", resultTab==="student", ()=>{ resultTab="student"; renderResultTabsAndBody(q); });
+  const t2 = mkTab("정답", resultTab==="answer", ()=>{ resultTab="answer"; renderResultTabsAndBody(q); });
+  tabsEl.appendChild(t1); tabsEl.appendChild(t2);
+
+  if(resultTab === "answer"){
+    bodyEl.innerHTML = '<div class="answer-big">'+escapeHtml(q.correctAnswer)+'</div>';
+    return;
+  }
+  renderDistributionPie(q, rows, colIndex, bodyEl);
+}
+
+function mkTab(label, active, onClick){
+  const b = document.createElement("button");
+  b.className = "btn" + (active ? " active" : "");
+  b.textContent = label;
+  b.addEventListener("click", onClick);
+  return b;
+}
+
+const PIE_COLORS = ["#4fb6a8","#e3a23d","#e1553a","#6fa8dc","#c8834a","#9db3ad","#d5566b","#8ba0b8"];
+
+function renderDistributionPie(q, rows, colIndex, bodyEl){
+  let buckets = [];
+  if(q.type === "choice"){
+    buckets = q.options.map(opt=>({label:opt, count:0}));
+    rows.forEach(r=>{
+      const v = String((r.answers||[])[colIndex]||"").trim();
+      const b = buckets.find(x=>x.label===v);
+      if(b) b.count++;
+    });
+  } else {
+    const map = new Map();
+    rows.forEach(r=>{
+      const v = String((r.answers||[])[colIndex]||"").trim();
+      if(!v) return;
+      map.set(v, (map.get(v)||0)+1);
+    });
+    buckets = Array.from(map.entries()).map(([label,count])=>({label,count}));
+  }
+  const total = buckets.reduce((s,b)=>s+b.count,0);
+  if(total === 0){
+    bodyEl.innerHTML = '<div class="stu-empty">아직 응답이 없어요.</div>';
+    return;
+  }
+  let acc = 0;
+  const gradientParts = buckets.map((b,i)=>{
+    const start = acc/total*100;
+    acc += b.count;
+    const end = acc/total*100;
+    const color = PIE_COLORS[i % PIE_COLORS.length];
+    return color+" "+start.toFixed(2)+"% "+end.toFixed(2)+"%";
+  });
+  const gradient = "conic-gradient(" + gradientParts.join(", ") + ")";
+  const legend = buckets.map((b,i)=>{
+    const pct = total ? Math.round(b.count/total*100) : 0;
+    const color = PIE_COLORS[i % PIE_COLORS.length];
+    return '<div class="legend-item"><span class="legend-swatch" style="background:'+color+'"></span>'+escapeHtml(b.label)+' — '+b.count+'명 ('+pct+'%)</div>';
+  }).join("");
+  bodyEl.innerHTML = '<div class="pie-wrap">'
+    + '<div class="pie" style="background:'+gradient+'"></div>'
+    + '<div class="legend">'+legend+'</div>'
+    + '</div>';
+}
+
+function renderShortAnswerCards(rows, colIndex){
+  const bodyEl = document.getElementById("result-body");
+  const answers = rows.map(r=>String((r.answers||[])[colIndex]||"").trim()).filter(v=>v);
+  if(answers.length === 0){
+    bodyEl.innerHTML = '<div class="stu-empty">아직 응답이 없어요.</div>';
+    return;
+  }
+  bodyEl.innerHTML = '<div class="card-list">' + answers.map(a=>{
+    const preview = a.length > 60 ? a.slice(0,60)+"…" : a;
+    return '<div class="ans-card" data-full="'+encodeURIComponent(a)+'">'+escapeHtml(preview)+'</div>';
+  }).join("") + '</div>';
+  bodyEl.querySelectorAll(".ans-card").forEach(card=>{
+    card.addEventListener("click", ()=>{
+      openSpotlight(decodeURIComponent(card.getAttribute("data-full")));
+    });
+  });
+}
+
+function openSpotlight(text){
+  const overlay = document.getElementById("spotlight-overlay");
+  document.getElementById("spotlight-text").textContent = text;
+  overlay.classList.remove("hidden");
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>{
+      overlay.classList.add("show");
+    });
+  });
+}
+function closeSpotlight(){
+  const overlay = document.getElementById("spotlight-overlay");
+  overlay.classList.remove("show");
+  setTimeout(()=>{ overlay.classList.add("hidden"); }, 320);
+}
+document.getElementById("spotlight-close").addEventListener("click", closeSpotlight);
+document.getElementById("spotlight-overlay").addEventListener("click", (e)=>{
+  if(e.target.id === "spotlight-overlay") closeSpotlight();
+});
+</script>
+</body>
+</html>
