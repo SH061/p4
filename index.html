@@ -2055,23 +2055,44 @@ function resetMetaTitleStyle(titleEl){
   if(row) row.style.flexWrap = "";
 }
 
-function fitMetaTitle(titleEl){
+function fitMetaTitle(titleEl, _retry){
   const row = titleEl.closest(".qmeta-left");
   if(!row) return;
-  const MAX_FONT = 45, MIN_FONT = 22, STEP = 2;
+  // 1단계: 한 줄로 유지하며 폭에 맞을 때까지만 줄인다. 바닥값(MIN_FONT_1LINE)은
+  // 너무 낮게 잡지 않는다 — 22px까지 내려버리면 2단계에서 여러 줄로 넘길 때도
+  // 그 작은 값이 그대로 남아 "문단은 내렸는데 글자는 계속 작은" 문제가 생긴다.
+  const MAX_FONT = 45, MIN_FONT_1LINE = 34, WRAP_FONT = 36, MIN_FONT_WRAP = 24, STEP = 2;
   let size = MAX_FONT;
   row.style.flexWrap = "nowrap";
   titleEl.style.whiteSpace = "nowrap";
   titleEl.style.fontSize = size + "px";
-  while(size > MIN_FONT && row.scrollWidth > row.clientWidth){
+  while(size > MIN_FONT_1LINE && row.scrollWidth > row.clientWidth + 1){
     size -= STEP;
     titleEl.style.fontSize = size + "px";
   }
-  if(row.scrollWidth > row.clientWidth){
+  if(row.scrollWidth > row.clientWidth + 1){
+    // 2단계: 한 줄(최소 34px)로도 안 들어감 → 여러 줄을 허용한다. 1단계에서 줄여 둔
+    // 값은 버리고 읽기 좋은 크기(WRAP_FONT)로 되돌린 뒤, 그 크기로도 폭이 넘칠
+    // 때(아주 긴 단어 등)만 조금씩 더 줄인다.
     row.style.flexWrap = "wrap";
     titleEl.style.whiteSpace = "normal";
+    size = WRAP_FONT;
+    titleEl.style.fontSize = size + "px";
+    while(size > MIN_FONT_WRAP && row.scrollWidth > row.clientWidth + 1){
+      size -= STEP;
+      titleEl.style.fontSize = size + "px";
+    }
   } else {
-    row.style.flexWrap = "nowrap";
+    // 한 줄에 들어갔더라도 nowrap은 풀어 둔다 — 렌더 직후엔 아직 좁아지지 않았던
+    // 그리드 트랙(1fr)이 나중에 좁아지며 한 줄 제목이 잘리고 가로 스크롤이 생기던
+    // 버그의 안전장치. 여유 있으면 그대로 한 줄, 아슬아슬하면 자연히 줄바꿈된다.
+    row.style.flexWrap = "wrap";
+    titleEl.style.whiteSpace = "normal";
+  }
+  // 렌더 직후 그리드 트랙 폭이 아직 확정되지 않아 측정이 어긋날 수 있으므로,
+  // 레이아웃이 안정된 다음 프레임에 한 번만 더 계산한다(무한 반복 방지).
+  if(!_retry && typeof requestAnimationFrame === "function"){
+    requestAnimationFrame(function(){ fitMetaTitle(titleEl, true); });
   }
 }
 
