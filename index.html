@@ -3,43 +3,48 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>수업내용 확인하기! — 산과 염기</title>
+<title>수업내용 확인하기! — 산과 염기(2)·(3)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
 <style>
   :root{
-    /* Claude.com 디자인 토큰 — 크림 캔버스 + 코랄 + 다크 네이비 3원색 */
-    --bg: #faf9f5;          /* canvas */
-    --panel: #f5f0e8;       /* surface-soft */
-    --panel-2: #efe9de;     /* surface-card */
-    --line: #e6dfd8;        /* hairline */
-    --text: #141413;        /* ink */
-    --muted: #6c6a64;       /* muted */
-    --accent: #cc785c;      /* coral (primary) */
+    /* design-cream-coral 디자인 시스템 */
+    --bg: #faf9f5;
+    --panel: #efe9de;
+    --panel-2: #f5f0e8;
+    --line: #e6dfd8;
+    --text: #141413;
+    --muted: #6c6a64;
+    --accent: #cc785c;
     --accent-active: #a9583e;
-    --accent-dim: #e8e0d2;  /* cream-strong — 선택된 탭/보기 */
-    --on-accent: #ffffff;
+    --accent-dim: rgba(204,120,92,.14);
     --ok: #5db872;
     --bad: #c64545;
     --warn: #d4a017;
+    --on-accent: #ffffff;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
-    background: var(--bg);
+    background:
+      radial-gradient(1200px 700px at 15% -10%, rgba(204,120,92,.06) 0%, transparent 60%),
+      radial-gradient(1000px 600px at 110% 10%, rgba(93,184,166,.06) 0%, transparent 55%),
+      var(--bg);
     color:var(--text);
-    font-family:'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+    font-family:'Pretendard','Pretendard Variable',-apple-system,'Noto Sans KR',sans-serif;
     min-height:100vh;
     -webkit-tap-highlight-color: transparent;
   }
-  .num{ font-family:inherit; font-feature-settings:"tnum"; }
+  .num{ font-family:'Space Grotesk', 'Pretendard', 'Noto Sans KR', sans-serif; }
 
   main#app{ max-width:720px; margin:0 auto; padding:14px 14px 60px; }
 
   header.top{ position:sticky; top:0; z-index:20; background:linear-gradient(180deg, var(--bg) 78%, transparent); padding:8px 0 4px; }
   .brand{ display:flex; align-items:flex-start; gap:8px; margin-bottom:4px; justify-content:space-between; flex-wrap:nowrap; }
   .brand-left{ display:flex; flex-direction:column; gap:2px; min-width:0; flex:1 1 auto; }
-  .brand h1{ font-size:19px; margin:0; letter-spacing:-0.3px; font-weight:600; line-height:1.3; color:var(--text); }
-  .brand h1 .sub{ color:var(--accent); font-size:13px; font-weight:500; margin-left:6px; white-space:nowrap; letter-spacing:0; }
+  .brand h1{ font-size:19px; margin:0; letter-spacing:.2px; font-weight:900; line-height:1.3; white-space:nowrap; }
+  .brand h1 .sub{ display:block; margin:2px 0 0; color:var(--accent); font-size:13px; font-weight:700; white-space:nowrap; }
   .brand-right{ display:flex; flex-direction:column; align-items:flex-end; gap:4px; flex:0 0 auto; }
   .teacher-toggle{
     font-size:11.5px; font-weight:700; padding:6px 10px; border-radius:999px;
@@ -53,14 +58,14 @@
   .conn-badge i{ width:5px; height:5px; border-radius:50%; display:inline-block; }
   .conn-badge.conn-checking{ color:var(--muted); background:var(--panel-2); }
   .conn-badge.conn-checking i{ background:var(--muted); animation:pulse 1.2s infinite; }
-  .conn-badge.conn-ok{ color:var(--ok); background:rgba(93,184,114,.14); }
+  .conn-badge.conn-ok{ color:var(--ok); background:rgba(111,191,115,.12); }
   .conn-badge.conn-ok i{ background:var(--ok); }
-  .conn-badge.conn-bad{ color:var(--bad); background:rgba(198,69,69,.12); }
+  .conn-badge.conn-bad{ color:var(--bad); background:rgba(213,86,107,.12); }
   .conn-badge.conn-bad i{ background:var(--bad); }
   @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:.3;} }
   .conn-detail{
-    text-align:right; font-family:'JetBrains Mono', ui-monospace, monospace; font-size:10px; color:var(--bad);
-    background:rgba(198,69,69,.08); border:1px solid rgba(198,69,69,.28); border-radius:8px;
+    text-align:right; font-family:'Space Grotesk', monospace; font-size:10px; color:var(--bad);
+    background:rgba(213,86,107,.08); border:1px solid rgba(213,86,107,.3); border-radius:8px;
     padding:6px 10px; margin:-2px 0 8px; word-break:break-all; line-height:1.5;
   }
   .conn-detail.hidden{ display:none; }
@@ -75,21 +80,21 @@
   @keyframes fadein{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;} }
 
   .card{
-    background: var(--panel-2);
+    background: linear-gradient(180deg, var(--panel), var(--panel-2));
     border:1px solid var(--line);
-    border-radius:12px;
-    padding:24px;
+    border-radius:16px;
+    padding:20px;
     margin-top:14px;
   }
-  .card h2{ font-size:18px; font-weight:600; letter-spacing:-0.3px; margin:0 0 4px; }
+  .card h2{ font-size:16px; margin:0 0 4px; }
   .card p.desc{ color:var(--muted); font-size:13px; line-height:1.6; margin:0 0 14px; }
 
   label.field-label{ display:block; font-size:12.5px; color:var(--muted); margin:14px 0 6px; font-weight:700; }
   select, input[type=text], textarea{
-    width:100%; background:var(--bg); border:1px solid var(--line); color:var(--text);
-    border-radius:8px; padding:12px 12px; font-size:15px; font-family:inherit;
+    width:100%; background:var(--panel-2); border:1px solid var(--line); color:var(--text);
+    border-radius:10px; padding:12px 12px; font-size:15px; font-family:inherit;
   }
-  select:focus, input[type=text]:focus, textarea:focus{ outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(204,120,92,.15); }
+  select:focus, input[type=text]:focus, textarea:focus{ outline:2px solid var(--accent); }
   textarea{ resize:vertical; min-height:110px; line-height:1.6; }
   .row2{ display:flex; gap:10px; }
   .row2 > *{ flex:1; }
@@ -99,15 +104,14 @@
 
   .btn{
     display:inline-flex; align-items:center; justify-content:center; gap:6px;
-    padding:13px 18px; border-radius:8px; border:1px solid var(--line);
-    background:var(--bg); color:var(--text); font-size:15px; font-weight:500;
+    padding:13px 18px; border-radius:12px; border:1px solid var(--line);
+    background:var(--panel-2); color:var(--text); font-size:15px; font-weight:700;
     cursor:pointer; -webkit-appearance:none; appearance:none;
   }
-  .btn.primary{ background:var(--accent); border-color:transparent; color:var(--on-accent); font-weight:600; }
-  .btn.primary:active{ background:var(--accent-active); }
-  .btn.primary:disabled{ opacity:.5; cursor:not-allowed; }
+  .btn.primary{ background:linear-gradient(180deg, var(--accent), var(--accent-active)); border-color:transparent; color:var(--on-accent); }
+  .btn.primary:disabled{ opacity:.45; cursor:not-allowed; }
   .btn.ghost{ background:transparent; }
-  .btn.danger{ background:rgba(198,69,69,.12); color:var(--bad); border-color:rgba(198,69,69,.35); }
+  .btn.danger{ background:rgba(213,86,107,.16); color:var(--bad); border-color:rgba(213,86,107,.4); }
   .btn:disabled{ opacity:.4; cursor:not-allowed; }
   .btn.loading{ opacity:.75; cursor:progress; position:relative; }
   @keyframes btn-spin{ from{ transform:rotate(0deg); } to{ transform:rotate(360deg); } }
@@ -119,69 +123,78 @@
   .btnrow{ display:flex; gap:10px; margin-top:18px; }
   .btnrow .btn{ flex:1; }
 
-  .qmeta{ display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
-  .qtag{ font-size:11px; font-weight:700; letter-spacing:.4px; color:var(--accent); text-transform:uppercase; }
+  .qmeta{ display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; gap:8px; }
+  .qmeta-left{ display:flex; align-items:center; gap:8px; min-width:0; }
   .qnum{ font-size:12px; color:var(--muted); }
+  .q-page{ font-size:11.5px; color:var(--muted); font-weight:700; white-space:nowrap; }
+
+  .qtag{
+    display:inline-flex; align-items:center; height:24px; box-sizing:border-box;
+    font-weight:800; font-size:12.5px; white-space:nowrap; vertical-align:middle;
+  }
+  .qtag img{ height:24px; width:auto; display:block; }
+  .qtag.tag-pill{ padding:0 12px; border-radius:999px; color:#fff; }
+  .qtag.tag-confirm{ padding:0 12px 0 16px; border-radius:999px; background:#eaf1fb; color:#2f5fa8; border:1.5px solid #2f5fa8; }
+  .qtag.tag-pastexam{ background:#3f6fb0; }
+  .qtag.tag-suneung{ background:#4a5fc1; }
+  .qtag.tag-selfcheck2{ color:#1f3864; letter-spacing:.5px; }
+  .qtag.tag-reflect{ background:linear-gradient(135deg, var(--accent), var(--accent-active)); color:#fff; padding:0 12px; }
 
   .qnote{
-    background:var(--bg); border:1px solid var(--line); border-radius:8px;
+    background:var(--panel-2); border:1px solid var(--line); border-radius:12px;
     padding:12px 14px; margin:10px 0; font-size:14px; color:var(--text); line-height:1.7;
     white-space:pre-wrap;
   }
-  .qtext{ font-size:17px; font-weight:600; letter-spacing:-0.2px; line-height:1.6; margin:6px 0 4px; }
+  .qtext{ font-size:17px; font-weight:700; line-height:1.6; margin:6px 0 4px; white-space:pre-wrap; }
+  /* 학생용 "공통 조건(보기 설명)" 안내 문구 — 교사용 .reflect-guide와 같은 톤(무채색/보조색,
+     본문 .qtext보다 작은 폰트)으로, q.guideText가 있을 때만 표시된다(renderQuestion 참고). */
+  .q-guide{ font-size:15px; color:var(--muted); line-height:1.6; margin:6px 0 2px; white-space:pre-wrap; }
   .qimg-wrap{ margin:12px 0; text-align:center; }
   .qimg-wrap img{ max-width:100%; border-radius:10px; border:1px solid var(--line); background:#fff; }
   .qimg-wrap.small img{ max-width:100%; }
 
   .choices{ display:flex; flex-wrap:wrap; gap:10px; margin-top:14px; }
   .choice-btn{
-    flex:1 1 auto; min-width:70px; padding:14px 10px; border-radius:8px; border:1.5px solid var(--line);
-    background:var(--bg); color:var(--text); font-size:15px; font-weight:500; cursor:pointer; text-align:center;
+    flex:1 1 auto; min-width:70px; padding:14px 10px; border-radius:12px; border:1.5px solid var(--line);
+    background:var(--panel-2); color:var(--text); font-size:15px; font-weight:700; cursor:pointer; text-align:center;
   }
-  .choice-btn.picked{ border-color:var(--accent); background:var(--accent-dim); color:var(--text); font-weight:600; }
+  .choice-btn.picked{ border-color:var(--accent); background:var(--accent-dim); color:var(--accent); }
   /* 단순 ①~⑤ 숫자 선택형 — 한 줄에 5개가 다 들어가도록 폭을 줄인 배치 */
   .choices.five-col{ flex-wrap:nowrap; gap:6px; }
   .choices.five-col .choice-btn{ flex:1 1 0; min-width:0; padding:12px 2px; font-size:14px; }
+  /* O/X, 흡수/방출처럼 보기가 2개뿐인 선택형 — 탭(세그먼트) 스타일 */
+  .choices.two-tab{ flex-wrap:nowrap; gap:0; border:1.5px solid var(--line); border-radius:12px; overflow:hidden; }
+  .choices.two-tab > *{ border:none; border-radius:0; flex:1 1 0; }
+  .choices.two-tab > *:first-child{ border-right:1px solid var(--line); }
+  .choices.two-tab > *.picked{ background:var(--accent); color:#fff; }
 
   .conn-status-inline{ font-size:12px; color:var(--muted); margin-top:14px; text-align:center; }
 
-  /* ---------- 접속 게이트 오버레이 ---------- */
-  #gate-overlay{
-    position:fixed; inset:0; z-index:200; background:var(--bg);
-    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px;
-    text-align:center; padding:24px;
-  }
-  #gate-overlay.hidden{ display:none; }
-  #gate-overlay .gate-spinner{
-    width:34px; height:34px; border:3px solid var(--line); border-top-color:var(--accent);
-    border-radius:50%; animation:btn-spin .8s linear infinite;
-  }
-  #gate-overlay .gate-msg{ font-size:15px; color:var(--muted); line-height:1.6; }
-  main#app.hidden{ display:none !important; }
-
   /* ---------- teacher panel ---------- */
   .modal-backdrop{
-    position:fixed; inset:0; background:rgba(24,23,21,.5); display:flex; align-items:center; justify-content:center;
+    position:fixed; inset:0; background:rgba(20,20,19,.45); display:flex; align-items:center; justify-content:center;
     z-index:100; padding:16px;
   }
   .modal-backdrop.hidden{ display:none; }
   .modal-card{
-    background:var(--panel-2); border:1px solid var(--line); border-radius:12px; padding:24px; width:100%; max-width:320px; text-align:center;
+    background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:24px; width:100%; max-width:320px; text-align:center;
   }
   .modal-card .micon{ font-size:30px; margin-bottom:8px; }
-  .modal-card h3{ margin:0 0 14px; font-size:16px; font-weight:600; }
+  .modal-card h3{ margin:0 0 14px; font-size:16px; }
   .modal-card input{ text-align:center; letter-spacing:4px; font-size:20px; }
   .modal-btns{ display:flex; gap:10px; margin-top:16px; }
   .modal-btns .btn{ flex:1; }
 
   .teacher-panel{ position:fixed; inset:0; background:var(--bg); z-index:90; overflow-y:auto; display:none; }
   .teacher-panel.on{ display:block; }
-  .teacher-inner{ max-width:900px; margin:0 auto; padding:0 16px 60px; }
+  .teacher-inner{ max-width:none; width:100%; margin:0 auto; padding:0 16px 40px; }
+  .picker-topbar{ max-width:none; width:100%; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:10px; padding:14px 16px 8px; }
+  .picker-title{ font-weight:800; font-size:15px; }
 
   /* 선생님보기 메인 화면 — 탭·반 정보·버튼·닫기를 한 줄에 압축 */
   .teacher-topbar{
     display:flex; align-items:center; gap:8px; flex-wrap:wrap;
-    max-width:900px; margin:0 auto; padding:14px 16px 12px;
+    max-width:none; width:100%; margin:0 auto; padding:10px 16px 8px;
     position:sticky; top:0; background:var(--bg); z-index:5;
   }
   .teacher-topbar .spacer{ flex:1; }
@@ -191,17 +204,34 @@
     white-space:nowrap;
   }
   .pill-tab.active{ background:var(--accent); color:var(--on-accent); border-color:transparent; }
+  .gate-btn{ font-weight:800; padding:8px 14px; font-size:12.5px; white-space:nowrap; }
+  .gate-btn.state-unknown{ opacity:.6; }
+  .gate-btn.state-closed{ background:rgba(213,86,107,.16); color:var(--bad); border-color:rgba(213,86,107,.4); }
+  .gate-btn.state-open{ background:var(--accent-dim); color:var(--accent); border-color:var(--accent); }
+  /* 정답률 공개/비공개 토글 — 눈에 확 튀는 원색 대신 은은한 톤으로, 공개면 초록,
+     비공개면 빨강 계열(둘 다 위 gate-btn과 같은 채도 낮은 톤 방식)로 상태를 구분. */
+  .accuracy-toggle.on{ background:rgba(93,184,114,.14); color:#3f7d54; border-color:rgba(93,184,114,.45); }
+  .accuracy-toggle.off{ background:rgba(213,86,107,.14); color:#a34456; border-color:rgba(213,86,107,.4); }
+  .gate-btn.state-confirm{ background:rgba(213,86,107,.35); color:var(--bad); border-color:var(--bad); }
+  /* "문제풀기 시작!"/"문제풀기 그만!" 토글 — 접속 게이트(.gate-btn)와 같은 톤 방식을
+     재사용한다. 기본(진행 중)은 은은한 초록, 확인 대기는 진한 빨강, 정지 상태는
+     눈에 띄는 빨강 계열로 접속 게이트의 state-closed와 같은 톤을 쓴다. */
+  .ps-btn{ font-weight:800; padding:8px 14px; font-size:12.5px; white-space:nowrap; }
+  /* 세 상태가 눈에 띄게 다른 색으로 — 진행 중(초록, 안심) / 확인 대기(주황, 주의)
+     / 정지됨(빨강, 경고)으로 채도를 뚜렷이 구분해서 지금 상태를 한눈에 알 수 있게 함. */
+  .ps-btn.state-running{ background:rgba(93,184,114,.16); color:#3f7d54; border-color:rgba(93,184,114,.5); }
+  .ps-btn.state-confirm{ background:rgba(212,160,23,.28); color:#9c7a0e; border-color:rgba(212,160,23,.55); }
+  .ps-btn.state-stopped{ background:rgba(213,86,107,.35); color:var(--bad); border-color:var(--bad); }
   .class-label{ font-size:12.5px; color:var(--muted); white-space:nowrap; }
   .teacher-topbar .btn{ padding:8px 13px; font-size:12.5px; white-space:nowrap; }
+  /* "방금 갱신함" 문구를 상단 바 오른쪽 끝이 아니라 "새로고침" 버튼 바로 아래
+     그 버튼 폭 안에서 가운데 정렬되도록 배치한다. */
+  /* "방금 갱신함"을 버튼 아래에 절대좌표로 띄우면 다른 영역과 겹치는 문제가 있었다.
+     대신 "새로고침" 버튼 바로 옆에 같은 줄(인라인)로 작게 붙여서, 버튼 높이는 다른
+     버튼들과 동일하게 유지하고 뒤따르는 버튼들은 flex가 알아서 밀어내게 한다. */
+  .refresh-wrap{ display:inline-flex; align-items:center; gap:6px; }
   .last-updated{ font-size:11px; color:var(--muted); white-space:nowrap; }
   .last-updated.fresh{ color:var(--ok); }
-
-  /* 교사 접속 스위치 버튼 */
-  .gate-btn{ font-weight:600; padding:8px 14px; font-size:12.5px; white-space:nowrap; }
-  .gate-btn.state-unknown{ opacity:.6; }
-  .gate-btn.state-closed{ background:rgba(198,69,69,.12); color:var(--bad); border-color:rgba(198,69,69,.35); }
-  .gate-btn.state-open{ background:var(--accent-dim); color:var(--text); border-color:var(--accent); }
-  .gate-btn.state-confirm{ background:rgba(198,69,69,.28); color:var(--bad); border-color:var(--bad); }
 
   #teacher-class-picker{ position:relative; min-height:calc(100vh - 60px); }
   .class-picker-card{
@@ -214,7 +244,7 @@
   .class-picker-card .btn{ display:block; margin:0 auto; font-size:18px; padding:14px 40px; }
 
   /* 1번 화면 — 학생 진행 상황: 이름 + 진행률 바 + 문항 수 + 정답률 */
-  .stu-grid{ display:flex; flex-direction:column; gap:8px; max-width:900px; margin:0 auto; }
+  .stu-grid{ display:flex; flex-direction:column; gap:8px; max-width:none; width:100%; margin:0 auto; }
   .stu-row{ display:flex; align-items:center; gap:14px; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:12px 16px; }
   .stu-name{ font-weight:700; flex:0 0 auto; min-width:100px; }
   .stu-progress-track{ flex:1; height:8px; border-radius:6px; background:var(--panel-2); overflow:hidden; border:1px solid var(--line); min-width:60px; }
@@ -224,62 +254,307 @@
   .stu-empty, .storage-warning{ color:var(--muted); text-align:center; padding:30px 10px; }
   .storage-warning{ color:var(--bad); }
 
-  .tq-nav{ display:flex; align-items:center; justify-content:space-between; gap:10px; max-width:900px; margin:0 auto 10px; }
-  .tq-nav .btn{ flex:0 0 auto; }
-  .tq-count{ font-size:13px; color:var(--muted); font-weight:700; }
+  /* 이전 문항/다음 문항 내비게이션 — 전체화면 수업 중에도 항상 보이도록 화면 하단 중앙에 고정 */
+  .tq-nav{
+    position:fixed; left:0; right:0; bottom:0; display:flex; align-items:center; justify-content:center;
+    gap:20px; margin:0; padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+    background:var(--panel); border-top:1px solid var(--line); z-index:20;
+  }
+  .tq-nav .btn{ flex:0 0 auto; font-size:16px; padding:12px 22px; }
+  .tq-count{ font-size:16px; color:var(--muted); font-weight:700; }
 
-  .tq-card{ max-width:900px; margin:0 auto; background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:22px; }
-  #tq-image{ width:65%; display:block; margin:14px auto; border-radius:8px; border:1px solid var(--line); background:#fff; }
-  #tq-image.q-image-small{ width:40%; }
-  #tq-text{ font-size:20px; font-weight:600; letter-spacing:-0.3px; line-height:1.6; }
-  #tq-note{ font-size:16.5px; white-space:pre-wrap; background:var(--bg); border:1px solid var(--line); border-radius:8px; padding:14px 16px; margin:12px 0; line-height:1.7; }
+  /* 선생님보기 문항별 결과 — 좌(문항 카드) / 우(정답 탭+원그래프) 2단 배치.
+     좌측 문제 카드 비중을 최대한 키우고, 하단 고정 내비게이션과 겹치지 않도록 여백 확보 */
+  .tq-layout{
+    display:grid; grid-template-columns: 1fr minmax(560px, 620px); gap:18px;
+    max-width:none; width:100%; margin:0 auto; align-items:start;
+    padding-bottom:72px;
+  }
+  @media (max-width: 980px){
+    .tq-layout{ grid-template-columns: 1fr; }
+  }
 
-  .reveal-gate{ text-align:center; margin:18px 0; }
-  .result-tabs{ display:flex; gap:8px; margin:16px 0 12px; }
-  .result-tabs .btn{ flex:1; }
-  .result-tabs .btn.active{ background:var(--accent-dim); color:var(--text); border-color:var(--accent); font-weight:600; }
+  /* "깨알 개념 체크 문제" 등 참고자료(이미지 또는 보기 텍스트)를 곁들이는 tag 전용
+     레이아웃 — 왼쪽은 참고자료(이미지 또는 note 텍스트)만 크게, 오른쪽은
+     뱃지+텍스트+선택지+정답통계를 세로로 이어 배치한다. 어떤 tag가 이 레이아웃을 쓸지는
+     SPLIT_TAG_SET(아래 스크립트)에서 tag 단위로 판정하므로, 같은 tag의 문항은
+     이미지 유무와 무관하게 항상 이 레이아웃으로 통일된다. 왼쪽 비중을 오른쪽보다
+     넓게(1.3fr : 1fr) 잡아서 참고자료(특히 이미지)가 실제로 크게 보이도록 한다. */
+  .tq-layout-split{ grid-template-columns: 1.3fr 1fr; }
+  .tq-split-image{
+    background:#fff; border:1px solid var(--line); border-radius:16px; overflow:hidden;
+    display:flex; align-items:center; justify-content:center; padding:10px;
+    /* height를 max-height뿐 아니라 명시적으로도 고정해야, 안의 .tq-img-box가 쓰는
+       height:100%가 실제로 계산된다(부모가 auto 높이면 자식의 %height는 무시되어
+       이미지가 원본 비율대로 커지다 뷰포트 아래로 잘리는 문제가 있었다). */
+    height:calc(100vh - 140px); max-height:calc(100vh - 140px); min-height:0;
+  }
+  .tq-split-image .tq-img-box{ height:100%; max-height:100%; min-height:0; margin:0; }
+  /* 왼쪽 칸에 이미지 대신 note(반응식 등 텍스트 보기)가 들어갈 때 — 가운데 정렬 대신
+     위쪽 왼쪽 정렬로 바꾸고, 내용이 길면 칸 안에서 스크롤되게 한다 */
+  .tq-split-image.note-mode{
+    display:block; background:var(--panel); text-align:left; padding:22px 26px; overflow-y:auto;
+  }
+  /* 반응식 등 텍스트 보기를 (가)(나)(다)(라) 같은 항목/줄 단위로 나눠서 각각 별도
+     블록으로 보여준다 — 다닥다닥 붙지 않도록 블록 사이 간격을 넉넉하게 준다 */
+  .tq-note-blocks{ display:flex; flex-direction:column; gap:18px; }
+  .tq-note-block{
+    background:var(--panel-2); border:1px solid var(--line); border-radius:12px;
+    padding:16px 20px; font-size:46px; line-height:1.75; font-weight:600;
+    word-break:keep-all; overflow-wrap:break-word;
+  }
+  /* 화학 반응식이 (가)(나)(다)(라) 형태로 나열된 note("스스로 확인하기" 문항)는
+     교실 뒷자리에서도 읽히도록 다른 확인문제 note 블록보다 더 크게(2.5배),
+     블록 사이 간격도 더 넉넉하게(1.3배) 잡는다. */
+  .tq-note-blocks.tq-note-blocks-chem{ gap:23px; }
+  .tq-note-blocks-chem .tq-note-block{ font-size:58px; }
+  .tq-split-right{
+    background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:20px 26px;
+    display:flex; flex-direction:column;
+    max-height:calc(100vh - 132px); overflow-y:auto;
+  }
+  /* 분할 레이아웃(왼쪽 이미지/보기+오른쪽 텍스트+정답통계)의 오른쪽 칸은 문항 텍스트·
+     보기·선택지까지 이미 위쪽을 차지하고 있어서, 일반 레이아웃(.tq-side)과 같은 크기의
+     정답통계(탭+원그래프+범례)를 그대로 넣으면 세로 공간이 부족해 화면 밖으로 넘친다.
+     다른 레이아웃(.tq-side)의 크기는 그대로 두고, 이 분할 레이아웃 오른쪽 칸 안의
+     정답통계 요소들만 한 화면에 들어갈 정도로 축소한다. */
+  .tq-split-right .result-tabs .btn{ font-size:20px; padding:14px 8px; }
+  .tq-split-right .pie{ width:220px; height:220px; }
+  .tq-split-right .legend-item{ font-size:22px; gap:8px; }
+  .tq-split-right .legend-swatch{ width:22px; height:22px; }
+  .tq-split-right .answer-big{ font-size:120px; padding:20px 14px; }
 
-  .pie-wrap{ display:flex; gap:22px; align-items:center; flex-wrap:wrap; justify-content:center; margin:14px 0; }
-  .pie{ width:180px; height:180px; border-radius:50%; flex:0 0 auto; }
-  .legend{ display:flex; flex-direction:column; gap:8px; }
-  .legend-item{ display:flex; align-items:center; gap:8px; font-size:14px; }
-  .legend-swatch{ width:12px; height:12px; border-radius:3px; flex:0 0 auto; }
-  .answer-big{ text-align:center; font-size:34px; font-weight:600; letter-spacing:-0.5px; color:var(--accent); padding:26px 10px; }
+  /* tq-card는 세로 flex 컬럼으로 두고, 화면 높이를 넘는 긴 문항(선택지 5개+보기 등)은
+     카드 자체를 넘기지 않고 카드 내부에서만 스크롤되게 해서 "절대 잘리지 않게" 한다.
+     상단 sticky 탑바(약 60px)와 하단 고정 내비게이션(72px) 높이를 뺀 값을 최대 높이로 잡는다. */
+  .tq-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:14px 18px;
+    display:flex; flex-direction:column;
+    max-height:calc(100vh - 132px); overflow-y:auto;
+  }
+  .tq-side{
+    background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:20px 26px; min-height:200px;
+    max-height:calc(100vh - 132px); overflow-y:auto;
+  }
 
-  .card-list{ display:flex; flex-direction:column; gap:8px; margin-top:10px; }
-  .ans-card{ background:var(--panel-2); border:1px solid var(--line); border-radius:12px; padding:12px 14px; cursor:pointer; font-size:14px; line-height:1.6; }
+  /* 교사용 전용 이미지 컨테이너 — 문항마다 원본 크기가 달라도 항상 일정한 박스 안에서
+     object-fit:contain으로 꽉 차게 보여서, 확대/축소 없이 바로 알아볼 수 있게 한다.
+     학생용(#q-image, .qimg-wrap)과는 완전히 분리된 id/class라서 학생 화면에는 영향 없음.
+     교실 뒷자리에서도 보이도록 뷰포트 높이 기준으로 크게 잡되, flex:1 1 auto + min-height:0으로
+     문항 텍스트/보기/선택지가 많아지면 이미지 쪽이 먼저 줄어들어 카드 전체가 잘리지 않게 한다. */
+  .tq-img-box{
+    height:min(74vh, 900px); flex:1 1 auto; min-height:120px;
+    display:flex; align-items:center; justify-content:center;
+    margin:8px auto; background:#fff; border:1px solid var(--line); border-radius:10px; overflow:hidden;
+    width:100%;
+  }
+  /* width/height 100% + object-fit:contain — 이미지 원본 해상도가 박스보다 작아도
+     박스 크기에 맞게 확대되고, 비율은 그대로 유지된다(찌그러짐 없음). */
+  .tq-img-box img{ width:100%; height:100%; object-fit:contain; display:block; }
+
+  /* 그림이 2개로 나뉜 문항의 두 번째 그림 — 오른쪽 컬럼(.tq-side) 위쪽에 배치되는 보조 이미지 박스.
+     메인 이미지 박스보다 작게 잡아서 그 아래 정답 탭+원그래프가 들어갈 공간을 남긴다. */
+  .tq-img-box-side{ height:min(34vh, 380px); flex:0 0 auto; margin:0 auto 14px; }
+
+  /* 교사용 전용 큰 글자 — 교실 뒷자리에서도 읽히도록 학생용보다 훨씬 크게.
+     .teacher-panel 안에서만 적용되므로 학생 화면(.screen 등)에는 영향 없음 */
+  .teacher-panel .qtag{ height:auto; font-size:39px; padding-top:4px; padding-bottom:4px; }
+  .teacher-panel .qtag img{ height:54px; }
+  .teacher-panel .q-page{ font-size:33px; }
+  /* 뱃지+학습지쪽수+제목을 한 줄로 나란히 배치 — 제목이 아주 길 때만 자연스럽게 다음 줄로 넘어간다 */
+  .teacher-panel .qmeta-left{ flex-wrap:wrap; row-gap:4px; }
+  #tq-text{ font-size:45px; font-weight:800; line-height:1.5; }
+  #tq-note{ font-size:24px; white-space:pre-wrap; background:var(--panel-2); border:1px solid var(--line); border-radius:12px; padding:14px 18px; margin:12px 0; line-height:1.6; }
+  #tq-choices{ margin-top:10px; }
+  #tq-choices .choice-btn{ cursor:default; font-size:22px; padding:14px 10px; }
+
+  /* 성찰 질문 전용 레이아웃 — 기출문제/확인문제 등 다른 문항의 좌우 2단(.tq-layout)
+     구조와는 완전히 분리된 독립 구조다. 위쪽엔 작고 간결한 질문 카드(가로로 넓게
+     한 줄~두 줄), 아래쪽엔 "결과 보기"를 누르면 여러 학생의 답변이 한 번에 다 보이는
+     그리드가 나온다. 클래스도 공유하지 않아서(.tq-reflect-*) 다른 레이아웃을 건드리지 않는다. */
+  .tq-reflect-layout{
+    display:flex; flex-direction:column; gap:16px;
+    max-width:none; width:100%; padding-bottom:72px;
+  }
+  .tq-reflect-qcard{
+    background:var(--panel); border:1px solid var(--line); border-radius:16px;
+    padding:16px 24px; flex:0 0 auto;
+  }
+  /* qmeta-left는 flex 컨테이너지만, 그 안의 #tq-text(flex 아이템)에 min-width:0을
+     안 주면 텍스트가 길 때 줄바꿈 대신 화면 밖으로 삐져나가는 flex 기본 버그가
+     생긴다(flex item의 기본 min-width는 auto라 줄바꿈 가능해도 줄어들지 않음).
+     성찰 질문처럼 문장이 긴 제목은 특히 이 문제가 잘 드러나므로 항상 줄바꿈 가능하게. */
+  #tq-text{ min-width:0; overflow-wrap:break-word; }
+  .tq-reflect-qcard #tq-text{ font-size:26px; font-weight:700; margin:8px 0 4px; text-wrap:pretty; white-space:normal; }
+  .tq-reflect-results{ flex:1 1 auto; min-height:0; }
+  /* 나중에 성찰 질문에 안내 문구가 추가될 때를 대비한 여분 문단 — 지금은 데이터에
+     없으면 비워둔 채 hidden 처리된다 */
+  .reflect-guide{ font-size:17px; color:var(--muted); line-height:1.65; margin:0 0 10px; }
+  /* 이제 성찰 질문뿐 아니라 "공통 조건" 안내로 매 문항마다 쓰이므로, 교실에서 읽을 수
+     있도록 교사 화면(.teacher-panel) 안에서만 폰트를 키운다(다른 화면에는 영향 없음) */
+  .teacher-panel .reflect-guide{ font-size:25px; }
+
+  .reveal-gate{ text-align:center; margin:10px 0; }
+  .reveal-gate .btn.primary{ font-size:22px; font-weight:800; padding:20px 36px; }
+  /* result-tabs/pie/legend는 기본(.tq-side) 레이아웃과 분할(.tq-split-right) 레이아웃이
+     같은 DOM 요소를 그대로 옮겨 쓰므로(layoutTeacherQuestionDom 참고), 여기서 크기를
+     한 번만 키우면 두 레이아웃 모두 동일하게(분할 레이아웃 수준으로) 커진다 */
+  /* 탭 버튼은 오른쪽 폭이 줄어든 만큼 살짝 작게 */
+  /* 오른쪽 컬럼 폭이 좁아진 만큼 탭 버튼은 가로 폭 대신 세로 두께와 글자 크기를 키워서
+     눌러도 답답하지 않게 한다(폰트 18px → 36px, 위아래 패딩도 함께 확대) */
+  .result-tabs{ display:flex; gap:8px; margin:0 0 16px; }
+  .result-tabs .btn{ flex:1; font-size:36px; font-weight:700; padding:26px 8px; }
+  .result-tabs .btn.active{ background:var(--accent); color:#fff; border-color:var(--accent); }
+
+  /* 원그래프는 그대로 두고, 범례(①②③④⑤ 응답 수/퍼센트)는 옆이 아니라
+     원그래프 "아래쪽"에 세로로 배치해서 각 항목을 넓게 읽을 수 있게 한다 */
+  .pie-wrap{ display:flex; flex-direction:column; gap:22px; align-items:center; justify-content:center; margin:10px 0; }
+  /* 원그래프 300px → 450px(1.5배). 일반/분할 레이아웃 모두 같은 DOM을 공유하므로
+     두 레이아웃에 동일하게 적용된다 */
+  .pie{ width:450px; height:450px; border-radius:50%; flex:0 0 auto; box-shadow:0 0 0 1px var(--line); }
+  .legend{ display:flex; flex-direction:column; gap:16px; width:100%; }
+  /* 범례 문구 "N번 응답: X명 (Y%)"이 오른쪽 컬럼 폭(minmax(560px,620px)) 안에서
+     절대 넘치지 않도록, 64px(잘림 발생)보다는 낮추되 이전(32px)보다는 확실히 크게
+     44px로 조정. 그래도 라벨이 길어지는 빈칸형 등에서는 라벨/수치를 별도 span으로
+     나눠 flex-wrap으로 자연스럽게 2줄로 떨어지게 해서(단어 중간 절단 없이) 안전을
+     한 번 더 확보한다. */
+  .legend-item{ display:flex; align-items:center; gap:12px; font-size:44px; font-weight:700; color:var(--text); line-height:1.35; flex-wrap:wrap; }
+  .legend-item .legend-count{ white-space:nowrap; }
+  .legend-swatch{ width:40px; height:40px; border-radius:6px; flex:0 0 auto; box-shadow:0 0 0 1px rgba(0,0,0,.15); }
+  /* "정답" 탭에서 보여주는 정답 표시 — 예전에는 456px 고정 크기를 썼는데, "환원"처럼
+     2글자 이상인 답이 오른쪽 컬럼 폭 안에 한 글자씩 세로로 쪼개져 보이는 심각한 버그가
+     있었다. 이제는 고정 크기 대신 JS의 fitAnswerBig()가 실제 렌더링 폭을 측정해서
+     박스에 꽉 차면서도 절대 넘치지 않는 최대 크기를 매번 계산해 인라인 font-size로
+     넣어준다. 아래 456px는 JS가 적용되기 전(또는 실패 시)의 안전한 기본값일 뿐이며,
+     word-break은 "환원"류 버그의 원인이었던 break-word 대신 keep-all로 바꿔 두어
+     혹시 JS가 줄바꿈 모드로 전환하더라도 글자가 한 글자씩 쪼개지지 않게 한다. 진한
+     배경+흰 글씨로 크림색 배경과 대비되는 것은 그대로 유지 */
+  .answer-big{
+    text-align:center; font-size:64px; font-weight:900; line-height:1.15;
+    color:#fff; background:#7a2419; border-radius:16px; padding:34px 20px;
+    letter-spacing:.01em; word-break:keep-all; white-space:nowrap; overflow:hidden;
+  }
+
+  /* 성찰 질문 학생 답변 그리드 — "결과 보기"를 누르면 한 반(최대 약 23명)의 답변이
+     한 화면에 격자로 모두 보여서, 교사가 스크롤 없이(또는 최소한으로) 훑어볼 수 있게
+     한다. 5열 x 최대 5줄(25칸) 기준으로 잡되, 학생이 그보다 적으면 자연스럽게 줄어든다.
+     이름은 표시하지 않는다(서답형 규칙). 답이 길면 카드 안에서 말줄임 처리하고,
+     클릭하면 기존 스포트라이트(openSpotlight)로 크게 확대해서 읽는다. */
+  .card-list{
+    display:grid; grid-template-columns:repeat(5, 1fr); gap:14px; margin-top:10px;
+    max-height:calc(100vh - 300px); overflow-y:auto; align-content:start;
+  }
+  @media (max-width: 1400px){ .card-list{ grid-template-columns:repeat(4, 1fr); } }
+  @media (max-width: 980px){ .card-list{ grid-template-columns:repeat(2, 1fr); } }
+  .ans-card{
+    background:var(--panel-2); border:1px solid var(--line); border-radius:14px; padding:16px 18px;
+    cursor:pointer; font-size:17px; font-weight:600; line-height:1.55; min-height:120px;
+    display:-webkit-box; -webkit-line-clamp:6; -webkit-box-orient:vertical; overflow:hidden;
+  }
   .ans-card:hover{ border-color:var(--accent); }
 
   .spotlight-overlay{
-    position:fixed; inset:0; background:rgba(24,23,21,0); z-index:110; display:flex; align-items:center; justify-content:center; padding:24px;
+    position:fixed; inset:0; background:rgba(20,20,19,0); z-index:110; display:flex; align-items:center; justify-content:center; padding:24px;
     opacity:0; transition:opacity .28s ease, background .28s ease;
   }
-  .spotlight-overlay.show{ background:rgba(24,23,21,.82); opacity:1; }
+  .spotlight-overlay.show{ background:rgba(20,20,19,.62); opacity:1; }
   .spotlight-box{
-    max-width:280px; width:100%; background:var(--panel-2); border:1px solid var(--line); border-radius:14px;
+    max-width:280px; width:100%; background:var(--panel); border:1px solid var(--line); border-radius:18px;
     padding:30px; font-size:22px; line-height:1.7; text-align:center;
     transform:scale(1); transform-origin:center; transition:transform .32s cubic-bezier(.22,1,.36,1);
   }
   .spotlight-overlay.show .spotlight-box{ transform:scale(2.5); }
   .spotlight-close{ margin-top:20px; }
+  /* 성찰 질문 학생 답변 스포트라이트 전용 — 학생이 직접 쓴 답변의 가독성을 최우선으로
+     해서 텍스트는 다른 문항(서답형 답안 카드)의 스포트라이트보다 훨씬 크게, 대신
+     화면을 가리는 "닫기" 버튼은 1/2 크기로 줄인다(폰트/패딩 모두 비례 축소). 다른
+     문항 타입의 스포트라이트(.spotlight-box에 reflect 클래스가 없는 경우)는 그대로 둔다.
+     일반 스포트라이트는 작은 박스를 transform:scale(2.5)로 확대하는 방식이라 폭이
+     고정돼 있는데, 성찰 질문은 답변 길이가 제각각이라 그 방식 대신 화면 폭 자체를
+     넉넉하게(90vw) 잡고, 확대 애니메이션도 살짝(1.04배)만 주는 방식으로 바꾼다.
+     그래도 답이 아주 길면 안 잘리도록 세로는 최대 뷰포트 90%까지만 허용하고
+     넘치면 스크롤, 글자 크기는 JS(fitReflectSpotlight)가 박스에 맞게 자동 축소한다. */
+  .spotlight-box.reflect{
+    position:relative; width:88vw; height:78vh; max-width:88vw; max-height:78vh; overflow-y:auto;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    font-size:88px; line-height:1.5; transform:scale(1) !important;
+  }
+  .spotlight-box.reflect #spotlight-text{ max-width:100%; }
+  .spotlight-overlay.show .spotlight-box.reflect{ transform:scale(1.04) !important; }
+  /* 닫기 버튼은 답변 텍스트 한가운데 끼어있으면 어색하므로, 박스 오른쪽 아래
+     모서리로 옮기고 눌러도 답답하지 않을 정도로만 살짝 키운다(너무 크면
+     학생 답변보다 눈에 띄어서 오히려 방해가 됨 — 딱 적당한 보조 버튼 크기). */
+  .spotlight-close.reflect{
+    position:absolute; left:50%; bottom:20px; transform:translateX(-50%); margin-top:0;
+    font-size:15px; padding:9px 18px; border-radius:8px;
+  }
+
+  /* 문항별 결과 — 문항이 바뀔 때(탭 최초 진입/이전·다음 문항) 잠깐 정답률만 화면
+     전체에 크게 보여줬다가 신기루처럼 흐려지며 사라지는 연출. 단일 색 배경 + 단일 색
+     숫자로, 눈에 편안한 은은한 민트/틸 톤을 쓴다(자극적인 원색 대비 대신 차분한 톤). */
+  .accuracy-mirage{
+    position:fixed; inset:0; z-index:130; display:flex; align-items:center; justify-content:center;
+    background:#eaf6f1; opacity:0; transition:opacity .5s ease, filter .9s ease, transform .9s ease;
+    filter:blur(0px); transform:scale(1);
+  }
+  .accuracy-mirage.show{ opacity:1; }
+  .accuracy-mirage.fade{ opacity:0; filter:blur(18px); transform:scale(1.18); }
+  .accuracy-mirage-num{
+    font-size:min(42vw, 480px); font-weight:900; color:#1f6f5c; letter-spacing:-.02em; line-height:1;
+  }
+
+  /* "문제풀기 그만!" 정지 상태 — 선생님이 정지시키면 학생 화면 전체를 덮어
+     아래 화면(선택지·입력창·이전/다음 버튼)이 전혀 조작되지 않게 막는다.
+     정답률 신기루(.accuracy-mirage, 민트 톤)와 혼동되지 않도록 다른(크림/베이지) 톤을 쓰고,
+     신기루처럼 잠깐 있다 사라지지 않고 선생님이 풀 때까지 계속 떠 있는다. */
+  .problemstop-overlay{
+    position:fixed; inset:0; z-index:400; display:flex; align-items:center; justify-content:center;
+    background:#f7f0e2; text-align:center; padding:24px;
+    pointer-events:auto; touch-action:none;
+  }
+  .problemstop-overlay.hidden{ display:none !important; pointer-events:none; }
+  .problemstop-msg{
+    font-size:min(7vw, 34px); font-weight:900; color:#8a6a2f; letter-spacing:-.01em; line-height:1.5;
+  }
 
   .hidden{ display:none !important; }
 
+  /* 시간 검증 게이트 */
+  #gate-overlay{
+    position:fixed; inset:0; background:var(--bg); z-index:200;
+    display:flex; align-items:center; justify-content:center; text-align:center; padding:20px;
+  }
+  #gate-overlay.hidden{ display:none; }
+  #gate-message{ color:var(--muted); font-size:16px; }
+
+  .callout-record{
+    background:linear-gradient(180deg, rgba(204,120,92,.10), rgba(204,120,92,.05));
+    border:1.5px solid rgba(204,120,92,.35); border-radius:12px;
+    padding:13px 14px; margin-top:14px; font-size:13px; line-height:1.65; color:var(--text);
+  }
+  .callout-record .cr-title{ font-weight:800; color:var(--accent-active); font-size:13px; margin-bottom:3px; display:flex; align-items:center; gap:5px; }
+
+  .callout-warning{
+    background:linear-gradient(180deg, rgba(212,160,23,.12), rgba(212,160,23,.05));
+    border:1.5px solid rgba(212,160,23,.4); border-radius:12px;
+    padding:13px 14px; margin:14px 0 0; font-size:13px; line-height:1.65; color:var(--text);
+  }
+  .callout-warning .cw-title{ font-weight:800; color:#9c7a0e; font-size:13px; margin-bottom:3px; display:flex; align-items:center; gap:5px; }
 </style>
 </head>
 <body>
 
-<!-- 접속 게이트 오버레이 (통과 전까지 화면을 가린다) -->
+<!-- 시간 검증 게이트 — 확인 전까지는 이 화면만 보인다 -->
 <div id="gate-overlay">
-  <div class="gate-spinner"></div>
-  <div class="gate-msg" id="gate-message">수업 접속 상태를 확인하고 있어요…</div>
+  <div id="gate-message">시간을 확인하고 있어요…</div>
 </div>
 
-<main id="app" class="hidden">
+<div id="app-root" class="hidden">
+<main id="app">
   <header class="top">
     <div class="brand">
       <div class="brand-left">
-        <h1>수업내용 확인하기!<span class="sub" id="topic-sub">산과 염기 (산성·염기성이 나타나는 까닭 / 중화 반응)</span></h1>
+        <h1>수업내용 확인하기!<span class="sub" id="topic-sub">산과 염기(2) · 산과 염기(3)</span></h1>
       </div>
       <div class="brand-right">
         <div class="conn-row">
@@ -309,6 +584,10 @@
         <input type="text" id="in-num" placeholder="학번 (예: 10101)" inputmode="numeric">
         <input type="text" id="in-name" placeholder="이름">
       </div>
+      <div class="callout-warning">
+        <div class="cw-title">⚠️ 시작 전 꼭 확인하세요</div>
+        이 문제는 학습지의 문제입니다. 문제를 풀 때 모르면 학습지를 보면서 풀어보세요. 장난스럽게 푸는 경우 감점의 대상이 됩니다.
+      </div>
       <div class="btnrow">
         <button class="btn primary" id="btn-start" disabled>시작하기</button>
       </div>
@@ -319,9 +598,13 @@
   <section class="screen" id="screen-question">
     <div class="card">
       <div class="qmeta">
-        <span class="qtag" id="q-tag">문항</span>
-        <span class="qnum" id="q-num">1 / 33</span>
+        <div class="qmeta-left">
+          <span class="qtag" id="q-tag">문항</span>
+          <span class="q-page" id="q-page"></span>
+        </div>
+        <span class="qnum" id="q-num">1 / 20</span>
       </div>
+      <div class="q-guide hidden" id="q-guide"></div>
       <div class="qtext" id="q-text"></div>
       <div class="qnote hidden" id="q-note"></div>
       <div class="qimg-wrap hidden" id="q-image-wrap"><img id="q-image" src="" alt=""></div>
@@ -342,11 +625,15 @@
   <section class="screen" id="screen-reflect">
     <div class="card">
       <div class="qmeta">
-        <span class="qtag">성찰 질문</span>
+        <span class="qtag" id="reflect-tag">성찰 질문</span>
         <span class="qnum" id="reflect-num">1 / 3</span>
       </div>
       <div class="qtext" id="reflect-text"></div>
       <textarea id="reflect-input" placeholder="자유롭게 적어보세요 (10자 이상)"></textarea>
+      <div class="callout-record">
+        <div class="cr-title">📋 참고사항</div>
+        이 성찰 질문에 대한 답변은 <b>학교생활기록부(세특) 작성의 기초 자료</b>로 선생님께 전달돼요. 대충 쓰지 않고 자신의 생각을 진솔하게 적을수록 나중에 나를 더 잘 보여주는 기록이 됩니다.
+      </div>
       <div class="btnrow">
         <button class="btn ghost" id="btn-reflect-prev">◀ 이전</button>
         <button class="btn primary" id="btn-reflect-next">다음 ▶</button>
@@ -398,16 +685,18 @@
       <div class="teacher-topbar">
         <button class="pill-tab active" id="tab-progress">진행 상황</button>
         <button class="pill-tab" id="tab-results">문항별 결과</button>
-        <span class="spacer"></span>
         <button class="btn gate-btn state-unknown" id="btn-gate-toggle">접속 확인 중…</button>
+        <span class="spacer"></span>
         <span class="class-label" id="teacher-current-class"></span>
+        <button class="btn ps-btn state-running" id="btn-problemstop-toggle">문제풀기 시작!</button>
+        <button class="btn ghost accuracy-toggle on" id="btn-accuracy-toggle">정답률 공개</button>
         <button class="btn ghost" id="btn-change-class">반 변경</button>
-        <button class="btn ghost" id="btn-teacher-refresh">↻ 새로고침</button>
+        <span class="refresh-wrap">
+          <button class="btn ghost" id="btn-teacher-refresh">↻ 새로고침</button>
+          <span class="last-updated" id="teacher-last-updated"></span>
+        </span>
         <button class="btn danger" id="btn-teacher-reset">🗑 전체 초기화</button>
         <button class="btn ghost" id="btn-teacher-close2">✕</button>
-      </div>
-      <div style="max-width:900px; margin:-4px auto 10px; padding:0 16px; text-align:right;">
-        <span class="last-updated" id="teacher-last-updated"></span>
       </div>
 
       <!-- 1번 화면: 진행 상황 -->
@@ -419,18 +708,55 @@
       <div id="view-results" class="hidden">
         <div class="tq-nav">
           <button class="btn ghost" id="btn-tq-prev">◀ 이전 문항</button>
-          <span class="tq-count" id="tq-count">1 / 36</span>
+          <span class="tq-count" id="tq-count">1 / 20</span>
           <button class="btn ghost" id="btn-tq-next">다음 문항 ▶</button>
         </div>
-        <div class="tq-card">
-          <div id="tq-image-wrap" class="hidden" style="text-align:center;"><img id="tq-image" src="" alt=""></div>
-          <div id="tq-text"></div>
-          <div id="tq-note" class="hidden"></div>
+        <!-- 기본 레이아웃: 왼쪽 문항 카드 전체 / 오른쪽 사이드 패널(정답통계).
+             note(보기)와 image가 함께 있는 문항일 때는 이 레이아웃이 숨겨지고
+             아래 .tq-layout-split 레이아웃이 대신 쓰인다(renderTeacherQuestionView 참고).
+             실제 콘텐츠 요소(뱃지·텍스트·보기·이미지·선택지·정답통계)는 두 레이아웃이
+             공유하며, 매 렌더링마다 JS가 해당 요소들을 알맞은 컨테이너로 옮겨 담는다. -->
+        <div class="tq-layout" id="tq-layout-normal">
+          <!-- 왼쪽: 문항 카드 (뱃지+학습지페이지+출처라벨+그림+텍스트+선택지) -->
+          <div class="tq-card" id="tq-card-normal"></div>
 
+          <!-- 오른쪽: (그림이 2개로 나뉜 문항이면) 두 번째 그림 + 학생 정답/정답 탭 + 원그래프 -->
+          <div class="tq-side" id="tq-side-normal">
+            <div id="tq-image2-wrap" class="hidden tq-img-box tq-img-box-side"><img id="tq-image2" src="" alt=""></div>
+          </div>
+        </div>
+
+        <!-- 보기(note)+이미지가 함께 있는 문항 전용: 왼쪽 이미지 / 오른쪽 텍스트+보기+선택지+정답통계 -->
+        <div class="tq-layout tq-layout-split hidden" id="tq-layout-split">
+          <div class="tq-split-image" id="tq-split-image"></div>
+          <div class="tq-split-right" id="tq-split-right"></div>
+        </div>
+
+        <!-- 성찰 질문 전용 레이아웃: 위=질문 카드(작고 간결하게), 아래=학생 답변 그리드
+             (여러 명 답변을 한 번에). 기출문제 등 다른 문항의 .tq-layout 좌우 2단
+             구조와 클래스를 공유하지 않는 독립 구조다(renderTeacherQuestionView 참고). -->
+        <div class="tq-reflect-layout hidden" id="tq-layout-reflect">
+          <div class="tq-reflect-qcard" id="tq-reflect-qcard"></div>
+          <div class="tq-reflect-results" id="tq-reflect-results"></div>
+        </div>
+
+        <!-- 두 레이아웃이 공유하는 실제 콘텐츠 요소들 — 렌더링 시 JS가 알맞은 위치로 옮긴다 -->
+        <div id="tq-content-pool" style="display:none;">
+          <div class="qmeta" id="tq-meta-block">
+            <div class="qmeta-left">
+              <span class="qtag" id="tq-tag">문항</span>
+              <span class="q-page" id="tq-page"></span>
+              <div id="tq-text"></div>
+            </div>
+          </div>
+          <div id="tq-guide" class="reflect-guide hidden"></div>
+          <div id="tq-note" class="hidden"></div>
+          <div id="tq-note-blocks" class="hidden tq-note-blocks"></div>
+          <div id="tq-image-wrap" class="hidden tq-img-box"><img id="tq-image" src="" alt=""></div>
+          <div id="tq-choices" class="choices hidden"></div>
           <div id="reveal-gate" class="reveal-gate">
             <button class="btn primary" id="btn-reveal">결과 보기</button>
           </div>
-
           <div id="tq-result" class="hidden">
             <div class="result-tabs" id="result-tabs"></div>
             <div id="result-body"></div>
@@ -449,12 +775,24 @@
   </div>
 </div>
 
+<!-- 문항별 결과 — 문항 진입 시 잠깐 뜨는 정답률 신기루 연출(교사용 전용) -->
+<div class="accuracy-mirage hidden" id="accuracy-mirage">
+  <div class="accuracy-mirage-num" id="accuracy-mirage-num"></div>
+</div>
+
+<!-- "문제풀기 그만!" 정지 오버레이 — 선생님이 정지시키면 학생 화면을 완전히 덮는다 -->
+<div class="problemstop-overlay hidden" id="problemstop-overlay">
+  <div class="problemstop-msg">문제를 선생님과<br>함께 풀어봅시다</div>
+</div>
+
+</div><!-- /#app-root -->
 
 <script>
 /* ============================================================
-   GAS_URL — 접속 게이트에서도 써야 하므로 다른 모든 스크립트보다 먼저 선언한다.
-   활동마다 다른 구글 시트 + 다른 배포이므로 이 값도 활동마다 새로 받아서 넣는다.
+   설정 — GAS_URL은 접속 제어 게이트에서도 써야 하므로 가장 먼저 선언한다.
 ============================================================ */
+// 활동마다 다른 구글 시트 + 다른 배포이므로, 이 값도 활동마다 새로 받아서 넣는다.
+// 절대 예전 활동에서 쓰던 주소를 재사용하지 말 것.
 const GAS_URL = "https://script.google.com/macros/s/AKfycbw39b-ePyIxUAbs0zzT6La0MZwMXqn2V_n3dey7fwpHd5CSa5H3h5xMBcxi3X8O6w/exec";
 function gasConfigured(){
   return !!GAS_URL && GAS_URL.indexOf("PASTE_YOUR_") !== 0;
@@ -463,10 +801,13 @@ function gasConfigured(){
 
 <script>
 /* ============================================================
-   접속 스위치 게이트 — 서버(구글 시트 "접속설정" A2)의 공통 스위치가
-   열려 있을 때만 학생 화면을 보여준다. 활동 중에도 5초마다 재확인하여
-   교사가 닫으면 즉시 구글로 내보낸다. 교사용 우회: URL 뒤에 ?t
-============================================================ */
+   접속 제어 게이트 — 선생님이 켠 "공통 접속 스위치"가 열려 있을 때만
+   학생이 반/학번/이름 입력 화면까지 들어올 수 있게 한다.
+   URL에 ?t 파라미터가 있으면(선생님 수업 준비·테스트용) 이 검증을
+   완전히 건너뛴다. 상태는 서버(구글시트 "접속설정" 탭)의 공통 값
+   하나로 판단하며, 학생이 이미 들어와 활동 중이어도 5초마다 다시
+   확인해서 선생님이 접속을 닫으면 곧바로 구글 화면으로 내보낸다.
+   ============================================================ */
 (function accessGate(){
   const params = new URLSearchParams(window.location.search);
   const teacherBypass = params.has('t');
@@ -474,7 +815,7 @@ function gasConfigured(){
 
   function revealApp(){
     document.getElementById('gate-overlay').classList.add('hidden');
-    document.getElementById('app').classList.remove('hidden');
+    document.getElementById('app-root').classList.remove('hidden');
   }
   function blockAccess(message){
     document.getElementById('gate-message').textContent = message;
@@ -482,19 +823,17 @@ function gasConfigured(){
     window.location.href = 'https://www.google.com';
   }
 
-  if(teacherBypass){ revealApp(); return; }
-
-  if(!gasConfigured()){
-    // 배포 주소가 아직 안 들어간 상태(미리보기 등)에서는 게이트를 통과시켜
-    // 화면 구조만 확인할 수 있게 한다. 실제 배포본에서는 GAS_URL이 채워지므로
-    // 아래 서버 확인 로직을 탄다.
+  if(teacherBypass){
     revealApp();
     return;
   }
 
   function fetchGateOpen(){
     return fetch(GAS_URL + '?action=gateStatus', { method: 'GET' })
-      .then(res=>{ if(!res.ok) throw new Error('게이트 상태 응답 오류'); return res.json(); })
+      .then(res=>{
+        if(!res.ok) throw new Error('게이트 상태 응답 오류');
+        return res.json();
+      })
       .then(data=> !!(data && data.open));
   }
 
@@ -502,16 +841,18 @@ function gasConfigured(){
     .then(open=>{
       if(open){
         revealApp();
+        // 활동 중에도 계속 지켜보다가, 선생님이 접속을 닫으면 곧바로 내보낸다.
         setInterval(()=>{
           fetchGateOpen().then(stillOpen=>{
             if(!stillOpen) blockAccess('선생님이 접속을 닫았습니다.');
-          }).catch(()=>{ /* 일시적 오류는 무시하고 다음 주기에 재확인 */ });
+          }).catch(()=>{ /* 폴링 중 일시적 오류는 무시하고 다음 주기에 다시 확인 */ });
         }, GATE_POLL_MS);
       } else {
         blockAccess('현재는 수업 시간이 아닙니다.');
       }
     })
     .catch(()=>{
+      // 서버 상태를 확인할 수 없으면 우회를 막기 위해 안전하게 접속을 차단한다.
       blockAccess('접속 상태를 확인할 수 없어요. 선생님께 문의해 주세요.');
     });
 })();
@@ -519,160 +860,205 @@ function gasConfigured(){
 
 <script>
 /* ============================================================
+   "문제풀기 그만!" 정지 상태 폴링 (학생 화면 전용)
+   접속 게이트와는 완전히 별개의 공통 값이다. 접속 게이트는 접속 자체를
+   막지만, 이건 이미 들어와 문제를 풀고 있는 학생 화면을 선생님이 원할 때
+   잠깐 잠그는 용도다. app-root가 보인 뒤(=접속 게이트를 통과한 뒤)부터
+   5초마다 폴링하며, 정지 상태면 오버레이로 화면 전체를 덮어 그 아래
+   무엇도(선택지·입력창·이전/다음 버튼 등) 조작할 수 없게 막는다.
+   ============================================================ */
+(function problemStopWatcher(){
+  const PS_POLL_MS = 5000;
+  const overlay = document.getElementById('problemstop-overlay');
+  const appRoot = document.getElementById('app-root');
+  // ?t=1 로 들어온 교사용 링크는 애초에 이 기능의 영향을 받지 않는다
+  // (교사가 스스로를 막을 이유가 없음 — 접속 게이트의 teacherBypass와 동일한 원칙).
+  const teacherBypassPS = new URLSearchParams(window.location.search).has('t');
+
+  function paint(stopped){
+    // 학생용 링크로 들어왔더라도, 그 안에서 "선생님 보기"(교사용 패널)를 열어
+    // 학생들과 화면을 공유하며 풀이 중인 경우에는 화면을 잠그면 안 된다 —
+    // 교사가 직접 조작해야 하는 화면이기 때문. 교사 패널이 열려 있는 동안은
+    // 정지 상태여도 오버레이를 항상 숨긴다.
+    const teacherPanelOpen = !!document.getElementById('teacher-panel') &&
+      document.getElementById('teacher-panel').classList.contains('on');
+    overlay.classList.toggle('hidden', !stopped || teacherPanelOpen);
+  }
+
+  function fetchStopped(){
+    return fetch(GAS_URL + '?action=problemStopStatus', { method: 'GET' })
+      .then(res=>{
+        if(!res.ok) throw new Error('문제풀이상태 응답 오류');
+        return res.json();
+      })
+      .then(data=> !!(data && data.stopped));
+  }
+
+  function poll(){
+    if(!gasConfigured() || teacherBypassPS) return;
+    fetchStopped()
+      .then(stopped=> paint(stopped))
+      .catch(()=>{ /* 폴링 중 일시적 오류는 무시하고 다음 주기에 다시 확인 */ });
+  }
+
+  // app-root가 실제로 보일 때(=접속 게이트 통과 후)부터 폴링을 시작한다.
+  const startWhenVisible = setInterval(()=>{
+    if(!appRoot.classList.contains('hidden')){
+      clearInterval(startWhenVisible);
+      poll();
+      setInterval(poll, PS_POLL_MS);
+    }
+  }, 300);
+})();
+</script>
+
+<script>
+/* ============================================================
    설정
 ============================================================ */
-// 선생님 보기 암호 — 구글 시트 "접속설정" 시트의 A4 칸 값으로 바꿀 수 있다.
-// 아래는 서버에서 값을 못 받아왔을 때 쓰는 기본값.
-let TEACHER_PASSCODE = "3699";
+const TEACHER_PASSCODE = "3699";
 const CLASS_COUNT = 10;
 
 /* ============================================================
-   문항 데이터 — 학습지 "1-2. HTML용" 에서 추출
-   (스스로 확인하기 → 깨알 개념 체크 문제 → 확인문제 → 기출문제 순서 그대로)
+   문항 데이터
 ============================================================ */
 const QUESTIONS = [
-  /* ===== [1] 산성·염기성이 나타나는 까닭 (교과서 48~49쪽) ===== */
+  /* ══════════ 산과 염기(2) — 산성·염기성이 나타나는 까닭 (학습지 29~30쪽) ══════════ */
 
-  // 스스로 확인하기
-  { id:"s1_sc1", type:"choice",
-    text:"산은 수용액에서 (        )을 내놓는 물질이다. — 알맞은 것을 고르세요.",
-    options:["수소 이온","수산화 이온"], correctAnswer:"수소 이온" },
-  { id:"s1_sc2", type:"choice",
+  /* ── 스스로 확인하기 (29쪽) ── */
+  { id:"s1_sc1", page:29, type:"choice", options:["수소 이온","수산화 이온"], correctAnswer:"수소 이온", tag:"스스로 확인하기",
+    text:"산은 수용액에서 (        )을 내놓는 물질이다. — 알맞은 것을 고르세요." },
+  { id:"s1_sc2", page:29, type:"choice", options:["O","X"], correctAnswer:"O", tag:"스스로 확인하기",
     text:"염기성은 수산화 이온 때문에 나타나는 성질이다.",
-    note:"옳으면 O, 옳지 않으면 X 를 고르세요.",
-    options:["O","X"], correctAnswer:"O" },
+    note:"옳으면 O, 옳지 않으면 X를 고르세요." },
 
-  // 깨알 개념 체크 문제 (리트머스 종이 + 실 실험, O/X 5개 — 그림 공유)
-  { id:"s1_kk1", type:"choice", image:"images/s1-selfcheck.png",
-    note:"그림은 묽은 염산에서 산성을 띠게 하는 이온을 확인하는 실험이다. 전류를 흘려 준 후, 묽은 염산을 적신 실로부터 (−)극 쪽으로 푸른색 리트머스 종이가 붉게 변하였다.\n각 설명이 옳으면 O, 옳지 않으면 X 를 고르세요.",
+  /* ── 깨알 개념 체크 문제 (29쪽) — 산성을 띠게 하는 이온 확인 실험, 그림 공유 ── */
+  { id:"s1_kk1", page:29, type:"choice", options:["O","X"], correctAnswer:"O", tag:"깨알 개념 체크 문제",
+    guideText:"그림은 묽은 염산에서 산성을 띠게 하는 이온을 확인하는 실험이다. 전류를 흘려 준 후, 묽은 염산을 적신 실로부터 (−)극 쪽으로 푸른색 리트머스 종이가 붉게 변하였다.\n각 설명이 옳으면 O, 옳지 않으면 X를 고르세요.",
     text:"(1) 산성을 나타내는 이온은 수소 이온이다.",
-    options:["O","X"], correctAnswer:"O" },
-  { id:"s1_kk2", type:"choice", image:"images/s1-selfcheck.png",
-    note:"그림은 묽은 염산에서 산성을 띠게 하는 이온을 확인하는 실험이다. 전류를 흘려 준 후, 묽은 염산을 적신 실로부터 (−)극 쪽으로 푸른색 리트머스 종이가 붉게 변하였다.\n각 설명이 옳으면 O, 옳지 않으면 X 를 고르세요.",
+    image:"images/s1-selfcheck.png" },
+  { id:"s1_kk2", page:29, type:"choice", options:["O","X"], correctAnswer:"O", tag:"깨알 개념 체크 문제",
+    guideText:"그림은 묽은 염산에서 산성을 띠게 하는 이온을 확인하는 실험이다. 전류를 흘려 준 후, 묽은 염산을 적신 실로부터 (−)극 쪽으로 푸른색 리트머스 종이가 붉게 변하였다.\n각 설명이 옳으면 O, 옳지 않으면 X를 고르세요.",
     text:"(2) 질산 칼륨은 전해질로 쓰였다.",
-    options:["O","X"], correctAnswer:"O" },
-  { id:"s1_kk3", type:"choice", image:"images/s1-selfcheck.png",
-    note:"그림은 묽은 염산에서 산성을 띠게 하는 이온을 확인하는 실험이다. 전류를 흘려 준 후, 묽은 염산을 적신 실로부터 (−)극 쪽으로 푸른색 리트머스 종이가 붉게 변하였다.\n각 설명이 옳으면 O, 옳지 않으면 X 를 고르세요.",
+    image:"images/s1-selfcheck.png" },
+  { id:"s1_kk3", page:29, type:"choice", options:["O","X"], correctAnswer:"X", tag:"깨알 개념 체크 문제",
+    guideText:"그림은 묽은 염산에서 산성을 띠게 하는 이온을 확인하는 실험이다. 전류를 흘려 준 후, 묽은 염산을 적신 실로부터 (−)극 쪽으로 푸른색 리트머스 종이가 붉게 변하였다.\n각 설명이 옳으면 O, 옳지 않으면 X를 고르세요.",
     text:"(3) (−)극으로 이동하는 이온은 수소 이온뿐이다.",
-    options:["O","X"], correctAnswer:"X" },
-  { id:"s1_kk4", type:"choice", image:"images/s1-selfcheck.png",
-    note:"그림은 묽은 염산에서 산성을 띠게 하는 이온을 확인하는 실험이다. 전류를 흘려 준 후, 묽은 염산을 적신 실로부터 (−)극 쪽으로 푸른색 리트머스 종이가 붉게 변하였다.\n각 설명이 옳으면 O, 옳지 않으면 X 를 고르세요.",
+    image:"images/s1-selfcheck.png" },
+  { id:"s1_kk4", page:29, type:"choice", options:["O","X"], correctAnswer:"X", tag:"깨알 개념 체크 문제",
+    guideText:"그림은 묽은 염산에서 산성을 띠게 하는 이온을 확인하는 실험이다. 전류를 흘려 준 후, 묽은 염산을 적신 실로부터 (−)극 쪽으로 푸른색 리트머스 종이가 붉게 변하였다.\n각 설명이 옳으면 O, 옳지 않으면 X를 고르세요.",
     text:"(4) 묽은 염산에 페놀프탈레인 용액을 떨어뜨리면 붉게 변한다.",
-    options:["O","X"], correctAnswer:"X" },
-  { id:"s1_kk5", type:"choice", image:"images/s1-selfcheck.png",
-    note:"그림은 묽은 염산에서 산성을 띠게 하는 이온을 확인하는 실험이다. 전류를 흘려 준 후, 묽은 염산을 적신 실로부터 (−)극 쪽으로 푸른색 리트머스 종이가 붉게 변하였다.\n각 설명이 옳으면 O, 옳지 않으면 X 를 고르세요.",
+    image:"images/s1-selfcheck.png" },
+  { id:"s1_kk5", page:29, type:"choice", options:["O","X"], correctAnswer:"O", tag:"깨알 개념 체크 문제",
+    guideText:"그림은 묽은 염산에서 산성을 띠게 하는 이온을 확인하는 실험이다. 전류를 흘려 준 후, 묽은 염산을 적신 실로부터 (−)극 쪽으로 푸른색 리트머스 종이가 붉게 변하였다.\n각 설명이 옳으면 O, 옳지 않으면 X를 고르세요.",
     text:"(5) 묽은 염산 대신 아세트산으로 실험해도 리트머스 종이의 색 변화는 같다.",
-    options:["O","X"], correctAnswer:"O" },
+    image:"images/s1-selfcheck.png" },
 
-  // 확인문제
-  { id:"s1_c1", type:"choice", image:"images/s1-confirm-01.png",
+  /* ── 확인문제 (29쪽) ── */
+  { id:"s1_c1", page:29, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"⑤", tag:"확인문제",
     text:"그림과 같이 질산 칼륨 수용액을 적신 붉은색 리트머스 종이 위에 ㉠을 적신 실을 올려놓고 전류를 흘려 주었더니 붉은색 리트머스 종이가 A극 쪽으로 푸른색으로 변했다. A극과 ㉠을 옳게 짝지은 것은?",
-    note:"①  A극 (−) / ㉠ 염산\n②  A극 (−) / ㉠ 수산화 나트륨 수용액\n③  A극 (+) / ㉠ 염산\n④  A극 (+) / ㉠ 아세트산 수용액\n⑤  A극 (+) / ㉠ 수산화 나트륨 수용액",
-    options:["①","②","③","④","⑤"], correctAnswer:"⑤" },
-  { id:"s1_c2", type:"choice",
+    image:"images/s1-confirm-01.png",
+    note:"① A극 (−) / ㉠ 염산\n② A극 (−) / ㉠ 수산화 나트륨 수용액\n③ A극 (+) / ㉠ 염산\n④ A극 (+) / ㉠ 아세트산 수용액\n⑤ A극 (+) / ㉠ 수산화 나트륨 수용액" },
+  { id:"s1_c2", page:29, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"④", tag:"확인문제",
     text:"산과 염기의 이온화식을 옳게 나타낸 것은?",
-    note:"①  HCl → H⁻ + Cl⁺\n②  CH₃COOH → CH₃CO⁺ + OH⁻\n③  NaOH → H⁺ + NaO⁻\n④  NH₄OH → NH₄⁺ + OH⁻\n⑤  H₂CO₃ → H⁺ + CO₃²⁻",
-    options:["①","②","③","④","⑤"], correctAnswer:"④" },
+    note:"① HCl → H⁻ + Cl⁺\n② CH₃COOH → CH₃CO⁺ + OH⁻\n③ NaOH → H⁺ + NaO⁻\n④ NH₄OH → NH₄⁺ + OH⁻\n⑤ H₂CO₃ → H⁺ + CO₃²⁻" },
 
-  // 기출문제 (문제 전체가 그림 안에 있음)
-  { id:"s1_p1", type:"choice", image:"images/s1-past-01.png", imageSize:"small",
-    text:"그림의 문제를 읽고 알맞은 답을 고르세요. (①~⑤)",
-    options:["①","②","③","④","⑤"], correctAnswer:"③" },
-  { id:"s1_p2", type:"choice", image:"images/s1-past-02.png", imageSize:"small",
-    text:"그림의 문제를 읽고 알맞은 답을 고르세요. (①~⑤)",
-    options:["①","②","③","④","⑤"], correctAnswer:"④" },
-  { id:"s1_p3", type:"choice", image:"images/s1-past-03.png", imageSize:"small",
-    text:"그림의 문제를 읽고 알맞은 답을 고르세요. (①~⑤)",
-    options:["①","②","③","④","⑤"], correctAnswer:"①" },
+  /* ── 기출 문제 (30쪽) — 문제·보기·선택지는 이미지 안에 있음 ── */
+  { id:"s1_p1", page:30, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"③", tag:"기출 문제",
+    text:"학력평가 기출",
+    image:"images/s1-past-01.png", imageSize:"small" },
+  { id:"s1_p2", page:30, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"④", tag:"기출 문제",
+    text:"학력평가 기출",
+    image:"images/s1-past-02.png", imageSize:"small" },
+  { id:"s1_p3", page:30, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"①", tag:"기출 문제",
+    text:"학력평가 기출",
+    image:"images/s1-past-03.png", imageSize:"small" },
 
-  /* ===== [2] 중화 반응 (교과서 52~53쪽) ===== */
+  /* ══════════ 산과 염기(3) — 중화 반응 (학습지 32~34쪽) ══════════ */
 
-  // 스스로 확인하기
-  { id:"s2_sc1", type:"blank",
-    text:"산의 수소 이온과 염기의 수산화 이온이 1:1의 개수비로 반응해 물을 생성하는 반응을 (        )이라고 한다.",
-    correctAnswer:"중화반응" },
-  { id:"s2_sc2", type:"choice",
+  /* ── 스스로 확인하기 (32쪽) ── */
+  { id:"s2_sc1", page:32, type:"blank", correctAnswer:"중화반응", tag:"스스로 확인하기",
+    text:"산의 수소 이온과 염기의 수산화 이온이 1:1의 개수비로 반응해 물을 생성하는 반응을 (        )이라고 한다." },
+  { id:"s2_sc2", page:32, type:"choice", options:["O","X"], correctAnswer:"O", tag:"스스로 확인하기",
     text:"생선에 식초나 레몬즙을 뿌리면 비린내 성분을 중화할 수 있다.",
-    note:"옳으면 O, 옳지 않으면 X 를 고르세요.",
-    options:["O","X"], correctAnswer:"O" },
+    note:"옳으면 O, 옳지 않으면 X를 고르세요." },
 
-  // 깨알 개념 체크 문제 A ((가)~(라) 중화 모형, O/X 5개 — 그림 공유)
-  { id:"s2_kkA1", type:"choice", image:"images/s2-selfcheckA.png",
-    note:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 가하는 중화 반응을 모형으로 나타낸 것이다. (단, 혼합 전 두 수용액의 온도와 농도는 같다.)\n각 설명이 옳으면 O, 옳지 않으면 X 를 고르세요.",
+  /* ── 깨알 개념 체크 문제 A (32쪽) — 중화 반응 모형 (가)~(라), 그림 공유 ── */
+  { id:"s2_kkA1", page:32, type:"choice", options:["O","X"], correctAnswer:"O", tag:"깨알 개념 체크 문제",
+    guideText:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 가하는 중화 반응을 모형으로 나타낸 것이다. (단, 혼합 전 두 수용액의 온도와 농도는 같다.)\n각 설명이 옳으면 O, 옳지 않으면 X를 고르세요.",
     text:"(1) (가)와 (나)는 산성이다.",
-    options:["O","X"], correctAnswer:"O" },
-  { id:"s2_kkA2", type:"choice", image:"images/s2-selfcheckA.png",
-    note:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 가하는 중화 반응을 모형으로 나타낸 것이다. (단, 혼합 전 두 수용액의 온도와 농도는 같다.)\n각 설명이 옳으면 O, 옳지 않으면 X 를 고르세요.",
+    image:"images/s2-selfcheckA.png" },
+  { id:"s2_kkA2", page:32, type:"choice", options:["O","X"], correctAnswer:"X", tag:"깨알 개념 체크 문제",
+    guideText:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 가하는 중화 반응을 모형으로 나타낸 것이다. (단, 혼합 전 두 수용액의 온도와 농도는 같다.)\n각 설명이 옳으면 O, 옳지 않으면 X를 고르세요.",
     text:"(2) (다)와 (라)는 염기성이다.",
-    options:["O","X"], correctAnswer:"X" },
-  { id:"s2_kkA3", type:"choice", image:"images/s2-selfcheckA.png",
-    note:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 가하는 중화 반응을 모형으로 나타낸 것이다. (단, 혼합 전 두 수용액의 온도와 농도는 같다.)\n각 설명이 옳으면 O, 옳지 않으면 X 를 고르세요.",
+    image:"images/s2-selfcheckA.png" },
+  { id:"s2_kkA3", page:32, type:"choice", options:["O","X"], correctAnswer:"O", tag:"깨알 개념 체크 문제",
+    guideText:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 가하는 중화 반응을 모형으로 나타낸 것이다. (단, 혼합 전 두 수용액의 온도와 농도는 같다.)\n각 설명이 옳으면 O, 옳지 않으면 X를 고르세요.",
     text:"(3) (다)에 BTB 용액을 떨어뜨리면 녹색이 된다.",
-    options:["O","X"], correctAnswer:"O" },
-  { id:"s2_kkA4", type:"choice", image:"images/s2-selfcheckA.png",
-    note:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 가하는 중화 반응을 모형으로 나타낸 것이다. (단, 혼합 전 두 수용액의 온도와 농도는 같다.)\n각 설명이 옳으면 O, 옳지 않으면 X 를 고르세요.",
+    image:"images/s2-selfcheckA.png" },
+  { id:"s2_kkA4", page:32, type:"choice", options:["O","X"], correctAnswer:"O", tag:"깨알 개념 체크 문제",
+    guideText:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 가하는 중화 반응을 모형으로 나타낸 것이다. (단, 혼합 전 두 수용액의 온도와 농도는 같다.)\n각 설명이 옳으면 O, 옳지 않으면 X를 고르세요.",
     text:"(4) 온도가 가장 높은 것은 (다)이다.",
-    options:["O","X"], correctAnswer:"O" },
-  { id:"s2_kkA5", type:"choice", image:"images/s2-selfcheckA.png",
-    note:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 가하는 중화 반응을 모형으로 나타낸 것이다. (단, 혼합 전 두 수용액의 온도와 농도는 같다.)\n각 설명이 옳으면 O, 옳지 않으면 X 를 고르세요.",
+    image:"images/s2-selfcheckA.png" },
+  { id:"s2_kkA5", page:32, type:"choice", options:["O","X"], correctAnswer:"X", tag:"깨알 개념 체크 문제",
+    guideText:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 가하는 중화 반응을 모형으로 나타낸 것이다. (단, 혼합 전 두 수용액의 온도와 농도는 같다.)\n각 설명이 옳으면 O, 옳지 않으면 X를 고르세요.",
     text:"(5) (가)와 (라)를 혼합한 용액에 BTB 용액을 떨어뜨리면 녹색이 된다.",
-    options:["O","X"], correctAnswer:"X" },
+    image:"images/s2-selfcheckA.png" },
 
-  // 깨알 개념 체크 문제 B (이온 수 변화 그래프, O/X 5개 — 그림 공유)
-  { id:"s2_kkB1", type:"choice", image:"images/s2-selfcheckB.png",
-    note:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 넣으며 반응시켰을 때, 넣어 준 NaOH 수용액의 부피에 따른 혼합 용액 속 이온 수 변화를 나타낸 것이다.\n각 설명이 옳으면 O, 옳지 않으면 X 를 고르세요.",
+  /* ── 깨알 개념 체크 문제 B (32쪽) — NaOH 부피에 따른 이온 수 변화 그래프, 그림 공유 ── */
+  { id:"s2_kkB1", page:32, type:"choice", options:["O","X"], correctAnswer:"X", tag:"깨알 개념 체크 문제",
+    guideText:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 넣으며 반응시켰을 때, 넣어 준 NaOH 수용액의 부피에 따른 혼합 용액 속 이온 수 변화를 나타낸 것이다.\n각 설명이 옳으면 O, 옳지 않으면 X를 고르세요.",
     text:"(1) ㉠은 Cl⁻이고, ㉣은 OH⁻이다.",
-    options:["O","X"], correctAnswer:"X" },
-  { id:"s2_kkB2", type:"choice", image:"images/s2-selfcheckB.png",
-    note:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 넣으며 반응시켰을 때, 넣어 준 NaOH 수용액의 부피에 따른 혼합 용액 속 이온 수 변화를 나타낸 것이다.\n각 설명이 옳으면 O, 옳지 않으면 X 를 고르세요.",
+    image:"images/s2-selfcheckB.png" },
+  { id:"s2_kkB2", page:32, type:"choice", options:["O","X"], correctAnswer:"X", tag:"깨알 개념 체크 문제",
+    guideText:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 넣으며 반응시켰을 때, 넣어 준 NaOH 수용액의 부피에 따른 혼합 용액 속 이온 수 변화를 나타낸 것이다.\n각 설명이 옳으면 O, 옳지 않으면 X를 고르세요.",
     text:"(2) ㉡은 H⁺이고, ㉢은 Na⁺이다.",
-    options:["O","X"], correctAnswer:"X" },
-  { id:"s2_kkB3", type:"choice", image:"images/s2-selfcheckB.png",
-    note:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 넣으며 반응시켰을 때, 넣어 준 NaOH 수용액의 부피에 따른 혼합 용액 속 이온 수 변화를 나타낸 것이다.\n각 설명이 옳으면 O, 옳지 않으면 X 를 고르세요.",
+    image:"images/s2-selfcheckB.png" },
+  { id:"s2_kkB3", page:32, type:"choice", options:["O","X"], correctAnswer:"O", tag:"깨알 개념 체크 문제",
+    guideText:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 넣으며 반응시켰을 때, 넣어 준 NaOH 수용액의 부피에 따른 혼합 용액 속 이온 수 변화를 나타낸 것이다.\n각 설명이 옳으면 O, 옳지 않으면 X를 고르세요.",
     text:"(3) 혼합 용액의 액성이 산성일 때 가장 많이 존재하는 이온은 Cl⁻이다.",
-    options:["O","X"], correctAnswer:"O" },
-  { id:"s2_kkB4", type:"choice", image:"images/s2-selfcheckB.png",
-    note:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 넣으며 반응시켰을 때, 넣어 준 NaOH 수용액의 부피에 따른 혼합 용액 속 이온 수 변화를 나타낸 것이다.\n각 설명이 옳으면 O, 옳지 않으면 X 를 고르세요.",
+    image:"images/s2-selfcheckB.png" },
+  { id:"s2_kkB4", page:32, type:"choice", options:["O","X"], correctAnswer:"X", tag:"깨알 개념 체크 문제",
+    guideText:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 넣으며 반응시켰을 때, 넣어 준 NaOH 수용액의 부피에 따른 혼합 용액 속 이온 수 변화를 나타낸 것이다.\n각 설명이 옳으면 O, 옳지 않으면 X를 고르세요.",
     text:"(4) 혼합 용액의 액성이 중성일 때 이온이 존재하지 않는다.",
-    options:["O","X"], correctAnswer:"X" },
-  { id:"s2_kkB5", type:"choice", image:"images/s2-selfcheckB.png",
-    note:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 넣으며 반응시켰을 때, 넣어 준 NaOH 수용액의 부피에 따른 혼합 용액 속 이온 수 변화를 나타낸 것이다.\n각 설명이 옳으면 O, 옳지 않으면 X 를 고르세요.",
+    image:"images/s2-selfcheckB.png" },
+  { id:"s2_kkB5", page:32, type:"choice", options:["O","X"], correctAnswer:"X", tag:"깨알 개념 체크 문제",
+    guideText:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 넣으며 반응시켰을 때, 넣어 준 NaOH 수용액의 부피에 따른 혼합 용액 속 이온 수 변화를 나타낸 것이다.\n각 설명이 옳으면 O, 옳지 않으면 X를 고르세요.",
     text:"(5) 혼합 용액의 액성이 염기성일 때 가장 많이 존재하는 이온은 OH⁻이다.",
-    options:["O","X"], correctAnswer:"X" },
+    image:"images/s2-selfcheckB.png" },
 
-  // 확인문제
-  { id:"s2_c1", type:"choice", image:"images/s2-confirm-01.png",
+  /* ── 확인문제 (32~33쪽) ── */
+  { id:"s2_c1", page:32, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"①", tag:"확인문제",
     text:"그림은 염산에 수산화 나트륨 수용액을 넣을 때 수용액 속에 들어 있는 입자를 모형으로 나타낸 것이다. 염산과 수산화 나트륨 수용액의 혼합 용액에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?",
-    note:"<보기>\nㄱ. 전류가 흐르지 않는다.\nㄴ. 수산화 나트륨 수용액을 넣으면 중화 반응을 한다.\nㄷ. 페놀프탈레인 용액을 떨어뜨리면 붉은색으로 변한다.\n\n①  ㄴ      ②  ㄷ      ③  ㄱ, ㄴ      ④  ㄱ, ㄷ      ⑤  ㄱ, ㄴ, ㄷ",
-    options:["①","②","③","④","⑤"], correctAnswer:"①" },
-  { id:"s2_c2", type:"choice", image:"images/s2-confirm-02.png",
+    image:"images/s2-confirm-01.png",
+    note:"<보기>\nㄱ. 전류가 흐르지 않는다.\nㄴ. 수산화 나트륨 수용액을 넣으면 중화 반응을 한다.\nㄷ. 페놀프탈레인 용액을 떨어뜨리면 붉은색으로 변한다.\n\n① ㄴ   ② ㄷ   ③ ㄱ, ㄴ   ④ ㄱ, ㄷ   ⑤ ㄱ, ㄴ, ㄷ" },
+  { id:"s2_c2", page:33, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"④", tag:"확인문제",
     text:"그림은 농도와 온도가 같은 염산과 수산화 나트륨 수용액의 부피를 달리하여 혼합했을 때 혼합 용액의 최고 온도를 측정하여 나타낸 것이다. 이에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?",
-    note:"<보기>\nㄱ. A와 B를 섞으면 중화 반응을 한다.\nㄴ. C에는 2종류의 이온이 존재한다.\nㄷ. 생성된 물의 양은 D가 E보다 많다.\n\n①  ㄱ      ②  ㄴ      ③  ㄱ, ㄷ      ④  ㄴ, ㄷ      ⑤  ㄱ, ㄴ, ㄷ",
-    options:["①","②","③","④","⑤"], correctAnswer:"④" },
-  { id:"s2_c3", type:"choice",
+    image:"images/s2-confirm-02.png",
+    note:"<보기>\nㄱ. A와 B를 섞으면 중화 반응을 한다.\nㄴ. C에는 2종류의 이온이 존재한다.\nㄷ. 생성된 물의 양은 D가 E보다 많다.\n\n① ㄱ   ② ㄴ   ③ ㄱ, ㄷ   ④ ㄴ, ㄷ   ⑤ ㄱ, ㄴ, ㄷ" },
+  { id:"s2_c3", page:33, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"②", tag:"확인문제",
     text:"중화 반응을 이용하는 예로 옳지 않은 것은?",
-    note:"①  생선에 레몬즙을 뿌린다.\n②  산화 철에서 산소를 제거한다.\n③  산성화된 토양에 석회 가루를 뿌린다.\n④  위산 때문에 속이 쓰릴 때 제산제를 복용한다.\n⑤  벌레에 물렸을 때 암모니아수가 들어 있는 약을 바른다.",
-    options:["①","②","③","④","⑤"], correctAnswer:"②" },
+    note:"① 생선에 레몬즙을 뿌린다.\n② 산화 철에서 산소를 제거한다.\n③ 산성화된 토양에 석회 가루를 뿌린다.\n④ 위산 때문에 속이 쓰릴 때 제산제를 복용한다.\n⑤ 벌레에 물렸을 때 암모니아수가 들어 있는 약을 바른다." },
 
-  // 기출문제 (문제 전체가 그림 안에 있음)
-  { id:"s2_p1", type:"choice", image:"images/s2-past-01.png", imageSize:"small",
-    text:"그림의 문제를 읽고 알맞은 답을 고르세요. (①~⑤)",
-    options:["①","②","③","④","⑤"], correctAnswer:"⑤" },
-  { id:"s2_p2", type:"choice", image:"images/s2-past-02.png", imageSize:"small",
-    text:"그림의 문제를 읽고 알맞은 답을 고르세요. (①~⑤)",
-    options:["①","②","③","④","⑤"], correctAnswer:"③" },
-  { id:"s2_p3", type:"choice", image:"images/s2-past-03.png", imageSize:"small",
-    text:"그림의 문제를 읽고 알맞은 답을 고르세요. (①~⑤)",
-    options:["①","②","③","④","⑤"], correctAnswer:"③" },
-  { id:"s2_p4", type:"choice", image:"images/s2-past-04.png", imageSize:"small",
-    text:"그림의 문제를 읽고 알맞은 답을 고르세요. (①~⑤)  [2023 3월 학평 17번]",
-    options:["①","②","③","④","⑤"], correctAnswer:"③" },
-  { id:"s2_p5", type:"choice", image:"images/s2-past-05.png", imageSize:"small",
-    text:"그림의 문제를 읽고 알맞은 답을 고르세요. (①~⑤)  [2023 11월 학평 18번]",
-    options:["①","②","③","④","⑤"], correctAnswer:"②" },
-  { id:"s2_p6", type:"choice", image:"images/s2-past-06.png", imageSize:"small",
-    text:"그림의 문제를 읽고 알맞은 답을 고르세요. (①~⑤)  [2023 3월 학평 14번]",
-    options:["①","②","③","④","⑤"], correctAnswer:"③" },
+  /* ── 기출 문제 (33~34쪽) — 문제·보기·선택지는 이미지 안에 있음 ── */
+  { id:"s2_p1", page:33, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"⑤", tag:"기출 문제",
+    text:"학력평가 기출",
+    image:"images/s2-past-01.png", imageSize:"small" },
+  { id:"s2_p2", page:33, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"③", tag:"기출 문제",
+    text:"학력평가 기출",
+    image:"images/s2-past-02.png", imageSize:"small" },
+  { id:"s2_p3", page:34, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"③", tag:"기출 문제",
+    text:"학력평가 기출",
+    image:"images/s2-past-03.png", imageSize:"small" },
+  { id:"s2_p4", page:34, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"③", tag:"기출 문제",
+    text:"[2023 실시 3월 학력평가 화학Ⅰ(고2) 17번]",
+    image:"images/s2-past-04.png", imageSize:"small" },
+  { id:"s2_p5", page:34, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"②", tag:"기출 문제",
+    text:"[2023 실시 11월 학력평가 통합과학(고1) 18번]",
+    image:"images/s2-past-05.png", imageSize:"small" },
+  { id:"s2_p6", page:34, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"③", tag:"기출 문제",
+    text:"[2023 실시 3월 학력평가 화학Ⅰ(고2) 14번]",
+    image:"images/s2-past-06.png", imageSize:"small" },
 ];
 
 const REFLECT_QUESTIONS = [
@@ -685,10 +1071,45 @@ const HEADERS = QUESTIONS.map(q=>q.text).concat(REFLECT_QUESTIONS);
 const CORRECT_ANSWERS = QUESTIONS.map(q=> (q.type==="short") ? "" : (q.correctAnswer||"")).concat(["","",""]);
 
 // 선생님보기 "문항별 결과" 화면에서 넘겨볼 전체 목록 — 학생용 QUESTIONS 뒤에
-// 성찰 질문 3개도 서답형(정답 없음) 항목으로 이어 붙인다.
+// 성찰 질문 3개도 서답형(정답 없음) 항목으로 이어 붙여서, 교사가 문항뿐
+// 아니라 성찰 응답까지 같은 화면에서 넘겨보며 확인할 수 있게 한다.
 const TEACHER_ITEMS = QUESTIONS.concat(REFLECT_QUESTIONS.map((text, i)=>({
   id: "reflect"+(i+1), type: "short", tag: "성찰 질문", text: text
 })));
+
+/* 선생님보기 "문항별 결과" — 어떤 tag의 문항이 분할 레이아웃(왼쪽 참고자료 / 오른쪽
+   텍스트+선택지+정답통계)을 쓸지 tag 단위로 미리 판정해둔다. 이렇게 하면 같은 tag
+   안에서는 문항마다 image 유무가 달라도 항상 같은 레이아웃으로 통일된다.
+   - "깨알 개념 체크 문제"는 항상 분할 레이아웃(명시적으로 고정).
+   - 그 외 tag는, 그 tag 안에 참고자료(이미지 또는 note)를 쓰는 문항이 하나라도 있으면
+     분할 레이아웃으로 통일한다(예: 보기가 있는 문항 하나 때문에 같은 tag의 다른 문항만
+     따로 기존 레이아웃을 쓰는 불일치를 막는다).
+*/
+const SPLIT_TAG_SET = (function(){
+  // tag 문자열을 미리 강제하지 않고, 아래 byTag 루프의 내용 기반 판정(반응식 나열
+  // note가 있는지)에만 맡긴다 — "깨알 개념 체크 문제" tag를 마그네슘 계열(q9~13, note
+  // 없이 image만 있음)도 함께 쓰게 되면서, tag 이름만으로 강제하면 반응식 나열이 없는
+  // 마그네슘 문항까지 잘못 분할 레이아웃으로 끌려가기 때문이다.
+  const forced = new Set();
+  const byTag = new Map();
+  QUESTIONS.forEach(q=>{
+    if(!q.tag) return;
+    if(!byTag.has(q.tag)) byTag.set(q.tag, []);
+    byTag.get(q.tag).push(q);
+  });
+  byTag.forEach((list, tag)=>{
+    // 기존 판정 기준(note와 image가 함께 있으면 분할)을 tag 단위로 넓혀서, 같은 tag
+    // 안의 문항 하나라도 이 조건을 만족하면 tag 전체를 분할 레이아웃으로 통일한다.
+    // (image만 있고 note가 없는 "확인문제"/"기출문제" 같은 tag는 그대로 기존 레이아웃 유지)
+    // "깨알 개념 체크 문제"라는 tag 문자열 자체가 아니라, note에 (가)(나)(다)(라) 식
+    // 반응식 나열(참고자료 역할)이 있으면 tag 이름과 무관하게 분할 레이아웃으로 통일한다
+    // — 활동마다 이 계열 문항의 tag 이름이 "깨알 개념 체크 문제"/"스스로 확인하기"처럼
+    // 다를 수 있기 때문(문항 데이터는 그대로 두고 판정 로직만 내용 기반으로 일반화).
+    const hasReactionListNote = item => item.note && /\(가\)|\(나\)|\(다\)|\(라\)/.test(item.note);
+    if(list.some(item => (item.image && item.note) || hasReactionListNote(item))) forced.add(tag);
+  });
+  return forced;
+})();
 
 /* ============================================================
    상태
@@ -696,8 +1117,8 @@ const TEACHER_ITEMS = QUESTIONS.concat(REFLECT_QUESTIONS.map((text, i)=>({
 const state = {
   screen: "intro",
   className: "",
-  studentName: "",
-  current: 0,
+  studentName: "",     // "학번 이름" 형태로 저장
+  current: 0,           // 문항 인덱스
   answers: new Array(QUESTIONS.length).fill(""),
   reflectIdx: 0,
   reflectAnswers: ["","",""],
@@ -751,6 +1172,8 @@ document.getElementById("btn-start").addEventListener("click", async ()=>{
   state.studentName = num + " " + name;
   state.current = 0;
 
+  // 이전에 한 번 제출한 적이 있다면, 그때 골랐던 답을 미리 채워 넣는다
+  // (다시 들어와도 답이 비어 보이지 않도록).
   const startBtn = document.getElementById("btn-start");
   startBtn.disabled = true;
   const prevAnswers = await fetchPreviousAnswers(state.className, sanitizeKey(state.studentName));
@@ -774,10 +1197,47 @@ document.getElementById("btn-start").addEventListener("click", async ()=>{
 /* ============================================================
    문항 화면
 ============================================================ */
+function renderTagBadge(el, tag){
+  el.className = "qtag";
+  el.innerHTML = "";
+  el.removeAttribute("style");
+  if(tag === "스스로 확인하기"){
+    const img = document.createElement("img");
+    img.src = "images/tag-selfcheck.png";
+    img.alt = "스스로 확인하기";
+    img.onerror = function(){ renderTagBadgeFallback(el, "스스로 확인하기"); };
+    el.appendChild(img);
+  } else if(tag === "성찰 질문"){
+    el.classList.add("tag-reflect"); el.textContent = "성찰 질문";
+  } else if(tag && tag.indexOf("확인문제") === 0){
+    el.classList.add("tag-confirm"); el.textContent = "확인 문제";
+  } else if((tag && tag.indexOf("기출문제") === 0) || tag === "기출 문제"){
+    el.classList.add("tag-pill","tag-pastexam"); el.textContent = "기출 문제";
+  } else if(tag === "수능대비문제"){
+    el.classList.add("tag-pill","tag-suneung"); el.textContent = "수능대비문제";
+  } else if(tag === "깨알 개념 체크 문제"){
+    el.classList.add("tag-selfcheck2"); el.textContent = "[ 깨알 개념 체크 문제 ]";
+  } else {
+    el.textContent = tag || "문항";
+  }
+}
+function renderTagBadgeFallback(el, label){
+  el.innerHTML = ""; el.className = "qtag tag-pill";
+  el.style.background = "#5db8a6"; el.textContent = label;
+}
+// 뱃지 옆에 "학습지 OO쪽"을 표시 — 학생용/교사용 화면에서 공통으로 재사용한다.
+function renderPageLabel(el, page){
+  if(!el) return;
+  el.textContent = page ? "학습지 "+page+"쪽" : "";
+}
+
 function renderQuestion(){
   const q = QUESTIONS[state.current];
-  document.getElementById("q-tag").textContent = q.tag || "문항";
+  renderTagBadge(document.getElementById("q-tag"), q.tag);
+  renderPageLabel(document.getElementById("q-page"), q.page);
   document.getElementById("q-num").textContent = (state.current+1)+" / "+QUESTIONS.length;
+  const qGuideEl = document.getElementById("q-guide");
+  if(q.guideText){ qGuideEl.textContent = q.guideText; qGuideEl.classList.remove("hidden"); } else qGuideEl.classList.add("hidden");
   document.getElementById("q-text").textContent = q.text;
 
   const noteEl = document.getElementById("q-note");
@@ -803,8 +1263,11 @@ function renderQuestion(){
 
   if(q.type === "choice"){
     choicesEl.classList.remove("hidden");
+    // 단순 ①~⑤ 숫자 선택형(보기 안에 다른 문자 없이 번호만 있는 경우)만
+    // 한 줄에 5개가 다 들어가도록 좁게 배치한다.
     const isPureNumberChoices = q.options.length === 5 && q.options.every(o => /^[①②③④⑤]$/.test(o));
     choicesEl.classList.toggle("five-col", isPureNumberChoices);
+    choicesEl.classList.toggle("two-tab", q.options.length === 2);
     q.options.forEach(opt=>{
       const btn = document.createElement("button");
       btn.className = "choice-btn" + (existing===opt ? " picked":"");
@@ -834,6 +1297,7 @@ function captureCurrentAnswer(){
   } else if(q.type === "short"){
     state.answers[state.current] = document.getElementById("q-short-input").value.trim();
   }
+  // choice 타입은 클릭 시 이미 state.answers에 반영됨
 }
 
 document.getElementById("btn-next").addEventListener("click", ()=>{
@@ -868,6 +1332,7 @@ document.getElementById("btn-prev").addEventListener("click", ()=>{
    성찰 질문 화면
 ============================================================ */
 function renderReflect(){
+  renderTagBadge(document.getElementById("reflect-tag"), "성찰 질문");
   document.getElementById("reflect-num").textContent = (state.reflectIdx+1)+" / "+REFLECT_QUESTIONS.length;
   document.getElementById("reflect-text").textContent = REFLECT_QUESTIONS[state.reflectIdx];
   document.getElementById("reflect-input").value = state.reflectAnswers[state.reflectIdx] || "";
@@ -897,6 +1362,7 @@ document.getElementById("btn-reflect-prev").addEventListener("click", ()=>{
     state.reflectIdx--;
     renderReflect();
   } else {
+    // 마지막 문항으로 되돌아감
     state.current = QUESTIONS.length-1;
     renderQuestion();
     showScreen("question");
@@ -917,6 +1383,9 @@ function sanitizeKey(name){
   return name.trim().slice(0,20).replace(/[\/\\'"\s]/g, "_");
 }
 
+// 학생이 이전에 이미 제출한 적이 있는지 서버에 물어보고, 있으면 그때 답을
+// 그대로 돌려받는다. 실패해도(네트워크 오류 등) 조용히 빈 결과로 넘어가고
+// 활동 시작 자체를 막지는 않는다.
 async function fetchPreviousAnswers(cls, key){
   if(!gasConfigured() || !key) return null;
   try{
@@ -929,13 +1398,8 @@ async function fetchPreviousAnswers(cls, key){
   }
 }
 
-let reportChain = Promise.resolve();
 let resyncTimer = null;
-function reportProgress(){
-  reportChain = reportChain.then(reportProgressInner).catch(()=>{});
-  return reportChain;
-}
-async function reportProgressInner(){
+async function reportProgress(){
   if(!state.studentName || !state.className) return;
   if(!gasConfigured()) return;
   const payload = {
@@ -1002,20 +1466,8 @@ async function runNetworkSelfTest(){
     setNetStatus(data && data.id ? "ok" : "bad");
   }catch(e){ setNetStatus("bad", String(e && e.message ? e.message : e)); }
 }
-
-// 선생님 암호를 구글 시트 값으로 갱신 (실패해도 기본값 3699 유지)
-async function loadTeacherPass(){
-  if(!gasConfigured()) return;
-  try{
-    const res = await fetch(GAS_URL + "?action=teacherPass", { method: "GET" });
-    const data = await res.json();
-    if(data && data.pass) TEACHER_PASSCODE = String(data.pass).trim();
-  }catch(e){ /* 기본값 유지 */ }
-}
-
 runConnectionSelfTest();
 runNetworkSelfTest();
-loadTeacherPass();
 showScreen("intro");
 
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
@@ -1087,30 +1539,16 @@ function selectTeacherClass(cls){
   switchTeacherTab("progress");
   renderTeacherDashboard();
   refreshGateButton();
+  refreshProblemStopButton();
 }
 document.getElementById("btn-change-class").addEventListener("click", ()=>{
   document.getElementById("teacher-main").classList.add("hidden");
   document.getElementById("teacher-class-picker").classList.remove("hidden");
 });
 
-/* ---------- 탭 전환 ---------- */
-let teacherTab = "progress";
-let tqIndex = 0;
-let tqRevealed = false;
-let latestTeacherData = null;
-
-function switchTeacherTab(tab){
-  teacherTab = tab;
-  document.getElementById("tab-progress").classList.toggle("active", tab==="progress");
-  document.getElementById("tab-results").classList.toggle("active", tab==="results");
-  document.getElementById("view-progress").classList.toggle("hidden", tab!=="progress");
-  document.getElementById("view-results").classList.toggle("hidden", tab!=="results");
-  if(tab==="results"){ tqRevealed = false; renderTeacherQuestionView(); }
-}
-document.getElementById("tab-progress").addEventListener("click", ()=>switchTeacherTab("progress"));
-document.getElementById("tab-results").addEventListener("click", ()=>switchTeacherTab("results"));
-
-/* ---------- 교사 접속 스위치 ---------- */
+/* ---------- 접속 제어 스위치 (전체 공통, 반과 무관) ---------- */
+// 기본 상태: 접속불가능. 열 때는 한 번만 누르면 되고, 닫을 때는 실수로
+// 학생들을 끊지 않도록 두 번 눌러야 실제로 닫히는 2단계 확인 방식이다.
 let gateOpen = false;
 let gateConfirmArmed = false, gateConfirmTimer = null;
 const gateBtn = document.getElementById("btn-gate-toggle");
@@ -1134,7 +1572,7 @@ async function refreshGateButton(){
     const res = await fetch(GAS_URL + "?action=gateStatus", { method:"GET" });
     const data = await res.json();
     gateOpen = !!(data && data.open);
-  }catch(e){ /* 다음 새로고침 때 다시 시도 */ }
+  }catch(e){ /* 조용히 넘어가고 다음 새로고침 때 다시 시도 */ }
   gateConfirmArmed = false;
   clearTimeout(gateConfirmTimer);
   paintGateButton();
@@ -1147,29 +1585,129 @@ async function setGate(open){
       const data = await res.json();
       gateOpen = !!(data && data.open);
     }
-  }catch(e){ /* 실패하면 다음 조작 때 refreshGateButton으로 실제 상태 재반영 */ }
+  }catch(e){ /* 실패하면 다음 조작 때 refreshGateButton으로 실제 상태를 다시 반영 */ }
   gateBtn.disabled = false;
   gateConfirmArmed = false;
   clearTimeout(gateConfirmTimer);
   paintGateButton();
 }
 gateBtn.addEventListener("click", ()=>{
-  if(!gateOpen){ setGate(true); return; }
+  if(!gateOpen){
+    // 닫힌 상태 → 한 번 클릭으로 바로 연다.
+    setGate(true);
+    return;
+  }
   if(!gateConfirmArmed){
+    // 열린 상태 → 첫 클릭은 확인 단계로만 진입 (아직 닫지 않음).
     gateConfirmArmed = true;
     paintGateButton();
     clearTimeout(gateConfirmTimer);
     gateConfirmTimer = setTimeout(()=>{ gateConfirmArmed = false; paintGateButton(); }, 4000);
     return;
   }
+  // 확인 단계에서 다시 클릭 → 실제로 닫는다.
   clearTimeout(gateConfirmTimer);
   setGate(false);
 });
+
+/* ---------- "문제풀기 시작!" / "문제풀기 그만!" 토글 (전체 공통, 반과 무관) ---------- */
+// 접속 게이트와 똑같은 패턴: 기본은 진행 중, 정지는 두 번 눌러야 하고(실수 방지),
+// 정지된 상태를 다시 시작할 때는 접속 게이트가 "열기"를 한 번에 여는 것과 동일하게
+// 확인 단계 없이 바로 되돌아간다. 상태는 서버(구글시트 "문제풀이상태" 탭)의 공통 값.
+let problemStopped = false;
+let psConfirmArmed = false, psConfirmTimer = null;
+const psBtn = document.getElementById("btn-problemstop-toggle");
+
+function paintProblemStopButton(){
+  psBtn.classList.remove("state-running","state-confirm","state-stopped");
+  if(psConfirmArmed){
+    psBtn.classList.add("state-confirm");
+    psBtn.textContent = "문제풀이 그만할까요?";
+  } else if(problemStopped){
+    psBtn.classList.add("state-stopped");
+    psBtn.textContent = "문제풀기 그만!";
+  } else {
+    psBtn.classList.add("state-running");
+    psBtn.textContent = "문제풀기 시작!";
+  }
+}
+async function refreshProblemStopButton(){
+  if(!gasConfigured()) return;
+  try{
+    const res = await fetch(GAS_URL + "?action=problemStopStatus", { method:"GET" });
+    const data = await res.json();
+    problemStopped = !!(data && data.stopped);
+  }catch(e){ /* 조용히 넘어가고 다음 새로고침 때 다시 시도 */ }
+  psConfirmArmed = false;
+  clearTimeout(psConfirmTimer);
+  paintProblemStopButton();
+}
+async function setProblemStop(stopped){
+  psBtn.disabled = true;
+  try{
+    if(gasConfigured()){
+      const res = await fetch(GAS_URL + "?action=setProblemStop&value=" + (stopped ? "true" : "false"), { method:"GET" });
+      const data = await res.json();
+      problemStopped = !!(data && data.stopped);
+    }
+  }catch(e){ /* 실패하면 다음 조작 때 refreshProblemStopButton으로 실제 상태를 다시 반영 */ }
+  psBtn.disabled = false;
+  psConfirmArmed = false;
+  clearTimeout(psConfirmTimer);
+  paintProblemStopButton();
+}
+psBtn.addEventListener("click", ()=>{
+  if(problemStopped){
+    // 정지된 상태 → 확인 없이 바로 재시작.
+    setProblemStop(false);
+    return;
+  }
+  if(!psConfirmArmed){
+    // 진행 중 → 첫 클릭은 확인 단계로만 진입 (아직 정지하지 않음).
+    psConfirmArmed = true;
+    paintProblemStopButton();
+    clearTimeout(psConfirmTimer);
+    psConfirmTimer = setTimeout(()=>{ psConfirmArmed = false; paintProblemStopButton(); }, 4000);
+    return;
+  }
+  // 확인 단계에서 다시 클릭 → 실제로 정지한다.
+  clearTimeout(psConfirmTimer);
+  setProblemStop(true);
+});
+
+/* ---------- 탭 전환 ---------- */
+let teacherTab = "progress";
+let tqIndex = 0; // 문항별 결과에서 현재 보고 있는 문항 인덱스
+let tqRevealed = false;
+let latestTeacherData = null;
+// 정답률 신기루 연출 on/off. 기본은 켜짐(true) — 필요 없는 상황(예: 그냥 문제만 훑어볼 때)
+// 이면 교사가 상단 바에서 꺼둘 수 있다. 새로고침하면 다시 기본값(켜짐)으로 돌아간다
+// (localStorage 등 저장소를 쓰지 않는다는 이 스킬의 원칙을 그대로 따름).
+let accuracyRevealOn = true;
+document.getElementById("btn-accuracy-toggle").addEventListener("click", ()=>{
+  accuracyRevealOn = !accuracyRevealOn;
+  const btn = document.getElementById("btn-accuracy-toggle");
+  btn.textContent = accuracyRevealOn ? "정답률 공개" : "정답률 비공개";
+  btn.classList.toggle("on", accuracyRevealOn);
+  btn.classList.toggle("off", !accuracyRevealOn);
+});
+
+function switchTeacherTab(tab){
+  teacherTab = tab;
+  document.getElementById("tab-progress").classList.toggle("active", tab==="progress");
+  document.getElementById("tab-results").classList.toggle("active", tab==="results");
+  document.getElementById("view-progress").classList.toggle("hidden", tab!=="progress");
+  document.getElementById("view-results").classList.toggle("hidden", tab!=="results");
+  if(tab==="results"){ tqRevealed = false; renderTeacherQuestionView(true); }
+}
+document.getElementById("tab-progress").addEventListener("click", ()=>switchTeacherTab("progress"));
+document.getElementById("tab-results").addEventListener("click", ()=>switchTeacherTab("results"));
 
 /* ---------- 새로고침 / 초기화 ---------- */
 document.getElementById("btn-teacher-refresh").addEventListener("click", ()=>{
   renderTeacherDashboard();
   refreshGateButton();
+  refreshProblemStopButton();
 });
 
 let resetArmed = false, resetArmTimer = null;
@@ -1265,35 +1803,174 @@ async function renderTeacherDashboard(){
 
 /* ---------- 2번 화면부터: 문항별 결과 (이름 감춤) ---------- */
 document.getElementById("btn-tq-prev").addEventListener("click", ()=>{
-  if(tqIndex>0){ tqIndex--; tqRevealed=false; renderTeacherQuestionView(); }
+  if(tqIndex>0){ tqIndex--; tqRevealed=false; renderTeacherQuestionView(true); }
 });
 document.getElementById("btn-tq-next").addEventListener("click", ()=>{
-  if(tqIndex<TEACHER_ITEMS.length-1){ tqIndex++; tqRevealed=false; renderTeacherQuestionView(); }
+  if(tqIndex<TEACHER_ITEMS.length-1){ tqIndex++; tqRevealed=false; renderTeacherQuestionView(true); }
 });
 document.getElementById("btn-reveal").addEventListener("click", ()=>{
   tqRevealed = true;
   renderTeacherQuestionView();
 });
 
-let resultTab = "student";
+let resultTab = "student"; // "student" | "answer"
 
-function renderTeacherQuestionView(){
+/* note(보기)와 image가 둘 다 있는 문항 전용 레이아웃 전환.
+   기본 레이아웃(#tq-layout-normal)과 분할 레이아웃(#tq-layout-split)은 실제 콘텐츠
+   요소(뱃지·텍스트·보기·이미지·선택지·정답통계)를 공유하므로, 매 렌더링마다 이 함수가
+   그 요소들을 알맞은 컨테이너로 옮겨 담는다(appendChild는 기존 부모에서 노드를 옮긴다). */
+function layoutTeacherQuestionDom(isSplit, noteOnLeft, isReflect){
+  const metaBlock = document.getElementById("tq-meta-block");
+  const textEl = document.getElementById("tq-text");
+  const guideEl = document.getElementById("tq-guide");
+  const noteEl = document.getElementById("tq-note");
+  const noteBlocksEl = document.getElementById("tq-note-blocks");
+  const imgWrap = document.getElementById("tq-image-wrap");
+  const choicesEl = document.getElementById("tq-choices");
+  const revealGate = document.getElementById("reveal-gate");
+  const resultEl = document.getElementById("tq-result");
+
+  document.getElementById("tq-layout-normal").classList.toggle("hidden", isSplit || isReflect);
+  document.getElementById("tq-layout-split").classList.toggle("hidden", !isSplit);
+  document.getElementById("tq-layout-reflect").classList.toggle("hidden", !isReflect);
+
+  if(isReflect){
+    // 성찰 질문 전용 레이아웃: 위쪽 작은 질문 카드 + 아래쪽 학생 답변 그리드.
+    // 다른 문항과 완전히 분리된 컨테이너(.tq-reflect-*)를 쓰므로 여기서만 이 두
+    // 컨테이너로 콘텐츠 요소를 옮긴다.
+    const qcardHost = document.getElementById("tq-reflect-qcard");
+    const resultsHost = document.getElementById("tq-reflect-results");
+    qcardHost.appendChild(metaBlock);
+    qcardHost.appendChild(guideEl);
+    qcardHost.appendChild(noteEl);
+    qcardHost.appendChild(noteBlocksEl);
+    qcardHost.appendChild(imgWrap);
+    qcardHost.appendChild(choicesEl);
+    resultsHost.appendChild(revealGate);
+    resultsHost.appendChild(resultEl);
+  } else if(isSplit){
+    const imageHost = document.getElementById("tq-split-image");
+    const rightHost = document.getElementById("tq-split-right");
+    imageHost.classList.toggle("note-mode", !!noteOnLeft);
+    // 왼쪽 칸: image가 있으면 이미지, 없고 note만 있으면(반응식 텍스트 보기 등) note를
+    // 문단 블록으로 나눠서 표시한다 — 둘 다 이 칸에 붙여두고 hidden 클래스로 토글한다.
+    imageHost.appendChild(imgWrap);
+    imageHost.appendChild(noteBlocksEl);
+    rightHost.appendChild(metaBlock);
+    rightHost.appendChild(guideEl);
+    // note가 왼쪽에 이미 표시될 때는 오른쪽에 원본 noteEl을 두지 않는다(중복 방지).
+    // noteEl 자체는 항상 hidden 처리되므로 어디에 붙어도 화면에는 영향 없다.
+    rightHost.appendChild(noteEl);
+    rightHost.appendChild(choicesEl);
+    rightHost.appendChild(revealGate);
+    rightHost.appendChild(resultEl);
+  } else {
+    const cardHost = document.getElementById("tq-card-normal");
+    const sideHost = document.getElementById("tq-side-normal");
+    cardHost.appendChild(metaBlock);
+    cardHost.appendChild(guideEl);
+    cardHost.appendChild(noteEl);
+    cardHost.appendChild(noteBlocksEl);
+    cardHost.appendChild(imgWrap);
+    cardHost.appendChild(choicesEl);
+    sideHost.appendChild(revealGate);
+    sideHost.appendChild(resultEl);
+  }
+}
+
+function renderTeacherQuestionView(showReveal){
   const q = TEACHER_ITEMS[tqIndex];
   document.getElementById("tq-count").textContent = (tqIndex+1)+" / "+TEACHER_ITEMS.length;
   document.getElementById("btn-tq-prev").disabled = (tqIndex===0);
   document.getElementById("btn-tq-next").disabled = (tqIndex===TEACHER_ITEMS.length-1);
 
-  document.getElementById("tq-text").textContent = q.text;
-  const noteEl = document.getElementById("tq-note");
-  if(q.note){ noteEl.textContent = q.note; noteEl.classList.remove("hidden"); } else noteEl.classList.add("hidden");
+  // 같은 tag의 문항은 항상 같은 레이아웃을 쓰도록 SPLIT_TAG_SET(tag 단위로 미리 계산됨)으로
+  // 판정한다 — "깨알 개념 체크 문제"처럼 그림이 있는 문항과 없는 문항이 섞여 있어도
+  // tag가 같으면 항상 분할 레이아웃("왼쪽=참고자료 / 오른쪽=텍스트+선택지+정답통계")을 쓴다.
+  const isSplit = !!(q.tag && SPLIT_TAG_SET.has(q.tag));
+  // 분할 레이아웃인데 image가 없고 note만 있는 문항(예: 반응식 텍스트 보기)은 그 note를
+  // 참고자료 역할로 왼쪽 칸에 표시한다(기존에는 오른쪽 텍스트 영역에 있었음).
+  const noteOnLeft = isSplit && !q.image && !!q.note;
+  // 성찰 질문은 그림·선택지가 전혀 없는 서답형(type:"short") 문항으로, 다른 문항들의
+  // 좌우 2단(.tq-layout) 구조 대신 완전히 독립된 전용 레이아웃(.tq-reflect-layout)을 쓴다.
+  const isReflect = q.tag === "성찰 질문";
+  layoutTeacherQuestionDom(isSplit, noteOnLeft, isReflect);
 
+  renderTagBadge(document.getElementById("tq-tag"), q.tag);
+  renderPageLabel(document.getElementById("tq-page"), q.page);
+
+  document.getElementById("tq-text").textContent = q.text;
+  // #tq-text/qmeta-left는 문항 화면들이 공유하는 하나의 DOM 노드라서, 이전 문항에서
+  // fitMetaTitle()이 걸어둔 인라인 스타일(font-size, white-space:nowrap, 부모의
+  // flex-wrap:nowrap)이 성찰 질문 화면으로 넘어와도 그대로 남아있는 문제가 있었다
+  // (이 앱에서 여러 번 반복된 "인라인 스타일 잔류" 버그와 같은 패턴). 매번 먼저
+  // 리셋한 뒤, 성찰 질문이 아닐 때만 다시 fitMetaTitle()로 자동 맞춤을 적용한다.
+  resetMetaTitleStyle(document.getElementById("tq-text"));
+  // 성찰 질문 화면은 제목(질문 텍스트)을 일부러 작게 유지하는 별도 규칙(.tq-reflect-qcard
+  // #tq-text)이 있으므로, 뱃지 옆 자동 크기 맞춤 대상에서 제외한다.
+  if(!isReflect) fitMetaTitle(document.getElementById("tq-text"));
+  const guideEl = document.getElementById("tq-guide");
+  if(q.guideText){ guideEl.textContent = q.guideText; guideEl.classList.remove("hidden"); } else guideEl.classList.add("hidden");
+  const noteEl = document.getElementById("tq-note");
+  const noteBlocksEl = document.getElementById("tq-note-blocks");
+  if(noteOnLeft){
+    // note를 왼쪽 참고자료 칸에 (가)(나)(다)(라) 등 항목/줄 단위로 나눠서 표시하고,
+    // 오른쪽에는 원본 note 텍스트를 중복 표시하지 않는다.
+    noteEl.classList.add("hidden");
+    noteBlocksEl.innerHTML = buildNoteBlocksHtml(q.note);
+    noteBlocksEl.classList.remove("hidden");
+    // (가)(나)(다)(라) 화학 반응식 나열(스스로 확인하기)은 다른 확인문제 note보다
+    // 더 크게/여유 있게 — 반응식 표기 여부로 판정(문항 데이터 수정 없이 판정만).
+    noteBlocksEl.classList.toggle("tq-note-blocks-chem", /\(가\)|\(나\)|\(다\)|\(라\)/.test(q.note || ""));
+  } else {
+    noteBlocksEl.classList.add("hidden");
+    noteBlocksEl.innerHTML = "";
+    if(q.note){ noteEl.textContent = q.note; noteEl.classList.remove("hidden"); } else noteEl.classList.add("hidden");
+  }
+
+  // 교사용 이미지 컨테이너 — 문항마다 원본 크기가 달라도 항상 같은 박스(.tq-img-box)
+  // 안에서 object-fit:contain으로 크게 보이도록 통일한다. imageSize(small 등)는
+  // 학생용에서만 쓰던 값이라 교사용에는 더 이상 적용하지 않는다.
   const imgWrap = document.getElementById("tq-image-wrap");
   const imgEl = document.getElementById("tq-image");
   if(q.image){
     imgEl.src = q.image;
-    imgEl.className = q.imageSize==="small" ? "q-image-small" : "";
+    imgEl.alt = q.text || "";
     imgWrap.classList.remove("hidden");
   } else imgWrap.classList.add("hidden");
+
+  // 그림이 2개로 나뉜 문항(예: 문제가 길어서 그림을 둘로 쪼갠 기출문제) — 두 번째 그림은
+  // 왼쪽 문항 카드가 아니라 오른쪽 컬럼(.tq-side) 위쪽에 배치한다. QUESTIONS에서 image2
+  // 필드가 있는 문항만 해당되며, 없는 일반 문항은 기존 레이아웃 그대로다.
+  const img2Wrap = document.getElementById("tq-image2-wrap");
+  const img2El = document.getElementById("tq-image2");
+  if(q.image2){
+    img2El.src = q.image2;
+    img2El.alt = q.text || "";
+    img2Wrap.classList.remove("hidden");
+  } else img2Wrap.classList.add("hidden");
+
+  // 선택지 — 교사가 학생들과 함께 화면으로 보도록 정적으로 표시(클릭 불가)
+  const choicesEl = document.getElementById("tq-choices");
+  choicesEl.innerHTML = "";
+  if(q.type === "choice" && Array.isArray(q.options) && q.options.length){
+    choicesEl.classList.remove("hidden");
+    const isPureNumberChoices = q.options.length === 5 && q.options.every(o => /^[①②③④⑤]$/.test(o));
+    choicesEl.classList.toggle("five-col", isPureNumberChoices);
+    choicesEl.classList.toggle("two-tab", q.options.length === 2);
+    q.options.forEach(opt=>{
+      const btn = document.createElement("div");
+      btn.className = "choice-btn";
+      btn.textContent = opt;
+      choicesEl.appendChild(btn);
+    });
+  } else {
+    choicesEl.classList.add("hidden");
+  }
+
+  // 문항이 바뀔 때만(탭 최초 진입/이전·다음 문항 이동) 정답률 신기루 연출을 보여준다.
+  // 새로고침·"결과 보기" 클릭 등 문항이 그대로인 재렌더링에서는 다시 뜨지 않는다.
+  if(showReveal) showAccuracyMirage(q);
 
   document.getElementById("reveal-gate").classList.toggle("hidden", tqRevealed);
   document.getElementById("tq-result").classList.toggle("hidden", !tqRevealed);
@@ -1303,13 +1980,29 @@ function renderTeacherQuestionView(){
   renderResultTabsAndBody(q);
 }
 
+// 분할 레이아웃 왼쪽 칸에 note(반응식 등 텍스트 보기)를 표시할 때, 줄바꿈 단위로
+// 먼저 나누고 한 줄 안에 "(가)(나)(다)(라)(마)" 같은 항목 표시가 이어붙어 있으면
+// 그 지점에서도 추가로 나눠서, 각 항목/반응식이 따로따로 여백을 두고 보이게 한다.
+function buildNoteBlocksHtml(noteText){
+  if(!noteText) return "";
+  const rawLines = String(noteText).split(/\n+/).map(s=>s.trim()).filter(Boolean);
+  const blocks = [];
+  rawLines.forEach(line=>{
+    const parts = line.split(/(?=\([가나다라마]\))/).map(s=>s.trim()).filter(Boolean);
+    if(parts.length){ parts.forEach(p=>blocks.push(p)); } else blocks.push(line);
+  });
+  if(blocks.length === 0) return "";
+  return blocks.map(b=>'<div class="tq-note-block">'+escapeHtml(b)+'</div>').join("");
+}
+
 function renderResultTabsAndBody(q){
   const rows = (latestTeacherData && latestTeacherData.rows) || [];
-  const colIndex = tqIndex;
+  const colIndex = tqIndex; // TEACHER_ITEMS(문항+성찰질문)와 headers 순서가 동일
   const tabsEl = document.getElementById("result-tabs");
   const bodyEl = document.getElementById("result-body");
 
   if(q.type === "short"){
+    // 서답형: 탭 없음(모범답안 있으면 "학생 정답"/"모범답안" 두 탭)
     if(q.sampleAnswer){
       tabsEl.innerHTML = "";
       tabsEl.classList.remove("hidden");
@@ -1317,16 +2010,17 @@ function renderResultTabsAndBody(q){
       const t2 = mkTab("모범답안", resultTab==="answer", ()=>{ resultTab="answer"; renderResultTabsAndBody(q); });
       tabsEl.appendChild(t1); tabsEl.appendChild(t2);
       if(resultTab === "answer"){
-        bodyEl.innerHTML = '<div class="answer-big" style="font-size:18px; text-align:left; line-height:1.7;">'+escapeHtml(q.sampleAnswer)+'</div>';
+        bodyEl.innerHTML = '<div class="answer-big" style="font-size:18px; text-align:left; line-height:1.7; white-space:normal; word-break:break-word; overflow:visible;">'+escapeHtml(q.sampleAnswer)+'</div>';
         return;
       }
     } else {
       tabsEl.classList.add("hidden"); tabsEl.innerHTML = "";
     }
-    renderShortAnswerCards(rows, colIndex);
+    renderShortAnswerCards(rows, colIndex, q.tag === "성찰 질문");
     return;
   }
 
+  // 선택형·빈칸형 — 두 탭
   tabsEl.classList.remove("hidden");
   tabsEl.innerHTML = "";
   const t1 = mkTab("학생 정답", resultTab==="student", ()=>{ resultTab="student"; renderResultTabsAndBody(q); });
@@ -1335,9 +2029,68 @@ function renderResultTabsAndBody(q){
 
   if(resultTab === "answer"){
     bodyEl.innerHTML = '<div class="answer-big">'+escapeHtml(q.correctAnswer)+'</div>';
+    fitAnswerBig(bodyEl.querySelector(".answer-big"));
     return;
   }
   renderDistributionPie(q, rows, colIndex, bodyEl);
+}
+
+// "정답" 탭의 .answer-big 글자 크기를 박스(부모 컨테이너) 폭에 맞게 자동으로 계산한다.
+// "①"처럼 짧은 답은 박스를 꽉 채울 만큼 크게(최대 320px), "환원"·"① ㄱ, ㄴ"처럼
+// 길어지는 답은 한 줄 안에 들어가는 선까지만 점점 작게 줄인다(최소 40px). 그래도
+// 안 들어가면(아주 긴 문장형 정답 등) 그때만 white-space를 normal로 바꾸고
+// word-break:keep-all을 유지해서, 단어/구 경계에서만 자연스럽게 줄바꿈되게 하고
+// 절대 한 글자씩 세로로 쪼개지지 않게 한다.
+// 교사용 문항 상단 한 줄(뱃지+학습지쪽수+제목/출처, .qmeta-left)에서 뱃지(이미지든 텍스트든)
+// 크기는 절대 건드리지 않고, 옆에 오는 제목 텍스트(#tq-text)만 자동으로 줄여서 최대한
+// 한 줄로 유지한다. 그래도 최소 크기(22px)로도 안 들어가면 그때만 다음 줄로 넘어가게
+// 허용한다(뱃지가 커져서 제목이 밀릴 때 뱃지가 아니라 제목 쪽이 양보하는 방식).
+// fitMetaTitle()이 걸어둔 인라인 스타일을 원상태로 되돌린다. #tq-text와 그 부모
+// .qmeta-left는 모든 문항 화면이 공유하는 노드라서, 리셋 없이 넘어가면 이전 문항의
+// 스타일이 성찰 질문 등 다른 화면에도 그대로 남는다.
+function resetMetaTitleStyle(titleEl){
+  const row = titleEl.closest(".qmeta-left");
+  titleEl.style.whiteSpace = "";
+  titleEl.style.fontSize = "";
+  if(row) row.style.flexWrap = "";
+}
+
+function fitMetaTitle(titleEl){
+  const row = titleEl.closest(".qmeta-left");
+  if(!row) return;
+  const MAX_FONT = 45, MIN_FONT = 22, STEP = 2;
+  let size = MAX_FONT;
+  row.style.flexWrap = "nowrap";
+  titleEl.style.whiteSpace = "nowrap";
+  titleEl.style.fontSize = size + "px";
+  while(size > MIN_FONT && row.scrollWidth > row.clientWidth){
+    size -= STEP;
+    titleEl.style.fontSize = size + "px";
+  }
+  if(row.scrollWidth > row.clientWidth){
+    row.style.flexWrap = "wrap";
+    titleEl.style.whiteSpace = "normal";
+  } else {
+    row.style.flexWrap = "nowrap";
+  }
+}
+
+function fitAnswerBig(el){
+  if(!el) return;
+  const MAX_FONT = 320, MIN_FONT = 40, STEP = 4;
+  el.style.whiteSpace = "nowrap";
+  el.style.wordBreak = "keep-all";
+  let size = MAX_FONT;
+  el.style.fontSize = size + "px";
+  while(size > MIN_FONT && el.scrollWidth > el.clientWidth){
+    size -= STEP;
+    el.style.fontSize = size + "px";
+  }
+  if(el.scrollWidth > el.clientWidth){
+    // 최소 크기로도 한 줄에 안 들어가면 단어 단위 줄바꿈을 허용한다(글자 쪼개짐 금지).
+    el.style.whiteSpace = "normal";
+    el.style.fontSize = MIN_FONT + "px";
+  }
 }
 
 function mkTab(label, active, onClick){
@@ -1348,11 +2101,57 @@ function mkTab(label, active, onClick){
   return b;
 }
 
-// 원그래프 색 — 크림/코랄/네이비 팔레트와 어울리는 톤
-const PIE_COLORS = ["#cc785c","#e8a55a","#5db8a6","#252320","#a9583e","#8e8b82","#d4a017","#c9beac"];
+// 크림색 배경(--bg:#faf9f5, --panel:#efe9de)과 확실히 대비되도록 진하고 채도 높은
+// 팔레트로 구성 — 진한 코랄레드/네이비/포레스트그린/머스터드브라운/버건디/틸블루 등
+// 서로도 구분되고 배경과도 뚜렷하게 대비된다.
+const PIE_COLORS = ["#c0392b","#1f3a5f","#1e6b4f","#a5730a","#6b2142","#2c6e8f","#8a4b08","#41474d"];
+
+// 문항별 결과 화면에 처음 들어가거나 이전/다음 문항으로 넘어갈 때, 그 문항의
+// 정답률(현재 선택된 반 학생들만 대상 — rows가 이미 그 반으로 좁혀져 있음)을
+// 화면 전체에 큼직하게 잠깐 보여줬다가 신기루처럼 사라지는 연출.
+// 정답이 정해진 선택형·빈칸형 문항에서만 뜨고, 서답형·성찰 질문(정답 없음)에는 안 뜬다.
+function computeQuestionAccuracy(q, rows, colIndex){
+  if(!q || q.type === "short" || !q.correctAnswer) return null;
+  const correct = String(q.correctAnswer).trim();
+  let total = 0, right = 0;
+  (rows||[]).forEach(r=>{
+    const v = String((r.answers||[])[colIndex] || "").trim();
+    if(v === ""){ return; }
+    total++;
+    if(v === correct) right++;
+  });
+  if(total === 0) return null;
+  return Math.round(right/total*100);
+}
+
+let accuracyMirageTimer = null;
+function showAccuracyMirage(q){
+  const overlay = document.getElementById("accuracy-mirage");
+  if(!overlay) return;
+  if(!accuracyRevealOn){ overlay.classList.add("hidden"); overlay.classList.remove("show","fade"); return; }
+  clearTimeout(accuracyMirageTimer);
+  const rows = (latestTeacherData && latestTeacherData.rows) || [];
+  const pct = computeQuestionAccuracy(q, rows, tqIndex);
+  if(pct === null){
+    overlay.classList.add("hidden");
+    overlay.classList.remove("show","fade");
+    return;
+  }
+  document.getElementById("accuracy-mirage-num").textContent = pct + "%";
+  overlay.classList.remove("hidden","fade");
+  // 다음 프레임에 show를 붙여서 등장 애니메이션이 재생되게 함
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>{ overlay.classList.add("show"); });
+  });
+  // 잠깐 보여준 뒤 신기루처럼(흐려지며 커지며) 사라지고, 끝나면 완전히 숨긴다.
+  accuracyMirageTimer = setTimeout(()=>{
+    overlay.classList.add("fade");
+    setTimeout(()=>{ overlay.classList.add("hidden"); overlay.classList.remove("show","fade"); }, 900);
+  }, 1400);
+}
 
 function renderDistributionPie(q, rows, colIndex, bodyEl){
-  let buckets = [];
+  let buckets = []; // {label, count}
   if(q.type === "choice"){
     buckets = q.options.map(opt=>({label:opt, count:0}));
     rows.forEach(r=>{
@@ -1361,6 +2160,7 @@ function renderDistributionPie(q, rows, colIndex, bodyEl){
       if(b) b.count++;
     });
   } else {
+    // 빈칸형: 학생이 적은 값을 있는 그대로 유니크하게 모음
     const map = new Map();
     rows.forEach(r=>{
       const v = String((r.answers||[])[colIndex]||"").trim();
@@ -1383,10 +2183,13 @@ function renderDistributionPie(q, rows, colIndex, bodyEl){
     return color+" "+start.toFixed(2)+"% "+end.toFixed(2)+"%";
   });
   const gradient = "conic-gradient(" + gradientParts.join(", ") + ")";
+  // 범례 문구 — 선택형(①②③④⑤)은 "1번 응답: 0명 (0%)"처럼 번호로 명확히 표시하고,
+  // 빈칸형처럼 번호가 없는 답은 학생이 적은 값 그대로 사용한다
   const legend = buckets.map((b,i)=>{
     const pct = total ? Math.round(b.count/total*100) : 0;
     const color = PIE_COLORS[i % PIE_COLORS.length];
-    return '<div class="legend-item"><span class="legend-swatch" style="background:'+color+'"></span>'+escapeHtml(b.label)+' — '+b.count+'명 ('+pct+'%)</div>';
+    const labelText = (q.type === "choice") ? ((i+1)+"번 응답") : escapeHtml(b.label);
+    return '<div class="legend-item"><span class="legend-swatch" style="background:'+color+'"></span><span class="legend-label">'+labelText+'</span><span class="legend-count">: '+b.count+'명 ('+pct+'%)</span></div>';
   }).join("");
   bodyEl.innerHTML = '<div class="pie-wrap">'
     + '<div class="pie" style="background:'+gradient+'"></div>'
@@ -1394,31 +2197,68 @@ function renderDistributionPie(q, rows, colIndex, bodyEl){
     + '</div>';
 }
 
-function renderShortAnswerCards(rows, colIndex){
+function renderShortAnswerCards(rows, colIndex, isReflect){
   const bodyEl = document.getElementById("result-body");
   const answers = rows.map(r=>String((r.answers||[])[colIndex]||"").trim()).filter(v=>v);
   if(answers.length === 0){
     bodyEl.innerHTML = '<div class="stu-empty">아직 응답이 없어요.</div>';
     return;
   }
+  // 그리드 칸 하나에 6줄(line-clamp)까지 보이므로, 답이 길면 그 정도 분량까지만
+  // 미리보기로 보여주고 나머지는 "…" 처리 — 전체 내용은 클릭 시 스포트라이트로 본다.
   bodyEl.innerHTML = '<div class="card-list">' + answers.map(a=>{
-    const preview = a.length > 60 ? a.slice(0,60)+"…" : a;
+    const preview = a.length > 140 ? a.slice(0,140)+"…" : a;
     return '<div class="ans-card" data-full="'+encodeURIComponent(a)+'">'+escapeHtml(preview)+'</div>';
   }).join("") + '</div>';
   bodyEl.querySelectorAll(".ans-card").forEach(card=>{
     card.addEventListener("click", ()=>{
-      openSpotlight(decodeURIComponent(card.getAttribute("data-full")));
+      openSpotlight(decodeURIComponent(card.getAttribute("data-full")), !!isReflect);
     });
   });
 }
 
-function openSpotlight(text){
+// 성찰 질문 답변 스포트라이트 전용 자동 맞춤 — 박스(.spotlight-box.reflect)는 화면
+// 폭의 90%(90vw)까지, 높이는 90vh까지만 허용되므로, 답이 길어서 그 안에서도 넘치면
+// (세로: box.scrollHeight > box.clientHeight, 가로: 개행 없는 긴 덩어리가 안 잘리고
+// 삐져나오는 경우까지) 글자 크기를 계속 줄인다. "아무리 글자가 많아도 박스를 넘어가면
+// 안 된다"는 원칙에 따라 정해진 최소 크기에서 멈추지 않고, 정말 필요하면 아주 작은
+// 크기(14px)까지도 줄인다 — 그 이하로는 화면에서 읽는 것 자체가 무의미해지므로 거기서
+// 멈추고, 혹시라도 그래도 안 맞으면 박스의 overflow-y:auto가 최후 안전장치로 스크롤을
+// 허용해서 화면 밖으로 잘리는 일만은 절대 없게 한다.
+function fitReflectSpotlight(textEl){
+  const box = textEl.closest(".spotlight-box");
+  if(!box) return;
+  // 개행 없이 아주 긴 덩어리가 있어도 박스 폭 안에서 강제로 줄바꿈되게 한다
+  // (단어 경계가 없는 자모 나열 같은 극단적인 입력에도 가로로 삐져나오지 않도록).
+  textEl.style.overflowWrap = "anywhere";
+  textEl.style.wordBreak = "break-word";
+  const MAX_FONT = 88, MIN_FONT = 14, STEP = 2;
+  let size = MAX_FONT;
+  textEl.style.fontSize = size + "px";
+  const overflows = ()=> box.scrollHeight > box.clientHeight || box.scrollWidth > box.clientWidth;
+  while(size > MIN_FONT && overflows()){
+    size -= STEP;
+    textEl.style.fontSize = size + "px";
+  }
+}
+
+// isReflect가 true면(성찰 질문 답변 카드) 스포트라이트 텍스트를 크게(위 fitReflectSpotlight로
+// 박스 크기에 맞게 자동 조정), 닫기 버튼은 1/2 크기로 보여준다(CSS의 .spotlight-box.reflect /
+// .spotlight-close.reflect 참고). 다른 문항(서답형 답안 카드 등)의 스포트라이트는
+// isReflect가 false/생략이라 기존과 동일하다.
+function openSpotlight(text, isReflect){
   const overlay = document.getElementById("spotlight-overlay");
-  document.getElementById("spotlight-text").textContent = text;
+  const textEl = document.getElementById("spotlight-text");
+  textEl.textContent = text;
+  textEl.style.fontSize = "";
+  document.querySelector(".spotlight-box").classList.toggle("reflect", !!isReflect);
+  document.getElementById("spotlight-close").classList.toggle("reflect", !!isReflect);
   overlay.classList.remove("hidden");
+  // 다음 프레임에 show를 붙여서 확대 애니메이션이 재생되게 함
   requestAnimationFrame(()=>{
     requestAnimationFrame(()=>{
       overlay.classList.add("show");
+      if(isReflect) fitReflectSpotlight(textEl);
     });
   });
 }
