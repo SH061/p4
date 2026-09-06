@@ -494,6 +494,31 @@
     font-size:15px; padding:9px 18px; border-radius:8px;
   }
 
+  /* 문항 바로 가기 — "n / 22" 카운터를 누르면 전체 문항 목록이 뜨고, 원하는 문항을
+     눌러 그 문항별 결과 화면으로 바로 이동한다(수업이 끊겼다가 다시 이어질 때 유용). */
+  .tq-count-jump{ cursor:pointer; text-decoration:underline; text-underline-offset:3px; text-decoration-thickness:1px; }
+  .tq-count-jump:hover{ color:var(--accent); }
+  .qjump-overlay{ position:fixed; inset:0; z-index:140; background:rgba(20,20,19,.5); display:flex; align-items:flex-start; justify-content:center; padding:28px 16px; overflow-y:auto; }
+  .qjump-panel{ background:var(--bg); border:1px solid var(--line); border-radius:16px; width:100%; max-width:1100px; overflow:hidden; }
+  .qjump-bar{ display:flex; align-items:center; justify-content:space-between; padding:14px 20px; border-bottom:1px solid var(--line); background:var(--panel-2); position:sticky; top:0; }
+  .qjump-bar .qjt{ font-size:17px; font-weight:900; color:var(--text); }
+  .qjump-bar .qjt small{ font-size:12.5px; font-weight:600; color:var(--muted); margin-left:6px; }
+  .qjump-chips{ display:flex; flex-wrap:wrap; gap:7px; padding:11px 20px; border-bottom:1px solid var(--line); }
+  .qjump-chip{ font-size:12px; font-weight:700; border-radius:999px; padding:4px 12px; background:var(--panel-2); border:1px solid var(--line); color:var(--muted); cursor:pointer; }
+  .qjump-chip:hover{ color:var(--text); border-color:var(--accent); }
+  .qjump-body{ padding:16px 20px 22px; display:flex; flex-direction:column; gap:18px; }
+  .qjump-block > .qjb-head{ display:flex; align-items:center; gap:9px; margin-bottom:9px; }
+  .qjb-head .q-page{ font-size:12px; }
+  .qjump-rows{ display:grid; grid-template-columns:1fr 1fr; gap:9px; }
+  @media (max-width: 900px){ .qjump-rows{ grid-template-columns:1fr; } }
+  .qjump-row{ display:flex; align-items:flex-start; gap:10px; background:var(--panel); border:1px solid var(--line); border-radius:11px; padding:10px 12px; cursor:pointer; text-align:left; }
+  .qjump-row:hover{ border-color:var(--accent); background:var(--accent-dim); }
+  .qjump-row .qjn{ flex:0 0 auto; width:24px; height:24px; border-radius:50%; background:var(--panel-2); color:var(--muted); font-size:12px; font-weight:900; display:flex; align-items:center; justify-content:center; }
+  .qjump-row .qjd{ font-size:13px; line-height:1.45; color:var(--text); }
+  .qjump-row.current{ border:2px solid var(--accent); background:var(--accent-dim); padding:9px 11px; }
+  .qjump-row.current .qjn{ background:var(--accent); color:#fff; }
+  .qjump-row .qjnow{ flex:0 0 auto; margin-left:auto; font-size:10.5px; font-weight:900; color:var(--accent-active); background:var(--accent-dim); border-radius:6px; padding:2px 7px; }
+
   /* 문항별 결과 — 문항이 바뀔 때(탭 최초 진입/이전·다음 문항) 잠깐 정답률만 화면
      전체에 크게 보여줬다가 신기루처럼 흐려지며 사라지는 연출. 단일 색 배경 + 단일 색
      숫자로, 눈에 편안한 은은한 민트/틸 톤을 쓴다(자극적인 원색 대비 대신 차분한 톤). */
@@ -713,7 +738,7 @@
       <div id="view-results" class="hidden">
         <div class="tq-nav">
           <button class="btn ghost" id="btn-tq-prev">◀ 이전 문항</button>
-          <span class="tq-count" id="tq-count">1 / 20</span>
+          <span class="tq-count tq-count-jump" id="tq-count" role="button" tabindex="0" title="누르면 전체 문항 목록에서 바로 이동">1 / 20</span>
           <button class="btn ghost" id="btn-tq-next">다음 문항 ▶</button>
         </div>
         <!-- 기본 레이아웃: 왼쪽 문항 카드 전체 / 오른쪽 사이드 패널(정답통계).
@@ -769,6 +794,18 @@
         </div>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- 문항 바로 가기 (교사용) — "n / 22" 카운터 클릭 시 전체 문항 목록 -->
+<div class="qjump-overlay hidden" id="qjump-overlay">
+  <div class="qjump-panel">
+    <div class="qjump-bar">
+      <div class="qjt">문항 바로 가기 <small id="qjump-total"></small></div>
+      <button class="btn ghost" id="qjump-close">닫기 ✕</button>
+    </div>
+    <div class="qjump-chips" id="qjump-chips"></div>
+    <div class="qjump-body" id="qjump-body"></div>
   </div>
 </div>
 
@@ -1821,6 +1858,112 @@ document.getElementById("btn-tq-next").addEventListener("click", ()=>{
 document.getElementById("btn-reveal").addEventListener("click", ()=>{
   tqRevealed = true;
   renderTeacherQuestionView();
+});
+
+/* ---------- 문항 바로 가기 (교사용) ---------- */
+function qjumpChipLabel(tag){
+  if(!tag) return "문항";
+  if(tag.indexOf("확인문제") === 0) return "확인문제";
+  if(tag.indexOf("기출문제") === 0 || tag.indexOf("기출 문제") === 0) return "기출문제";
+  if(tag === "수능대비문제") return "수능대비";
+  if(tag === "깨알 개념 체크 문제") return "깨알 개념 체크";
+  return tag;
+}
+function qjumpDesc(q){
+  // 그 문항 고유의 문장(text)을 먼저 쓴다 — 공통조건(guideText)만 보이면 같은 뱃지
+  // 문항끼리 구분이 안 되기 때문. 기출/수능은 text가 곧 대괄호 출처 라벨이다.
+  let s = String(q.text || q.guideText || "").split("\n")[0].trim();
+  if(s.length > 74) s = s.slice(0, 72).trim() + "…";
+  return s || "문항";
+}
+function buildQuestionJump(){
+  const body = document.getElementById("qjump-body");
+  const chipsEl = document.getElementById("qjump-chips");
+  document.getElementById("qjump-total").textContent = "· 전체 " + TEACHER_ITEMS.length + "문항";
+  body.innerHTML = "";
+  chipsEl.innerHTML = "";
+  const blocks = [];
+  TEACHER_ITEMS.forEach((q, idx)=>{
+    const key = (q.tag || "") + "||" + (q.page || "");
+    const last = blocks[blocks.length - 1];
+    if(last && last.key === key) last.items.push({ q, idx });
+    else blocks.push({ key, tag: q.tag, page: q.page, items: [{ q, idx }] });
+  });
+  const chipSeen = {};
+  blocks.forEach((blk, bi)=>{
+    const blockEl = document.createElement("div");
+    blockEl.className = "qjump-block";
+    blockEl.id = "qjb-" + bi;
+    const head = document.createElement("div");
+    head.className = "qjb-head";
+    const badge = document.createElement("span");
+    badge.className = "qtag";
+    renderTagBadge(badge, blk.tag);
+    head.appendChild(badge);
+    if(blk.page){
+      const pg = document.createElement("span");
+      pg.className = "q-page";
+      renderPageLabel(pg, blk.page);
+      head.appendChild(pg);
+    }
+    blockEl.appendChild(head);
+    const rows = document.createElement("div");
+    rows.className = "qjump-rows";
+    blk.items.forEach(({ q, idx })=>{
+      const row = document.createElement("button");
+      row.type = "button";
+      row.className = "qjump-row" + (idx === tqIndex ? " current" : "");
+      const n = document.createElement("span");
+      n.className = "qjn"; n.textContent = (idx + 1);
+      const d = document.createElement("span");
+      d.className = "qjd"; d.textContent = qjumpDesc(q);
+      row.appendChild(n); row.appendChild(d);
+      if(idx === tqIndex){
+        const now = document.createElement("span");
+        now.className = "qjnow"; now.textContent = "현재";
+        row.appendChild(now);
+      }
+      row.addEventListener("click", ()=>{
+        tqIndex = idx;
+        tqRevealed = false;
+        closeQuestionJump();
+        renderTeacherQuestionView(true);
+      });
+      rows.appendChild(row);
+    });
+    blockEl.appendChild(rows);
+    body.appendChild(blockEl);
+    const label = qjumpChipLabel(blk.tag);
+    if(!chipSeen[label]){
+      chipSeen[label] = true;
+      const chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = "qjump-chip";
+      chip.textContent = label;
+      chip.addEventListener("click", ()=>{
+        blockEl.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+      chipsEl.appendChild(chip);
+    }
+  });
+}
+function openQuestionJump(){
+  buildQuestionJump();
+  document.getElementById("qjump-overlay").classList.remove("hidden");
+}
+function closeQuestionJump(){
+  document.getElementById("qjump-overlay").classList.add("hidden");
+}
+document.getElementById("tq-count").addEventListener("click", openQuestionJump);
+document.getElementById("tq-count").addEventListener("keydown", (e)=>{
+  if(e.key === "Enter" || e.key === " "){ e.preventDefault(); openQuestionJump(); }
+});
+document.getElementById("qjump-close").addEventListener("click", closeQuestionJump);
+document.getElementById("qjump-overlay").addEventListener("click", (e)=>{
+  if(e.target.id === "qjump-overlay") closeQuestionJump();
+});
+document.addEventListener("keydown", (e)=>{
+  if(e.key === "Escape" && !document.getElementById("qjump-overlay").classList.contains("hidden")) closeQuestionJump();
 });
 
 let resultTab = "student"; // "student" | "answer"
