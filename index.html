@@ -2070,7 +2070,7 @@ function renderAwards(){
   document.getElementById("awt-sj").classList.toggle("on", awardsSub==="sj");
   document.getElementById("awt-tg").classList.toggle("on", awardsSub==="tg");
   if(awardsSub==="jd") renderJeongdabwang();
-  else if(awardsSub==="sj") renderSeongjangwang();
+  else if(awardsSub==="sj"){ growthPrior = null; renderSeongjangwang(); } // 매번 다시 불러온다(빈 응답이 캐시되는 버그 방지)
   else renderTamguwang();
 }
 
@@ -2145,7 +2145,7 @@ async function renderSeongjangwang(){
   await ensureGrowthPrior();
   const grown = awRows().map(function(r){
     const cur = rowAccuracy(r);
-    const prev = growthPrior[r.key];
+    const prev = growthPrior[r.key || sanitizeKey(r.name)]; // 교사 데이터엔 key가 없어 이름으로 재생성
     if(cur===null || prev===undefined || prev===null || isNaN(prev)) return null;
     return { name:r.name, key:r.key, delta: cur - Number(prev) };
   }).filter(Boolean).filter(x=>x.delta>0)
