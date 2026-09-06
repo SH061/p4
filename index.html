@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>수업내용 확인하기! — 산과 염기(2)·(3)</title>
+<title>수업내용 확인하기! — 에너지의 흡수와 방출</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
@@ -308,6 +308,8 @@
      블록 사이 간격도 더 넉넉하게(1.3배) 잡는다. */
   .tq-note-blocks.tq-note-blocks-chem{ gap:23px; }
   .tq-note-blocks-chem .tq-note-block{ font-size:58px; }
+  /* 긴 <보기>·설명 prose를 왼쪽 참고자료 칸에 넣을 때: 큰 블록으로 쪼개지 않고
+     읽기 좋은 크기의 단일 박스로. 칸을 넘치면 .tq-split-image.note-mode가 스크롤한다. */
   .tq-note-plain{
     background:var(--panel-2); border:1px solid var(--line); border-radius:12px;
     padding:18px 22px; font-size:23px; line-height:1.75; font-weight:600;
@@ -733,7 +735,7 @@
   <header class="top">
     <div class="brand">
       <div class="brand-left">
-        <h1>수업내용 확인하기!<span class="sub" id="topic-sub">산과 염기(2) · 산과 염기(3)</span></h1>
+        <h1>수업내용 확인하기!<span class="sub" id="topic-sub">3. 에너지의 흡수와 방출</span></h1>
       </div>
       <div class="brand-right">
         <div class="conn-row">
@@ -1027,7 +1029,7 @@
 ============================================================ */
 // 활동마다 다른 구글 시트 + 다른 배포이므로, 이 값도 활동마다 새로 받아서 넣는다.
 // 절대 예전 활동에서 쓰던 주소를 재사용하지 말 것.
-const GAS_URL = "https://script.google.com/macros/s/AKfycbw39b-ePyIxUAbs0zzT6La0MZwMXqn2V_n3dey7fwpHd5CSa5H3h5xMBcxi3X8O6w/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbxgZT9CuYSjz6CXOLmtqE9QMHV3tNeT2hWBvDDf44O4iqr-V429jVOZ-r-J3qM9cCY/exec";
 function gasConfigured(){
   return !!GAS_URL && GAS_URL.indexOf("PASTE_YOUR_") !== 0;
 }
@@ -1156,153 +1158,129 @@ const TEACHER_PASSCODE = "3699";
 const CLASS_COUNT = 10;
 // 캐릭터 배정 소금값 — 활동마다 달라서 같은 학생이라도 다른 활동에선 다른 캐릭터가 배정된다.
 // 한 활동 안에선 같다(학생 완료 카드와 교사 정답왕/성장왕/탐구왕 화면이 같은 캐릭터를 맞추도록).
-const CHAR_SALT = "산과 염기(2) · 산과 염기(3)";
+const CHAR_SALT = "에너지의 흡수와 방출";
 
 /* ============================================================
    문항 데이터
 ============================================================ */
 const QUESTIONS = [
-  /* ══════════ 산과 염기(2) — 산성·염기성이 나타나는 까닭 (학습지 29~30쪽) ══════════ */
+  /* ══════════ 에너지의 흡수와 방출 (학습지 36~41쪽) ══════════ */
 
-  /* ── 스스로 확인하기 (29쪽) ── */
-  { id:"s1_sc1", page:29, type:"choice", options:["수소 이온","수산화 이온"], correctAnswer:"수소 이온", tag:"스스로 확인하기",
-    text:"산은 수용액에서 (        )을 내놓는 물질이다. — 알맞은 것을 고르세요." },
-  { id:"s1_sc2", page:29, type:"choice", options:["O","X"], correctAnswer:"O", tag:"스스로 확인하기",
-    text:"염기성은 수산화 이온 때문에 나타나는 성질이다.",
+  /* ── 스스로 확인하기 ① (36쪽) ── */
+  { id:"q1", page:36, type:"choice", options:["낮아진다","높아진다"], correctAnswer:"낮아진다", tag:"스스로 확인하기",
+    text:"주변으로부터 에너지를 흡수하는 반응이 일어나면 주변의 온도가 ( 낮아진다 / 높아진다 )." },
+  { id:"q2", page:36, type:"choice", options:["O","X"], correctAnswer:"X", tag:"스스로 확인하기",
+    text:"연료가 연소하는 것은 주변으로부터 에너지를 흡수하는 반응이다.",
     note:"옳으면 O, 옳지 않으면 X를 고르세요." },
 
-  /* ── 깨알 개념 체크 문제 (29쪽) — 산성을 띠게 하는 이온 확인 실험, 그림 공유 ── */
-  { id:"s1_kk1", page:29, type:"choice", options:["O","X"], correctAnswer:"O", tag:"깨알 개념 체크 문제",
-    guideText:"그림은 묽은 염산에서 산성을 띠게 하는 이온을 확인하는 실험이다. 전류를 흘려 준 후, 묽은 염산을 적신 실로부터 (−)극 쪽으로 푸른색 리트머스 종이가 붉게 변하였다.\n각 설명이 옳으면 O, 옳지 않으면 X를 고르세요.",
-    text:"(1) 산성을 나타내는 이온은 수소 이온이다.",
-    image:"images/s1-selfcheck.png" },
-  { id:"s1_kk2", page:29, type:"choice", options:["O","X"], correctAnswer:"O", tag:"깨알 개념 체크 문제",
-    guideText:"그림은 묽은 염산에서 산성을 띠게 하는 이온을 확인하는 실험이다. 전류를 흘려 준 후, 묽은 염산을 적신 실로부터 (−)극 쪽으로 푸른색 리트머스 종이가 붉게 변하였다.\n각 설명이 옳으면 O, 옳지 않으면 X를 고르세요.",
-    text:"(2) 질산 칼륨은 전해질로 쓰였다.",
-    image:"images/s1-selfcheck.png" },
-  { id:"s1_kk3", page:29, type:"choice", options:["O","X"], correctAnswer:"X", tag:"깨알 개념 체크 문제",
-    guideText:"그림은 묽은 염산에서 산성을 띠게 하는 이온을 확인하는 실험이다. 전류를 흘려 준 후, 묽은 염산을 적신 실로부터 (−)극 쪽으로 푸른색 리트머스 종이가 붉게 변하였다.\n각 설명이 옳으면 O, 옳지 않으면 X를 고르세요.",
-    text:"(3) (−)극으로 이동하는 이온은 수소 이온뿐이다.",
-    image:"images/s1-selfcheck.png" },
-  { id:"s1_kk4", page:29, type:"choice", options:["O","X"], correctAnswer:"X", tag:"깨알 개념 체크 문제",
-    guideText:"그림은 묽은 염산에서 산성을 띠게 하는 이온을 확인하는 실험이다. 전류를 흘려 준 후, 묽은 염산을 적신 실로부터 (−)극 쪽으로 푸른색 리트머스 종이가 붉게 변하였다.\n각 설명이 옳으면 O, 옳지 않으면 X를 고르세요.",
-    text:"(4) 묽은 염산에 페놀프탈레인 용액을 떨어뜨리면 붉게 변한다.",
-    image:"images/s1-selfcheck.png" },
-  { id:"s1_kk5", page:29, type:"choice", options:["O","X"], correctAnswer:"O", tag:"깨알 개념 체크 문제",
-    guideText:"그림은 묽은 염산에서 산성을 띠게 하는 이온을 확인하는 실험이다. 전류를 흘려 준 후, 묽은 염산을 적신 실로부터 (−)극 쪽으로 푸른색 리트머스 종이가 붉게 변하였다.\n각 설명이 옳으면 O, 옳지 않으면 X를 고르세요.",
-    text:"(5) 묽은 염산 대신 아세트산으로 실험해도 리트머스 종이의 색 변화는 같다.",
-    image:"images/s1-selfcheck.png" },
+  /* ── 확인문제 ① (36쪽) ── */
+  { id:"q3", page:36, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"④", tag:"확인문제",
+    text:"( ㉠ ), ( ㉡ )에 들어갈 알맞은 말을 옳게 짝 지은 것은?",
+    note:"[설명] 다음은 수산화 바륨과 염화 암모늄의 반응에 대한 설명이다.\n주변으로부터 에너지를 ( ㉠ )하는 반응이 일어나므로 주변의 온도가 ( ㉡ )진다.\n\n① ㉠ 방출, ㉡ 높아\n② ㉠ 방출, ㉡ 낮아\n③ ㉠ 흡수, ㉡ 높아\n④ ㉠ 흡수, ㉡ 낮아\n⑤ ㉠ 흡수, ㉡ 일정해" },
+  { id:"q4", page:36, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"①", tag:"확인문제",
+    text:"주변으로 에너지를 방출하는 현상만을 <보기>에서 있는 대로 고른 것은?",
+    note:"<보기>\nㄱ. 화석 연료가 연소한다.\nㄴ. 질산 암모늄이 물에 녹는다.\nㄷ. 드라이아이스의 크기가 작아진다.\n\n① ㄱ   ② ㄴ   ③ ㄷ   ④ ㄱ, ㄴ   ⑤ ㄴ, ㄷ" },
+  { id:"q5", page:36, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"③", tag:"확인문제",
+    text:"주변의 온도가 낮아지는 현상만을 <보기>에서 있는 대로 고른 것은?",
+    note:"<보기>\nㄱ. 손에 손 소독제를 바른다.\nㄴ. 염화 칼슘이 물에 녹는다.\nㄷ. 수산화 바륨과 염화 암모늄이 반응한다.\n\n① ㄱ   ② ㄴ   ③ ㄱ, ㄷ   ④ ㄴ, ㄷ   ⑤ ㄱ, ㄴ, ㄷ" },
 
-  /* ── 확인문제 (29쪽) ── */
-  { id:"s1_c1", page:29, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"⑤", tag:"확인문제",
-    text:"그림과 같이 질산 칼륨 수용액을 적신 붉은색 리트머스 종이 위에 ㉠을 적신 실을 올려놓고 전류를 흘려 주었더니 붉은색 리트머스 종이가 A극 쪽으로 푸른색으로 변했다. A극과 ㉠을 옳게 짝지은 것은?",
-    image:"images/s1-confirm-01.png",
-    note:"① A극 (−) / ㉠ 염산\n② A극 (−) / ㉠ 수산화 나트륨 수용액\n③ A극 (+) / ㉠ 염산\n④ A극 (+) / ㉠ 아세트산 수용액\n⑤ A극 (+) / ㉠ 수산화 나트륨 수용액" },
-  { id:"s1_c2", page:29, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"④", tag:"확인문제",
-    text:"산과 염기의 이온화식을 옳게 나타낸 것은?",
-    note:"① HCl → H⁻ + Cl⁺\n② CH₃COOH → CH₃CO⁺ + OH⁻\n③ NaOH → H⁺ + NaO⁻\n④ NH₄OH → NH₄⁺ + OH⁻\n⑤ H₂CO₃ → H⁺ + CO₃²⁻" },
-
-  /* ── 기출 문제 (30쪽) — 문제·보기·선택지는 이미지 안에 있음 ── */
-  { id:"s1_p1", page:30, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"③", tag:"기출 문제",
-    text:"학력평가 기출",
-    image:"images/s1-past-01.png", imageSize:"small" },
-  { id:"s1_p2", page:30, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"④", tag:"기출 문제",
-    text:"학력평가 기출",
-    image:"images/s1-past-02.png", imageSize:"small" },
-  { id:"s1_p3", page:30, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"①", tag:"기출 문제",
-    text:"학력평가 기출",
-    image:"images/s1-past-03.png", imageSize:"small" },
-
-  /* ══════════ 산과 염기(3) — 중화 반응 (학습지 32~34쪽) ══════════ */
-
-  /* ── 스스로 확인하기 (32쪽) ── */
-  { id:"s2_sc1", page:32, type:"blank", correctAnswer:"중화반응", tag:"스스로 확인하기",
-    text:"산의 수소 이온과 염기의 수산화 이온이 1:1의 개수비로 반응해 물을 생성하는 반응을 (        )이라고 한다." },
-  { id:"s2_sc2", page:32, type:"choice", options:["O","X"], correctAnswer:"O", tag:"스스로 확인하기",
-    text:"생선에 식초나 레몬즙을 뿌리면 비린내 성분을 중화할 수 있다.",
+  /* ── 스스로 확인하기 ② (38쪽) ── */
+  { id:"q6", page:38, type:"choice", options:["흡수하는","방출하는"], correctAnswer:"흡수하는", tag:"스스로 확인하기",
+    text:"냉찜질 팩은 질산 암모늄이 물에 녹으면서 에너지를 ( 흡수하는 / 방출하는 ) 현상을 이용한다." },
+  { id:"q7", page:38, type:"choice", options:["O","X"], correctAnswer:"O", tag:"스스로 확인하기",
+    text:"식물이 광합성을 할 때 에너지를 흡수하고, 생명체의 세포호흡이 일어날 때 에너지를 방출한다.",
     note:"옳으면 O, 옳지 않으면 X를 고르세요." },
 
-  /* ── 깨알 개념 체크 문제 A (32쪽) — 중화 반응 모형 (가)~(라), 그림 공유 ── */
-  { id:"s2_kkA1", page:32, type:"choice", options:["O","X"], correctAnswer:"O", tag:"깨알 개념 체크 문제",
-    guideText:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 가하는 중화 반응을 모형으로 나타낸 것이다. (단, 혼합 전 두 수용액의 온도와 농도는 같다.)\n각 설명이 옳으면 O, 옳지 않으면 X를 고르세요.",
-    text:"(1) (가)와 (나)는 산성이다.",
-    image:"images/s2-selfcheckA.png" },
-  { id:"s2_kkA2", page:32, type:"choice", options:["O","X"], correctAnswer:"X", tag:"깨알 개념 체크 문제",
-    guideText:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 가하는 중화 반응을 모형으로 나타낸 것이다. (단, 혼합 전 두 수용액의 온도와 농도는 같다.)\n각 설명이 옳으면 O, 옳지 않으면 X를 고르세요.",
-    text:"(2) (다)와 (라)는 염기성이다.",
-    image:"images/s2-selfcheckA.png" },
-  { id:"s2_kkA3", page:32, type:"choice", options:["O","X"], correctAnswer:"O", tag:"깨알 개념 체크 문제",
-    guideText:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 가하는 중화 반응을 모형으로 나타낸 것이다. (단, 혼합 전 두 수용액의 온도와 농도는 같다.)\n각 설명이 옳으면 O, 옳지 않으면 X를 고르세요.",
-    text:"(3) (다)에 BTB 용액을 떨어뜨리면 녹색이 된다.",
-    image:"images/s2-selfcheckA.png" },
-  { id:"s2_kkA4", page:32, type:"choice", options:["O","X"], correctAnswer:"O", tag:"깨알 개념 체크 문제",
-    guideText:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 가하는 중화 반응을 모형으로 나타낸 것이다. (단, 혼합 전 두 수용액의 온도와 농도는 같다.)\n각 설명이 옳으면 O, 옳지 않으면 X를 고르세요.",
-    text:"(4) 온도가 가장 높은 것은 (다)이다.",
-    image:"images/s2-selfcheckA.png" },
-  { id:"s2_kkA5", page:32, type:"choice", options:["O","X"], correctAnswer:"X", tag:"깨알 개념 체크 문제",
-    guideText:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 가하는 중화 반응을 모형으로 나타낸 것이다. (단, 혼합 전 두 수용액의 온도와 농도는 같다.)\n각 설명이 옳으면 O, 옳지 않으면 X를 고르세요.",
-    text:"(5) (가)와 (라)를 혼합한 용액에 BTB 용액을 떨어뜨리면 녹색이 된다.",
-    image:"images/s2-selfcheckA.png" },
+  /* ── 깨알 개념 체크 문제 1 (38쪽) — 알코올 연소 / 철의 산화 / 소화기, 그림 공유 ── */
+  { id:"q8", page:38, type:"choice", options:["O","X"], correctAnswer:"O", tag:"깨알 개념 체크 문제",
+    guideText:"그림 (가)는 알코올의 연소, (나)는 철의 산화, (다)는 소화기이다.\n다음은 물질 변화에서 출입하는 에너지를 이용하는 예에 대한 설명이다. 옳으면 O, 옳지 않으면 X를 고르세요.",
+    text:"(1) (가)의 알코올이 연소할 때 열에너지를 방출하여 주변의 온도가 올라가는 현상을 이용한다.",
+    image:"images/img-selfcheck-01.png" },
+  { id:"q9", page:38, type:"choice", options:["O","X"], correctAnswer:"X", tag:"깨알 개념 체크 문제",
+    guideText:"그림 (가)는 알코올의 연소, (나)는 철의 산화, (다)는 소화기이다.\n다음은 물질 변화에서 출입하는 에너지를 이용하는 예에 대한 설명이다. 옳으면 O, 옳지 않으면 X를 고르세요.",
+    text:"(2) (나)에서 손난로를 흔들면 철 가루가 공기 중의 산소와 반응하면서 열에너지를 흡수하여 주변의 온도가 올라가는 현상을 이용한다.",
+    image:"images/img-selfcheck-01.png" },
+  { id:"q10", page:38, type:"choice", options:["O","X"], correctAnswer:"X", tag:"깨알 개념 체크 문제",
+    guideText:"그림 (가)는 알코올의 연소, (나)는 철의 산화, (다)는 소화기이다.\n다음은 물질 변화에서 출입하는 에너지를 이용하는 예에 대한 설명이다. 옳으면 O, 옳지 않으면 X를 고르세요.",
+    text:"(3) (다)에서 소화기 속 탄산수소 나트륨이 불꽃에 닿으면 분해되면서 열에너지를 방출하여 주위의 온도를 낮추고, 기체가 발생해 산소를 차단하는 현상을 이용한다.",
+    image:"images/img-selfcheck-01.png" },
 
-  /* ── 깨알 개념 체크 문제 B (32쪽) — NaOH 부피에 따른 이온 수 변화 그래프, 그림 공유 ── */
-  { id:"s2_kkB1", page:32, type:"choice", options:["O","X"], correctAnswer:"X", tag:"깨알 개념 체크 문제",
-    guideText:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 넣으며 반응시켰을 때, 넣어 준 NaOH 수용액의 부피에 따른 혼합 용액 속 이온 수 변화를 나타낸 것이다.\n각 설명이 옳으면 O, 옳지 않으면 X를 고르세요.",
-    text:"(1) ㉠은 Cl⁻이고, ㉣은 OH⁻이다.",
-    image:"images/s2-selfcheckB.png" },
-  { id:"s2_kkB2", page:32, type:"choice", options:["O","X"], correctAnswer:"X", tag:"깨알 개념 체크 문제",
-    guideText:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 넣으며 반응시켰을 때, 넣어 준 NaOH 수용액의 부피에 따른 혼합 용액 속 이온 수 변화를 나타낸 것이다.\n각 설명이 옳으면 O, 옳지 않으면 X를 고르세요.",
-    text:"(2) ㉡은 H⁺이고, ㉢은 Na⁺이다.",
-    image:"images/s2-selfcheckB.png" },
-  { id:"s2_kkB3", page:32, type:"choice", options:["O","X"], correctAnswer:"O", tag:"깨알 개념 체크 문제",
-    guideText:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 넣으며 반응시켰을 때, 넣어 준 NaOH 수용액의 부피에 따른 혼합 용액 속 이온 수 변화를 나타낸 것이다.\n각 설명이 옳으면 O, 옳지 않으면 X를 고르세요.",
-    text:"(3) 혼합 용액의 액성이 산성일 때 가장 많이 존재하는 이온은 Cl⁻이다.",
-    image:"images/s2-selfcheckB.png" },
-  { id:"s2_kkB4", page:32, type:"choice", options:["O","X"], correctAnswer:"X", tag:"깨알 개념 체크 문제",
-    guideText:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 넣으며 반응시켰을 때, 넣어 준 NaOH 수용액의 부피에 따른 혼합 용액 속 이온 수 변화를 나타낸 것이다.\n각 설명이 옳으면 O, 옳지 않으면 X를 고르세요.",
-    text:"(4) 혼합 용액의 액성이 중성일 때 이온이 존재하지 않는다.",
-    image:"images/s2-selfcheckB.png" },
-  { id:"s2_kkB5", page:32, type:"choice", options:["O","X"], correctAnswer:"X", tag:"깨알 개념 체크 문제",
-    guideText:"그림은 일정량의 묽은 염산(HCl)에 수산화 나트륨(NaOH) 수용액을 넣으며 반응시켰을 때, 넣어 준 NaOH 수용액의 부피에 따른 혼합 용액 속 이온 수 변화를 나타낸 것이다.\n각 설명이 옳으면 O, 옳지 않으면 X를 고르세요.",
-    text:"(5) 혼합 용액의 액성이 염기성일 때 가장 많이 존재하는 이온은 OH⁻이다.",
-    image:"images/s2-selfcheckB.png" },
+  /* ── 깨알 개념 체크 문제 2 (38쪽) — 흡수 / 방출 판단 10개 ── */
+  { id:"q11", page:38, type:"choice", options:["흡수","방출"], correctAnswer:"흡수", tag:"깨알 개념 체크 문제",
+    guideText:"다음 현상에서 물질 변화가 일어날 때, 에너지를 방출하면 '방출', 에너지를 흡수하면 '흡수'를 고르세요.",
+    text:"냉찜질 주머니를 사용해 몸의 열을 낮춘다." },
+  { id:"q12", page:38, type:"choice", options:["흡수","방출"], correctAnswer:"흡수", tag:"깨알 개념 체크 문제",
+    guideText:"다음 현상에서 물질 변화가 일어날 때, 에너지를 방출하면 '방출', 에너지를 흡수하면 '흡수'를 고르세요.",
+    text:"제빵 소다를 넣어 빵을 구우면 밀가루 반죽이 점차 부풀어 오른다." },
+  { id:"q13", page:38, type:"choice", options:["흡수","방출"], correctAnswer:"흡수", tag:"깨알 개념 체크 문제",
+    guideText:"다음 현상에서 물질 변화가 일어날 때, 에너지를 방출하면 '방출', 에너지를 흡수하면 '흡수'를 고르세요.",
+    text:"소독용 에탄올 솜으로 피부를 닦으면 에탄올이 증발하면서 시원해진다." },
+  { id:"q14", page:38, type:"choice", options:["흡수","방출"], correctAnswer:"방출", tag:"깨알 개념 체크 문제",
+    guideText:"다음 현상에서 물질 변화가 일어날 때, 에너지를 방출하면 '방출', 에너지를 흡수하면 '흡수'를 고르세요.",
+    text:"산화 칼슘과 물을 반응시켜 가열 장치 없이 음식을 조리한다." },
+  { id:"q15", page:38, type:"choice", options:["흡수","방출"], correctAnswer:"흡수", tag:"깨알 개념 체크 문제",
+    guideText:"다음 현상에서 물질 변화가 일어날 때, 에너지를 방출하면 '방출', 에너지를 흡수하면 '흡수'를 고르세요.",
+    text:"물이 증발해 수증기가 된다." },
+  { id:"q16", page:38, type:"choice", options:["흡수","방출"], correctAnswer:"방출", tag:"깨알 개념 체크 문제",
+    guideText:"다음 현상에서 물질 변화가 일어날 때, 에너지를 방출하면 '방출', 에너지를 흡수하면 '흡수'를 고르세요.",
+    text:"수증기가 응결해 구름이 된다." },
+  { id:"q17", page:38, type:"choice", options:["흡수","방출"], correctAnswer:"흡수", tag:"깨알 개념 체크 문제",
+    guideText:"다음 현상에서 물질 변화가 일어날 때, 에너지를 방출하면 '방출', 에너지를 흡수하면 '흡수'를 고르세요.",
+    text:"식물의 엽록체에서 광합성이 일어난다." },
+  { id:"q18", page:38, type:"choice", options:["흡수","방출"], correctAnswer:"방출", tag:"깨알 개념 체크 문제",
+    guideText:"다음 현상에서 물질 변화가 일어날 때, 에너지를 방출하면 '방출', 에너지를 흡수하면 '흡수'를 고르세요.",
+    text:"세포 내의 마이토콘드리아에서 세포호흡이 일어난다." },
+  { id:"q19", page:38, type:"choice", options:["흡수","방출"], correctAnswer:"방출", tag:"깨알 개념 체크 문제",
+    guideText:"다음 현상에서 물질 변화가 일어날 때, 에너지를 방출하면 '방출', 에너지를 흡수하면 '흡수'를 고르세요.",
+    text:"나무나 가스 등이 연소한다." },
+  { id:"q20", page:38, type:"choice", options:["흡수","방출"], correctAnswer:"방출", tag:"깨알 개념 체크 문제",
+    guideText:"다음 현상에서 물질 변화가 일어날 때, 에너지를 방출하면 '방출', 에너지를 흡수하면 '흡수'를 고르세요.",
+    text:"반딧불이의 몸에서 빛이 난다." },
 
-  /* ── 확인문제 (32~33쪽) ── */
-  { id:"s2_c1", page:32, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"①", tag:"확인문제",
-    text:"그림은 염산에 수산화 나트륨 수용액을 넣을 때 수용액 속에 들어 있는 입자를 모형으로 나타낸 것이다. 염산과 수산화 나트륨 수용액의 혼합 용액에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?",
-    image:"images/s2-confirm-01.png",
-    note:"<보기>\nㄱ. 전류가 흐르지 않는다.\nㄴ. 수산화 나트륨 수용액을 넣으면 중화 반응을 한다.\nㄷ. 페놀프탈레인 용액을 떨어뜨리면 붉은색으로 변한다.\n\n① ㄴ   ② ㄷ   ③ ㄱ, ㄴ   ④ ㄱ, ㄷ   ⑤ ㄱ, ㄴ, ㄷ" },
-  { id:"s2_c2", page:33, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"④", tag:"확인문제",
-    text:"그림은 농도와 온도가 같은 염산과 수산화 나트륨 수용액의 부피를 달리하여 혼합했을 때 혼합 용액의 최고 온도를 측정하여 나타낸 것이다. 이에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?",
-    image:"images/s2-confirm-02.png",
-    note:"<보기>\nㄱ. A와 B를 섞으면 중화 반응을 한다.\nㄴ. C에는 2종류의 이온이 존재한다.\nㄷ. 생성된 물의 양은 D가 E보다 많다.\n\n① ㄱ   ② ㄴ   ③ ㄱ, ㄷ   ④ ㄴ, ㄷ   ⑤ ㄱ, ㄴ, ㄷ" },
-  { id:"s2_c3", page:33, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"②", tag:"확인문제",
-    text:"중화 반응을 이용하는 예로 옳지 않은 것은?",
-    note:"① 생선에 레몬즙을 뿌린다.\n② 산화 철에서 산소를 제거한다.\n③ 산성화된 토양에 석회 가루를 뿌린다.\n④ 위산 때문에 속이 쓰릴 때 제산제를 복용한다.\n⑤ 벌레에 물렸을 때 암모니아수가 들어 있는 약을 바른다." },
+  /* ── 확인문제 ② (39쪽) ── */
+  { id:"q21", page:39, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"③", tag:"확인문제",
+    text:"(가)와 (나)의 반응을 이용하는 장치를 옳게 짝 지은 것은?",
+    note:"(가) 질산 암모늄이 물에 녹을 때 에너지를 흡수한다.\n(나) 철이 공기 중의 산소와 반응할 때 에너지를 방출한다.\n\n① (가) - 손난로\n② (가) - 발열 도시락\n③ (나) - 손난로\n④ (나) - 냉찜질 팩\n⑤ (나) - 소화기" },
+  { id:"q22", page:39, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"④", tag:"확인문제",
+    text:"이에 대한 설명으로 옳은 것만을 <보기>에서 있는 대로 고른 것은?",
+    note:"(가) 수증기가 응결해 구름이 된다.\n(나) 물이 증발해 수증기가 된다.\n\n<보기>\nㄱ. (가)에서 주변으로 에너지를 방출하는 반응이 일어난다.\nㄴ. 광합성과 (나)에서 일어나는 반응은 에너지의 출입 방향이 같다.\nㄷ. (가)와 (나) 모두 반응이 일어날 때 주변의 온도가 높아진다.\n\n① ㄱ   ② ㄴ   ③ ㄷ   ④ ㄱ, ㄴ   ⑤ ㄴ, ㄷ",
+    image:"images/img-clouds-evap.png" },
 
-  /* ── 기출 문제 (33~34쪽) — 문제·보기·선택지는 이미지 안에 있음 ── */
-  { id:"s2_p1", page:33, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"⑤", tag:"기출 문제",
-    text:"학력평가 기출",
-    image:"images/s2-past-01.png", imageSize:"small" },
-  { id:"s2_p2", page:33, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"③", tag:"기출 문제",
-    text:"학력평가 기출",
-    image:"images/s2-past-02.png", imageSize:"small" },
-  { id:"s2_p3", page:34, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"③", tag:"기출 문제",
-    text:"학력평가 기출",
-    image:"images/s2-past-03.png", imageSize:"small" },
-  { id:"s2_p4", page:34, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"③", tag:"기출 문제",
-    text:"[2023 실시 3월 학력평가 화학Ⅰ(고2) 17번]",
-    image:"images/s2-past-04.png", imageSize:"small" },
-  { id:"s2_p5", page:34, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"②", tag:"기출 문제",
-    text:"[2023 실시 11월 학력평가 통합과학(고1) 18번]",
-    image:"images/s2-past-05.png", imageSize:"small" },
-  { id:"s2_p6", page:34, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"③", tag:"기출 문제",
-    text:"[2023 실시 3월 학력평가 화학Ⅰ(고2) 14번]",
-    image:"images/s2-past-06.png", imageSize:"small" },
+  /* ── 기출 문제 (39~40쪽) ── */
+  { id:"q23", page:39, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"①", tag:"기출 문제",
+    text:"(가)~(바) 중에서 에너지를 흡수하는 현상과 방출하는 현상으로 옳게 구분한 것은?",
+    note:"[설명] 다음 (가)~(바)는 에너지를 흡수하거나 방출하는 현상을 설명한 것이다.\n(가) 바닷물이 증발한다.\n(나) 생명체가 세포호흡을 한다.\n(다) 산화 칼슘과 물이 반응한다.\n(라) 도시가스를 연소시켜 난방에 이용한다.\n(마) 얼음 조각상 옆에 서 있으면 시원해진다.\n(바) 물에 수산화 나트륨을 소량 넣은 후 전기 분해하면 산소와 수소를 얻는다.\n\n〈에너지 흡수 / 에너지 방출〉\n① (가),(마),(바) / (나),(다),(라)\n② (나),(마),(라) / (가),(다),(바)\n③ (가),(다),(바) / (나),(마),(라)\n④ (나),(다),(바) / (가),(마),(라)\n⑤ (가),(마),(라) / (나),(다),(바)" },
+  { id:"q24", page:40, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"③", tag:"기출 문제",
+    text:"[2025 실시 10월 학력평가 통합과학(고1) 17번]",
+    image:"images/img-pastexam-01.png", imageSize:"small" },
+  { id:"q25", page:40, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"④", tag:"기출 문제",
+    text:"[학력평가 기출 변형]",
+    image:"images/img-pastexam-02.png", imageSize:"small" },
+  { id:"q26", page:40, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"⑤", tag:"기출 문제",
+    text:"[2023 실시 3월 학력평가 통합과학(고1) 6번]",
+    image:"images/img-pastexam-03.png", imageSize:"small" },
+  { id:"q27", page:40, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"④", tag:"기출 문제",
+    text:"[2022 실시 3월 학력평가 화학Ⅰ 3번 변형]",
+    image:"images/img-pastexam-04.png", imageSize:"small" },
 
-  /* ── 2026 실시 9월 학력평가 통합과학(고2) — 학습지 밖 추가 기출 (성찰 질문 앞) ── */
-  { id:"q_2026sep_20", type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"②", tag:"기출 문제",
-    text:"[2026 실시 9월 학평 20번 통합과학(고2)]",
-    image:"images/q-2026sep-20.png", imageSize:"small" },
+  /* ── 수능대비문제 (41쪽) ── */
+  { id:"q28", page:41, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"①", tag:"수능대비문제",
+    text:"[2028년 대비 2차 수능 예시 12번]",
+    image:"images/img-pastexam-05.png", imageSize:"small" },
+  { id:"q29", page:41, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"④", tag:"수능대비문제",
+    text:"[2028년 대비 2차 수능 예시 24번]",
+    image:"images/img-pastexam-06.png", imageSize:"small" },
+  { id:"q30", page:41, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"③", tag:"수능대비문제",
+    text:"[2028년 대비 2차 수능 예시 7번]",
+    image:"images/img-pastexam-07.png", imageSize:"small" },
+  { id:"q31", page:41, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"①", tag:"수능대비문제",
+    text:"[2026 실시 3월 학력평가 통합과학(고2) 25번]",
+    image:"images/img-pastexam-08.png", imageSize:"small" },
+
+  /* ── 2026 실시 9월 학력평가 통합과학(고2) — 학습지 밖 추가 기출 (수능대비문제 뒤, 성찰 질문 앞) ── */
+  { id:"q_2026sep_12", type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"③", tag:"기출 문제",
+    text:"[2026 실시 9월 학평 12번 통합과학(고2)]",
+    image:"images/img-2026sep-12.png", imageSize:"small" },
 ];
 
 const REFLECT_QUESTIONS = [
@@ -1349,6 +1327,9 @@ const SPLIT_TAG_SET = (function(){
     // 반응식 나열(참고자료 역할)이 있으면 tag 이름과 무관하게 분할 레이아웃으로 통일한다
     // — 활동마다 이 계열 문항의 tag 이름이 "깨알 개념 체크 문제"/"스스로 확인하기"처럼
     // 다를 수 있기 때문(문항 데이터는 그대로 두고 판정 로직만 내용 기반으로 일반화).
+    // (가)(나)(다)(라) 항목 표시 + 반응식 화살표(→)가 함께 있는 note만 "반응식 나열"로 본다.
+    // 화살표가 없는 <보기>·설명 prose는 (가)(나)가 들어있어도 분할 레이아웃을 강제하지 않는다
+    // (긴 prose를 왼쪽 큰 블록으로 쪼개면 화면 밖으로 넘치는 문제가 있었다).
     const hasReactionListNote = item => item.note && /\(가\)|\(나\)|\(다\)|\(라\)/.test(item.note) && /→|⟶|⟵|↔|⇌/.test(item.note);
     if(list.some(item => (item.image && item.note) || hasReactionListNote(item))) forced.add(tag);
   });
@@ -2546,11 +2527,13 @@ function renderTeacherQuestionView(showReveal){
   const noteEl = document.getElementById("tq-note");
   const noteBlocksEl = document.getElementById("tq-note-blocks");
   if(noteOnLeft){
-    // note를 왼쪽 참고자료 칸에 (가)(나)(다)(라) 등 항목/줄 단위로 나눠서 표시하고,
-    // 오른쪽에는 원본 note 텍스트를 중복 표시하지 않는다.
+    // 왼쪽 참고자료 칸 렌더링. note가 (가)(나) + 반응식 화살표(→)를 가진 "반응식 나열"이면
+    // 항목별 큰 블록(buildNoteBlocksHtml)으로 시원하게 보여주고, 그 외 긴 <보기>·설명
+    // prose는 큰 블록으로 쪼개면 화면 밖으로 넘치므로 읽기 좋은 크기의 단일 박스
+    // (.tq-note-plain)로 넣고 넘치면 칸 안에서 스크롤한다.
     noteEl.classList.add("hidden");
     noteBlocksEl.classList.remove("hidden");
-    const isReactionList = /→|⟶|⟵|↔|⇌/.test(q.note || "") && /(?:\(가\)|\(나\)|\(다\)|\(라\))/.test(q.note || "");
+    const isReactionList = /→|⟶|⟵|↔|⇌/.test(q.note || "") && /\(가\)|\(나\)|\(다\)|\(라\)/.test(q.note || "");
     if(isReactionList){
       noteBlocksEl.innerHTML = buildNoteBlocksHtml(q.note);
       noteBlocksEl.classList.add("tq-note-blocks-chem");
@@ -2726,6 +2709,8 @@ function fitMetaTitle(titleEl, _retry){
     // 때(아주 긴 단어 등)만 조금씩 더 줄인다.
     row.style.flexWrap = "wrap";
     titleEl.style.whiteSpace = "normal";
+    // 여러 줄로 내릴 때는 줄 길이를 고르게 배분해서 마지막 줄에 한 글자만 남는
+    // (문장 뜻이 어색해지는) 고아 줄바꿈을 막는다.
     titleEl.style.textWrap = "balance";
     size = WRAP_FONT;
     titleEl.style.fontSize = size + "px";
