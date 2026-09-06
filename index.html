@@ -686,7 +686,7 @@
   <div class="modal-card">
     <div class="micon">🔒</div>
     <h3>선생님 암호</h3>
-    <input id="teacher-gate-input" type="password" inputmode="numeric" maxlength="8" placeholder="••••">
+    <input id="teacher-gate-input" type="password" maxlength="16" placeholder="암호 입력">
     <div class="modal-btns">
       <button class="btn ghost" id="teacher-gate-cancel">취소</button>
       <button class="btn primary" id="teacher-gate-confirm">확인</button>
@@ -958,6 +958,8 @@ function gasConfigured(){
 /* ============================================================
    설정
 ============================================================ */
+// 예비 암호 — 구글시트 "선생님암호" 시트가 비었거나 서버 확인이 안 될 때만 통과되는 값.
+// 평소 쓸 암호(복수 가능)는 그 시트에서 셀 편집으로 관리하고, 이 값은 잠금 사고 방지용.
 const TEACHER_PASSCODE = "3699";
 const CLASS_COUNT = 10;
 
@@ -1543,15 +1545,31 @@ document.getElementById("teacher-gate-confirm").addEventListener("click", tryGat
 document.getElementById("teacher-gate-input").addEventListener("keydown", (e)=>{
   if(e.key === "Enter") tryGateSubmit();
 });
-function tryGateSubmit(){
-  const val = document.getElementById("teacher-gate-input").value;
-  if(val === TEACHER_PASSCODE){
+async function tryGateSubmit(){
+  const inputEl = document.getElementById("teacher-gate-input");
+  const val = String(inputEl.value).trim();
+  // 평소 쓸 암호는 구글시트 "선생님암호" 시트에서 줄 단위로 추가/수정한다(재배포 불필요).
+  // 시트가 비었거나 서버 응답을 못 받으면 예비 암호(TEACHER_PASSCODE)로만 통과한다.
+  let allowed = false;
+  if(gasConfigured()){
+    try{
+      const res = await fetch(GAS_URL + "?action=teacherPasscodes", { method:"GET" });
+      const data = await res.json();
+      const list = (data && Array.isArray(data.list)) ? data.list.map(String) : [];
+      allowed = list.length ? (list.indexOf(val) !== -1) : (val === TEACHER_PASSCODE);
+    }catch(e){
+      allowed = (val === TEACHER_PASSCODE);
+    }
+  } else {
+    allowed = (val === TEACHER_PASSCODE);
+  }
+  if(allowed){
     teacherUnlocked = true;
     gateModal.classList.add("hidden");
     openTeacherView();
   } else {
-    document.getElementById("teacher-gate-input").value = "";
-    document.getElementById("teacher-gate-input").placeholder = "암호가 틀렸어요";
+    inputEl.value = "";
+    inputEl.placeholder = "암호가 틀렸어요";
   }
 }
 document.getElementById("btn-teacher-close").addEventListener("click", ()=>{
