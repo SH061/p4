@@ -519,6 +519,155 @@
   .qjump-row.current .qjn{ background:var(--accent); color:#fff; }
   .qjump-row .qjnow{ flex:0 0 auto; margin-left:auto; font-size:10.5px; font-weight:900; color:var(--accent-active); background:var(--accent-dim); border-radius:6px; padding:2px 7px; }
 
+  /* ===== 학생 완료 화면 — 게임 카드 스타일 ===== */
+  #screen-done .card{ background:transparent; border:none; padding:0; }
+  .done-card{
+    max-width:340px; margin:6px auto 0; border-radius:24px; padding:3px;
+    background:linear-gradient(160deg,#e8a55a,#cc785c 42%,#5db8a6 92%);
+  }
+  .done-inner{
+    background:linear-gradient(180deg,#ffffff,#faf6ee); border-radius:21px;
+    padding:22px 18px 20px; text-align:center; color:var(--body);
+  }
+  .done-badge{
+    display:inline-flex; align-items:center; gap:6px; background:var(--panel-2);
+    border:1px solid var(--accent); border-radius:999px; padding:6px 16px;
+    font-size:14px; font-weight:900; color:var(--accent-active);
+  }
+  .done-sub{ font-size:11px; color:var(--muted); margin-top:5px; }
+  .done-gauge{ position:relative; width:180px; height:180px; margin:16px auto 8px; }
+  .done-gauge .ring{ position:absolute; inset:0; border-radius:50%; }
+  .done-gauge .hole{ position:absolute; inset:12px; border-radius:50%; overflow:hidden; background:#fff; }
+  .done-gauge .hole img{ width:100%; height:100%; object-fit:cover; object-position:top; display:block; }
+  .done-gauge .spark{ position:absolute; font-size:15px; }
+  .done-pct{ font-size:12px; color:var(--muted); }
+  .done-pct b{ display:block; font-size:46px; font-weight:900; color:#0f6e56; line-height:1; }
+  .done-pct span{ font-size:11px; color:var(--muted); }
+  .done-msg{ margin-top:12px; font-size:17px; font-weight:900; color:var(--text); }
+  .done-tip{ margin-top:5px; font-size:12.5px; line-height:1.6; color:var(--muted); }
+  .done-chips{ display:flex; gap:6px; justify-content:center; margin-top:13px; flex-wrap:wrap; }
+  .done-chips span{ font-size:10.5px; font-weight:800; background:var(--panel-2); border-radius:999px; padding:4px 12px; }
+  .done-chips .c1{ color:var(--accent-active); }
+  .done-chips .c2{ color:#0f6e56; }
+  .done-foot{ margin-top:12px; font-size:9.5px; color:var(--muted-soft, #8e8b82); }
+
+  /* ===== 교사 "문제 풀이 결과" ===== */
+  #view-awards{ width:100%; }
+  .aw-tabs{ display:flex; gap:12px; margin-bottom:14px; }
+  .aw-tabs .awt{ flex:1; text-align:center; padding:16px 8px; border-radius:14px; font-size:21px; font-weight:900;
+    border:1px solid var(--line); background:var(--panel-2); color:var(--muted); cursor:pointer; }
+  .aw-tabs .awt.on{ color:#fff; border-color:transparent; box-shadow:0 4px 0 rgba(0,0,0,.22); }
+  .aw-tabs .awt.on.jd{ background:linear-gradient(180deg,#cc785c,#a9583e); }
+  .aw-tabs .awt.on.sj{ background:linear-gradient(180deg,#5db8a6,#0f6e56); }
+  .aw-tabs .awt.on.tg{ background:linear-gradient(180deg,#d85a30,#993c1d); }
+  .aw-stage{ min-height:calc(100vh - 210px); display:flex; flex-direction:column; }
+  .aw-title{ text-align:center; font-size:30px; font-weight:900; }
+  .aw-title small{ font-size:15px; font-weight:700; color:var(--muted); margin-left:8px; }
+  .aw-empty{ flex:1; display:flex; align-items:center; justify-content:center; font-size:20px; color:var(--muted); font-weight:700; }
+  .aw-circ{ border-radius:50%; overflow:hidden; flex:0 0 auto; }
+  .aw-circ img{ width:100%; height:100%; object-fit:cover; object-position:top; display:block; }
+
+  /* 정답왕 시상대 */
+  .jd-podium{ flex:1; display:flex; align-items:flex-end; justify-content:center; gap:26px; padding:8px 20px 0; min-height:0; }
+  .jd-col{ flex:1; max-width:420px; text-align:center; }
+  .jd-col.first{ flex:1.25; max-width:520px; }
+  .jd-name{ font-size:22px; font-weight:800; }
+  .jd-col.first .jd-name{ font-size:28px; }
+  .jd-pct{ font-size:58px; font-weight:900; line-height:1; }
+  .jd-col.first .jd-pct{ font-size:92px; }
+  .jd-plate{ border-radius:16px 16px 0 0; padding:16px 10px; margin-top:10px; }
+  .jd-col.first .jd-plate{ border-radius:20px 20px 0 0; padding:20px 12px; box-shadow:0 0 0 3px #fff inset; }
+  .jd-block{ border-radius:0 0 10px 10px; }
+  .jd-rest{ flex:0 0 auto; display:flex; gap:20px; padding-top:16px; }
+  .jd-restcard{ flex:1; display:flex; align-items:center; gap:20px; background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:14px 26px; }
+  .jd-restcard .r{ font-size:26px; font-weight:900; color:var(--muted); flex:0 0 auto; }
+  .jd-restcard .n{ font-size:26px; font-weight:900; flex:1; }
+  .jd-restcard .p{ font-size:44px; font-weight:900; color:var(--accent); }
+
+  /* 성장왕 */
+  .sj-list{ flex:1; display:flex; flex-direction:column; gap:22px; padding:14px 24px 0; min-height:0; }
+  .sj-row{ flex:1; display:flex; align-items:center; gap:34px; background:var(--panel); border:1px solid var(--line); border-radius:22px; padding:20px 40px; min-height:150px; }
+  .sj-row.top{ border:3px solid #1d9e75; }
+  .sj-row .lab{ font-size:16px; font-weight:800; color:#0f6e56; }
+  .sj-row.top .lab{ font-size:20px; }
+  .sj-row .nm{ font-size:30px; font-weight:900; }
+  .sj-row.top .nm{ font-size:40px; }
+  .sj-row .delta{ font-size:56px; font-weight:900; color:#1d9e75; line-height:1; text-align:right; }
+  .sj-row.top .delta{ font-size:92px; }
+  .sj-foot{ text-align:center; font-size:13px; color:var(--muted-soft,#8e8b82); flex:0 0 auto; padding-top:10px; }
+
+  /* 탐구왕 */
+  .tg-grid{ flex:1; display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:18px; align-content:start; overflow-y:auto; padding:4px; }
+  .tg-card{ background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:18px 20px; display:flex; flex-direction:column; }
+  .tg-card .t{ font-size:17px; line-height:1.6; color:var(--body); flex:1; white-space:pre-wrap; }
+  .tg-card button{ margin-top:14px; width:100%; padding:12px; border-radius:10px; border:1.5px solid #d85a30;
+    background:rgba(216,90,48,.1); color:#993c1d; font-size:15px; font-weight:900; cursor:pointer; }
+  .tg-card button:hover{ background:rgba(216,90,48,.2); }
+  .tg-celebrate{
+    position:fixed; inset:0; z-index:150; background:radial-gradient(circle at 50% 26%,#fff2e8,#f2d6bf);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; padding:30px; text-align:center;
+    animation:fadein .3s ease;
+  }
+  .tg-celebrate.hidden{ display:none; }
+  .tg-celebrate .banner{ font-size:26px; font-weight:900; color:#993c1d; letter-spacing:3px; }
+  .tg-celebrate .who{ font-size:52px; font-weight:900; color:var(--text); margin-top:10px; }
+  .tg-celebrate .ans{ margin-top:18px; font-size:24px; line-height:1.7; color:#2c2c2a; background:#ffffffdd; border-radius:16px; padding:22px 30px; max-width:1100px; }
+  .tg-celebrate .spark{ position:absolute; font-size:30px; animation:tgpop .5s ease; }
+  @keyframes tgpop{ from{ transform:scale(0); } to{ transform:scale(1); } }
+  .tg-celebrate .close{ position:absolute; right:24px; top:18px; }
+
+  /* 문항별 결과 — 문항이 바뀔 때(탭 최초 진입/이전·다음 문항) 잠깐 정답률만 화면
+     전체에 크게 보여줬다가 신기루처럼 흐려지며 사라지는 연출. 단일 색 배경 + 단일 색
+     숫자로, 눈에 편안한 은은한 민트/틸 톤을 쓴다(자극적인 원색 대비 대신 차분한 톤). */
+  .accuracy-mirage{
+    position:fixed; inset:0; z-index:130; display:flex; align-items:center; justify-content:center;
+    background:#eaf6f1; opacity:0; transition:opacity .5s ease, filter .9s ease, transform .9s ease;
+    filter:blur(0px); transform:scale(1);
+  }
+  .accuracy-mirage.show{ opacity:1; }
+  .accuracy-mirage.fade{ opacity:0; filter:blur(18px); transform:scale(1.18); }
+  .accuracy-mirage-num{
+    font-size:min(42vw, 480px); font-weight:900; color:#1f6f5c; letter-spacing:-.02em; line-height:1;
+  }
+
+  /* "문제풀기 그만!" 정지 상태 — 선생님이 정지시키면 학생 화면 전체를 덮어
+     아래 화면(선택지·입력창·이전/다음 버튼)이 전혀 조작되지 않게 막는다.
+     정답률 신기루(.accuracy-mirage, 민트 톤)와 혼동되지 않도록 다른(크림/베이지) 톤을 쓰고,
+     신기루처럼 잠깐 있다 사라지지 않고 선생님이 풀 때까지 계속 떠 있는다. */
+  .problemstop-overlay{
+    position:fixed; inset:0; z-index:400; display:flex; align-items:center; justify-content:center;
+    background:#f7f0e2; text-align:center; padding:24px;
+    pointer-events:auto; touch-action:none;
+  }
+  .problemstop-overlay.hidden{ display:none !important; pointer-events:none; }
+  .problemstop-msg{
+    font-size:min(7vw, 34px); font-weight:900; color:#8a6a2f; letter-spacing:-.01em; line-height:1.5;
+  }
+
+  .hidden{ display:none !important; }
+
+  /* 시간 검증 게이트 */
+  #gate-overlay{
+    position:fixed; inset:0; background:var(--bg); z-index:200;
+    display:flex; align-items:center; justify-content:center; text-align:center; padding:20px;
+  }
+  #gate-overlay.hidden{ display:none; }
+  #gate-message{ color:var(--muted); font-size:16px; }
+
+  .callout-record{
+    background:linear-gradient(180deg, rgba(204,120,92,.10), rgba(204,120,92,.05));
+    border:1.5px solid rgba(204,120,92,.35); border-radius:12px;
+    padding:13px 14px; margin-top:14px; font-size:13px; line-height:1.65; color:var(--text);
+  }
+  .callout-record .cr-title{ font-weight:800; color:var(--accent-active); font-size:13px; margin-bottom:3px; display:flex; align-items:center; gap:5px; }
+
+  .callout-warning{
+    background:linear-gradient(180deg, rgba(212,160,23,.12), rgba(212,160,23,.05));
+    border:1.5px solid rgba(212,160,23,.4); border-radius:12px;
+    padding:13px 14px; margin:14px 0 0; font-size:13px; line-height:1.65; color:var(--text);
+  }
+  .callout-warning .cw-title{ font-weight:800; color:#9c7a0e; font-size:13px; margin-bottom:3px; display:flex; align-items:center; gap:5px; }
+
   /* 문항별 결과 — 문항이 바뀔 때(탭 최초 진입/이전·다음 문항) 잠깐 정답률만 화면
      전체에 크게 보여줬다가 신기루처럼 흐려지며 사라지는 연출. 단일 색 배경 + 단일 색
      숫자로, 눈에 편안한 은은한 민트/틸 톤을 쓴다(자극적인 원색 대비 대신 차분한 톤). */
@@ -671,12 +820,29 @@
     </div>
   </section>
 
-  <!-- 완료 화면 -->
+  <!-- 완료 화면 — 게임 카드 -->
   <section class="screen" id="screen-done">
-    <div class="card" style="text-align:center;">
-      <div style="font-size:40px;">🎉</div>
-      <h2>고생했어요!</h2>
-      <p class="desc">오늘 활동과 방금 남긴 생각까지 선생님께 잘 전달됐어요. 정답은 선생님 화면에서 함께 확인해요.</p>
+    <div class="card">
+      <div class="done-card">
+        <div class="done-inner">
+          <div class="done-badge">✅ 완주 인증</div>
+          <div class="done-sub">전 문항 + 성찰 질문 3개 완료</div>
+          <div class="done-gauge">
+            <div class="ring" id="done-ring"></div>
+            <div class="hole"><img id="done-img" src="" alt=""></div>
+            <div class="spark" style="left:-4px;top:12px;">✨</div>
+            <div class="spark" style="right:-2px;bottom:18px;">⭐</div>
+          </div>
+          <div class="done-pct">나의 정답률<b id="done-pct-num">계산 중…</b><span id="done-pct-sub"></span></div>
+          <div class="done-msg" id="done-msg">고생했어요! 💪</div>
+          <div class="done-tip" id="done-tip">오늘 활동과 방금 남긴 생각까지 선생님께 잘 전달됐어요.</div>
+          <div class="done-chips">
+            <span class="c1">🏁 완주</span>
+            <span class="c2">✍️ 성찰 3/3</span>
+          </div>
+          <div class="done-foot">이 화면은 참여 기록이 저장된 뒤에 나타나요</div>
+        </div>
+      </div>
     </div>
   </section>
 </main>
@@ -715,6 +881,7 @@
       <div class="teacher-topbar">
         <button class="pill-tab active" id="tab-progress">진행 상황</button>
         <button class="pill-tab" id="tab-results">문항별 결과</button>
+        <button class="pill-tab" id="tab-awards">🏆 문제 풀이 결과</button>
         <button class="btn gate-btn state-unknown" id="btn-gate-toggle">접속 확인 중…</button>
         <span class="spacer"></span>
         <span class="class-label" id="teacher-current-class"></span>
@@ -793,8 +960,33 @@
           </div>
         </div>
       </div>
+
+      <!-- 3번 화면: 문제 풀이 결과 (정답왕 / 성장왕 / 탐구왕) -->
+      <div id="view-awards" class="hidden">
+        <div class="aw-tabs">
+          <button class="awt on jd" id="awt-jd">🏆 정답왕</button>
+          <button class="awt sj" id="awt-sj">🚀 성장왕</button>
+          <button class="awt tg" id="awt-tg">🔥 탐구왕</button>
+        </div>
+        <div class="aw-stage" id="aw-stage"></div>
+      </div>
+
     </div>
   </div>
+</div>
+
+<!-- 탐구왕 선정 축하 오버레이 -->
+<div class="tg-celebrate hidden" id="tg-celebrate">
+  <button class="btn ghost close" id="tg-celebrate-close">닫기 ✕</button>
+  <div class="spark" style="left:8%;top:8%;">✨</div>
+  <div class="spark" style="right:10%;top:12%;">🎉</div>
+  <div class="spark" style="left:46%;top:6%;">🎊</div>
+  <div class="spark" style="left:14%;bottom:12%;">⭐</div>
+  <div class="spark" style="right:9%;bottom:10%;">✨</div>
+  <div class="banner">🔥 이번 활동의 탐구왕 🔥</div>
+  <div class="aw-circ" id="tg-cel-img" style="width:240px;height:240px;box-shadow:0 0 0 6px #fff,0 0 0 10px #e0951f;margin:16px 0 12px;"></div>
+  <div class="who" id="tg-cel-who"></div>
+  <div class="ans" id="tg-cel-ans"></div>
 </div>
 
 <!-- 문항 바로 가기 (교사용) — "n / 22" 카운터 클릭 시 전체 문항 목록 -->
@@ -962,6 +1154,9 @@ function gasConfigured(){
 // 평소 쓸 암호(복수 가능)는 그 시트에서 셀 편집으로 관리하고, 이 값은 잠금 사고 방지용.
 const TEACHER_PASSCODE = "3699";
 const CLASS_COUNT = 10;
+// 캐릭터 배정 소금값 — 활동마다 달라서 같은 학생이라도 다른 활동에선 다른 캐릭터가 배정된다.
+// 한 활동 안에선 같다(학생 완료 카드와 교사 정답왕/성장왕/탐구왕 화면이 같은 캐릭터를 맞추도록).
+const CHAR_SALT = "산과 염기(2) · 산과 염기(3)";
 
 /* ============================================================
    문항 데이터
@@ -1171,6 +1366,7 @@ const state = {
   answers: new Array(QUESTIONS.length).fill(""),
   reflectIdx: 0,
   reflectAnswers: ["","",""],
+  lastAccuracy: null,   // 서버가 돌려준 최종 정답률(완료 카드용)
 };
 
 function showScreen(name){
@@ -1178,6 +1374,7 @@ function showScreen(name){
   document.querySelectorAll("#app .screen").forEach(el=>el.classList.remove("on"));
   const el = document.getElementById("screen-"+name);
   if(el) el.classList.add("on");
+  if(name === "done") renderDoneCard();
   const progRow = document.getElementById("progress-row");
   if(name === "question" || name === "reflect"){
     progRow.style.display = "flex";
@@ -1186,6 +1383,55 @@ function showScreen(name){
   }
   updateProgressBar();
 }
+
+// 학번+이름을 30종 캐릭터 중 하나에 고정 배정 (같은 학생 = 항상 같은 캐릭터)
+function charForStudent(str){
+  let h = 0; const s = CHAR_SALT + "\u0001" + String(str || "");
+  for(let i=0;i<s.length;i++){ h = (h*31 + s.charCodeAt(i)) >>> 0; }
+  return "images/char/" + (h % 30 + 1) + ".jpg";
+}
+
+// 완료 화면 게임 카드 채우기
+function renderDoneCard(){
+  const total = QUESTIONS.length;
+  let answered = 0;
+  for(let i=0;i<total;i++){ if(String(state.answers[i]||"").trim() !== "") answered++; }
+  const acc = state.lastAccuracy;
+  const pctNum = document.getElementById("done-pct-num");
+  const pctSub = document.getElementById("done-pct-sub");
+  const ring = document.getElementById("done-ring");
+  document.getElementById("done-img").src = charForStudent(state.studentName);
+
+  if(acc === null || acc === undefined || isNaN(acc)){
+    pctNum.textContent = "계산 중…";
+    pctSub.textContent = "";
+    ring.style.background = "conic-gradient(var(--line) 0 1turn)";
+  } else {
+    pctNum.textContent = acc + "%";
+    pctSub.textContent = "채점 대상 문항 기준";
+    ring.style.background = "conic-gradient(#5db8a6 0 " + (acc/100) + "turn, var(--line) " + (acc/100) + "turn 1turn)";
+  }
+  let msg = "고생했어요! 💪", tip = "끝까지 잘 해냈어요.";
+  if(acc !== null && !isNaN(acc)){
+    if(acc >= 90){ msg = "거의 완벽해! 🏆"; tip = "정확하게 이해하고 있어. 이 감각을 계속 이어가자!"; }
+    else if(acc >= 70){ msg = "훌륭한 실력이야! 💪"; tip = "끝까지 집중해서 잘 해냈어. 다음 활동엔 " + Math.min(100, (Math.ceil(acc/10)*10)+10) + "%에 도전!"; }
+    else if(acc >= 50){ msg = "잘 해냈어, 다음엔 더! 🌱"; tip = "틀린 문항을 선생님 화면에서 같이 확인하면 금방 오를 거야."; }
+    else { msg = "끝까지 완주한 게 진짜 실력! 🔥"; tip = "포기하지 않고 다 푼 것부터가 잘한 거야. 정답은 같이 확인하자."; }
+  }
+  document.getElementById("done-msg").textContent = msg;
+  document.getElementById("done-tip").textContent = tip;
+}
+
+function updateProgressBar(){
+  const totalSteps = QUESTIONS.length + REFLECT_QUESTIONS.length;
+  let doneSteps = 0;
+  if(state.screen === "question") doneSteps = state.current;
+  else if(state.screen === "reflect") doneSteps = QUESTIONS.length + state.reflectIdx;
+  else if(state.screen === "done") doneSteps = totalSteps;
+  document.getElementById("progress-fill").style.width = Math.round(doneSteps/totalSteps*100)+"%";
+  document.getElementById("progress-label").textContent = doneSteps+" / "+totalSteps;
+}
+
 
 function updateProgressBar(){
   const totalSteps = QUESTIONS.length + REFLECT_QUESTIONS.length;
@@ -1471,7 +1717,11 @@ async function reportProgress(){
       });
       if(res.ok){
         const j = await res.json().catch(()=>null);
-        if(j && j.ok){ clearTimeout(resyncTimer); setConnStatus("ok"); return; }
+        if(j && j.ok){
+          if(j.accuracy !== undefined && j.accuracy !== "" && j.accuracy !== null) state.lastAccuracy = Number(j.accuracy);
+          if(state.screen === "done") renderDoneCard();
+          clearTimeout(resyncTimer); setConnStatus("ok"); return;
+        }
       }
     }catch(err){ /* 조용히 재시도 */ }
     await new Promise(r=>setTimeout(r, delays[attempt]));
@@ -1545,24 +1795,45 @@ document.getElementById("teacher-gate-confirm").addEventListener("click", tryGat
 document.getElementById("teacher-gate-input").addEventListener("keydown", (e)=>{
   if(e.key === "Enter") tryGateSubmit();
 });
+// 암호 확인은 서버(선생님암호 시트)를 기다리는 async라서, 응답이 느린 동안
+// 교사가 Enter/확인을 두 번 누르면 tryGateSubmit이 겹쳐 실행된다. 그러면
+// 나중에 끝난 호출이 이미 반을 선택한 뒤에 openTeacherView()를 다시 불러서
+// "들어갔다가 반선택 화면으로 팅기는" 버그가 났다. 재진입 가드 + 확인 후
+// 이미 통과됐으면 아무 것도 하지 않도록 막는다.
+let gateSubmitting = false;
 async function tryGateSubmit(){
+  if(gateSubmitting) return;
+  if(teacherUnlocked){ gateModal.classList.add("hidden"); return; }
   const inputEl = document.getElementById("teacher-gate-input");
+  const confirmBtn = document.getElementById("teacher-gate-confirm");
   const val = String(inputEl.value).trim();
+  if(!val) return;
   // 평소 쓸 암호는 구글시트 "선생님암호" 시트에서 줄 단위로 추가/수정한다(재배포 불필요).
   // 시트가 비었거나 서버 응답을 못 받으면 예비 암호(TEACHER_PASSCODE)로만 통과한다.
+  gateSubmitting = true;
+  confirmBtn.disabled = true;
+  const _label = confirmBtn.textContent;
+  confirmBtn.textContent = "확인 중…";
   let allowed = false;
-  if(gasConfigured()){
-    try{
-      const res = await fetch(GAS_URL + "?action=teacherPasscodes", { method:"GET" });
-      const data = await res.json();
-      const list = (data && Array.isArray(data.list)) ? data.list.map(String) : [];
-      allowed = list.length ? (list.indexOf(val) !== -1) : (val === TEACHER_PASSCODE);
-    }catch(e){
+  try{
+    if(gasConfigured()){
+      try{
+        const res = await fetch(GAS_URL + "?action=teacherPasscodes", { method:"GET" });
+        const data = await res.json();
+        const list = (data && Array.isArray(data.list)) ? data.list.map(String) : [];
+        allowed = list.length ? (list.indexOf(val) !== -1) : (val === TEACHER_PASSCODE);
+      }catch(e){
+        allowed = (val === TEACHER_PASSCODE);
+      }
+    } else {
       allowed = (val === TEACHER_PASSCODE);
     }
-  } else {
-    allowed = (val === TEACHER_PASSCODE);
+  }finally{
+    gateSubmitting = false;
+    confirmBtn.disabled = false;
+    confirmBtn.textContent = _label;
   }
+  if(teacherUnlocked){ gateModal.classList.add("hidden"); return; } // 그 사이 다른 호출이 이미 통과시킴
   if(allowed){
     teacherUnlocked = true;
     gateModal.classList.add("hidden");
@@ -1761,12 +2032,202 @@ function switchTeacherTab(tab){
   teacherTab = tab;
   document.getElementById("tab-progress").classList.toggle("active", tab==="progress");
   document.getElementById("tab-results").classList.toggle("active", tab==="results");
+  document.getElementById("tab-awards").classList.toggle("active", tab==="awards");
   document.getElementById("view-progress").classList.toggle("hidden", tab!=="progress");
   document.getElementById("view-results").classList.toggle("hidden", tab!=="results");
+  document.getElementById("view-awards").classList.toggle("hidden", tab!=="awards");
   if(tab==="results"){ tqRevealed = false; renderTeacherQuestionView(true); }
+  if(tab==="awards"){ renderAwards(); requestQuestionStatsRebuild(); }
 }
 document.getElementById("tab-progress").addEventListener("click", ()=>switchTeacherTab("progress"));
 document.getElementById("tab-results").addEventListener("click", ()=>switchTeacherTab("results"));
+document.getElementById("tab-awards").addEventListener("click", ()=>switchTeacherTab("awards"));
+
+/* ============================================================
+   문제 풀이 결과 — 정답왕 / 성장왕 / 탐구왕
+============================================================ */
+// 학번+이름을 30종 캐릭터 중 하나에 고정 배정 (같은 학생 = 항상 같은 캐릭터)
+function charFor(str){
+  let h = 0; const s = CHAR_SALT + "\u0001" + String(str || "");
+  for(let i=0;i<s.length;i++){ h = (h*31 + s.charCodeAt(i)) >>> 0; }
+  return "images/char/" + (h % 30 + 1) + ".jpg";
+}
+function studentNumOf(name){ const m = String(name).match(/\d+/); return m ? parseInt(m[0],10) : Infinity; }
+
+let awardsSub = "jd"; // "jd" | "sj" | "tg"
+let growthPrior = null; // {key: 이전정답률}
+let tamguWinner = null; // {name, text}
+
+document.getElementById("awt-jd").addEventListener("click", ()=>{ awardsSub="jd"; renderAwards(); });
+document.getElementById("awt-sj").addEventListener("click", ()=>{ awardsSub="sj"; renderAwards(); });
+document.getElementById("awt-tg").addEventListener("click", ()=>{ awardsSub="tg"; renderAwards(); });
+document.getElementById("tg-celebrate-close").addEventListener("click", ()=>{
+  document.getElementById("tg-celebrate").classList.add("hidden");
+});
+
+function renderAwards(){
+  document.getElementById("awt-jd").classList.toggle("on", awardsSub==="jd");
+  document.getElementById("awt-sj").classList.toggle("on", awardsSub==="sj");
+  document.getElementById("awt-tg").classList.toggle("on", awardsSub==="tg");
+  if(awardsSub==="jd") renderJeongdabwang();
+  else if(awardsSub==="sj") renderSeongjangwang();
+  else renderTamguwang();
+}
+
+function awRows(){ return (latestTeacherData && latestTeacherData.rows) || []; }
+function rowAccuracy(r){
+  const a = r.accuracy;
+  return (a === "" || a === null || a === undefined || isNaN(a)) ? null : Number(a);
+}
+
+function renderJeongdabwang(){
+  const stage = document.getElementById("aw-stage");
+  const ranked = awRows().filter(r=>rowAccuracy(r)!==null)
+    .sort((a,b)=> rowAccuracy(b)-rowAccuracy(a) || studentNumOf(a.name)-studentNumOf(b.name));
+  if(!ranked.length){ stage.innerHTML = '<div class="aw-empty">아직 집계할 정답률 데이터가 부족해요.</div>'; return; }
+  const top5 = ranked.slice(0,5);
+  const cls = (latestTeacherData && latestTeacherData.__class) || teacherClass || "";
+  function col(r, place){
+    const first = place===1;
+    const medal = place===1 ? "🥇" : place===2 ? "🥈" : "🥉";
+    const plateBg = place===1 ? "linear-gradient(180deg,#f2c987,#e0951f)"
+                  : place===2 ? "linear-gradient(180deg,#dad8cf,#b4b2a9)"
+                  : "linear-gradient(180deg,#e3ac86,#c8845a)";
+    const plateFg = place===1 ? "#3a2600" : place===2 ? "#2c2c2a" : "#3a1e0c";
+    const blockBg = place===1 ? "linear-gradient(180deg,#f6d39a,#e0951f)"
+                  : place===2 ? "linear-gradient(180deg,#e2e0d7,#b4b2a9)"
+                  : "linear-gradient(180deg,#e8bd9c,#c8845a)";
+    const blockH = place===1 ? 180 : place===2 ? 110 : 78;
+    const csz = first ? 176 : 128;
+    return '<div class="jd-col'+(first?' first':'')+'">'
+      + (first ? '<div style="font-size:44px;line-height:.9;">👑</div>' : '')
+      + '<div class="aw-circ" style="width:'+csz+'px;height:'+csz+'px;margin:0 auto;box-shadow:0 0 0 '+(first?5:4)+'px #fff,0 0 0 '+(first?9:8)+'px #e0951f;"><img src="'+charFor(r.key||r.name)+'" alt=""></div>'
+      + '<div class="jd-plate" style="background:'+plateBg+';color:'+plateFg+';">'
+      +   '<div class="jd-name">'+medal+' '+escapeHtml(String(r.name))+'</div>'
+      +   '<div class="jd-pct">'+rowAccuracy(r)+'%</div>'
+      +   (first ? '<div style="font-size:18px;font-weight:800;">'+(rowAccuracy(r)===100?'전 문항 정답':'최고 정답률')+'</div>' : '')
+      + '</div>'
+      + '<div class="jd-block" style="height:'+blockH+'px;background:'+blockBg+';"></div>'
+      + '</div>';
+  }
+  let restHtml = '';
+  if(top5.length>3){
+    restHtml = '<div class="jd-rest">' + top5.slice(3).map(function(r,i){
+      return '<div class="jd-restcard"><div class="r">'+(i+4)+'위</div>'
+        + '<div class="aw-circ" style="width:84px;height:84px;box-shadow:0 0 0 3px #fff,0 0 0 6px var(--accent);"><img src="'+charFor(r.key||r.name)+'" alt=""></div>'
+        + '<div class="n">'+escapeHtml(String(r.name))+'</div>'
+        + '<div class="p">'+rowAccuracy(r)+'%</div></div>';
+    }).join('') + '</div>';
+  }
+  stage.innerHTML =
+    '<div class="aw-title">🏆 정답왕 명예의 전당 <small>'+escapeHtml(cls)+(cls?' · ':'')+'상위 '+top5.length+'명</small></div>'
+    + '<div class="jd-podium">'
+    +   (top5[1] ? col(top5[1],2) : '<div class="jd-col"></div>')
+    +   (top5[0] ? col(top5[0],1) : '')
+    +   (top5[2] ? col(top5[2],3) : '<div class="jd-col"></div>')
+    + '</div>'
+    + restHtml;
+}
+
+async function ensureGrowthPrior(){
+  if(growthPrior !== null) return;
+  growthPrior = {};
+  if(!gasConfigured()) return;
+  try{
+    const res = await fetch(GAS_URL + "?action=growthPrior&class=" + encodeURIComponent(teacherClass), { method:"GET" });
+    const data = await res.json();
+    if(data && data.prior && typeof data.prior === "object") growthPrior = data.prior;
+  }catch(e){ /* 무시 */ }
+}
+async function renderSeongjangwang(){
+  const stage = document.getElementById("aw-stage");
+  stage.innerHTML = '<div class="aw-empty">성장 기록 불러오는 중…</div>';
+  await ensureGrowthPrior();
+  const grown = awRows().map(function(r){
+    const cur = rowAccuracy(r);
+    const prev = growthPrior[r.key];
+    if(cur===null || prev===undefined || prev===null || isNaN(prev)) return null;
+    return { name:r.name, key:r.key, delta: cur - Number(prev) };
+  }).filter(Boolean).filter(x=>x.delta>0)
+    .sort((a,b)=> b.delta-a.delta || studentNumOf(a.name)-studentNumOf(b.name))
+    .slice(0,3);
+  if(!grown.length){
+    stage.innerHTML = '<div class="aw-title">🚀 성장왕</div>'
+      + '<div class="aw-empty">지난 활동과 비교할 기록이 아직 없어요.<br>(두 번째 활동부터 자동으로 채워져요 · 통합 기록 시트 ID 필요)</div>';
+    return;
+  }
+  stage.innerHTML = '<div class="aw-title">🚀 성장왕 <small>지난 활동보다 정답률이 가장 많이 오른 학생 (최대 3명)</small></div>'
+    + '<div class="sj-list">' + grown.map(function(g,i){
+      const top = i===0;
+      const csz = top ? 168 : 120;
+      return '<div class="sj-row'+(top?' top':'')+'">'
+        + '<div class="aw-circ" style="width:'+csz+'px;height:'+csz+'px;box-shadow:0 0 0 '+(top?4:3)+'px #fff,0 0 0 '+(top?8:6)+'px #1d9e75;"><img src="'+charFor(g.key||g.name)+'" alt=""></div>'
+        + '<div style="flex:1;"><div class="lab">'+(top?'🚀 이번 활동 성장 1위':('성장 '+(i+1)+'위'))+'</div><div class="nm">'+escapeHtml(String(g.name))+'</div></div>'
+        + '<div style="text-align:right;flex:0 0 auto;"><div style="font-size:16px;color:var(--muted);">지난 활동보다</div>'
+        +   '<div class="delta">+'+Math.round(g.delta)+'%</div>'
+        +   '<div style="font-size:16px;color:var(--muted);">상승</div></div>'
+        + '</div>';
+    }).join('') + '</div>'
+    + '<div class="sj-foot">※ 이전 활동 기록이 있는 학생만 대상 · 이전 점수는 표시하지 않음</div>';
+}
+
+function reflectTextOf(r){
+  const ans = r.answers || [];
+  const nQ = QUESTIONS.length;
+  const parts = [ans[nQ], ans[nQ+1], ans[nQ+2]].map(function(s){ return String(s||"").trim(); }).filter(Boolean);
+  return parts.join("\n\n");
+}
+function renderTamguwang(){
+  const stage = document.getElementById("aw-stage");
+  const cands = awRows().map(function(r){ return { name:r.name, key:r.key, text: reflectTextOf(r) }; })
+    .filter(function(c){ return c.text.replace(/\s/g,"").length >= 10; });
+  if(!cands.length){
+    stage.innerHTML = '<div class="aw-title">🔥 탐구왕</div><div class="aw-empty">아직 성찰 답변이 부족해요.</div>';
+    return;
+  }
+  stage.innerHTML = '<div class="aw-title">🔥 탐구왕 <small style="color:#993c1d;">선생님이 답변을 읽고 직접 선정</small></div>'
+    + '<div style="text-align:center;font-size:15px;color:var(--muted);margin:8px 0 12px;">답변은 이름 없이 펼쳐집니다 · 마음에 드는 답변의 [🔥 탐구왕으로 선정] 클릭</div>'
+    + '<div class="tg-grid" id="tg-grid"></div>';
+  const grid = document.getElementById("tg-grid");
+  cands.forEach(function(c){
+    const card = document.createElement("div");
+    card.className = "tg-card";
+    const t = document.createElement("div"); t.className = "t"; t.textContent = '"' + c.text + '"';
+    const b = document.createElement("button"); b.type = "button"; b.textContent = "🔥 탐구왕으로 선정";
+    b.addEventListener("click", ()=> celebrateTamgu(c));
+    card.appendChild(t); card.appendChild(b);
+    grid.appendChild(card);
+  });
+}
+function celebrateTamgu(c){
+  tamguWinner = c;
+  document.getElementById("tg-cel-img").innerHTML = '<img src="'+charFor(c.key||c.name)+'" alt="">';
+  document.getElementById("tg-cel-who").textContent = String(c.name);
+  document.getElementById("tg-cel-ans").textContent = '"' + c.text + '"';
+  document.getElementById("tg-celebrate").classList.remove("hidden");
+}
+
+// 교사가 "문제 풀이 결과"를 열 때 문항별 정답률 시트를 최신값으로 다시 계산
+function questionLabelFor(q, idx){
+  const tagEl = document.createElement("span");
+  renderTagBadge(tagEl, q.tag);
+  const tagTxt = (tagEl.textContent || q.tag || "문항").replace(/[\[\]]/g,"").trim();
+  const page = q.page ? (" · 학습지 "+q.page+"쪽") : "";
+  return tagTxt + page + " · " + (idx+1) + "번";
+}
+let qstatsTimer = null;
+function requestQuestionStatsRebuild(){
+  if(!gasConfigured()) return;
+  clearTimeout(qstatsTimer);
+  qstatsTimer = setTimeout(function(){
+    const labels = QUESTIONS.map(questionLabelFor);
+    fetch(GAS_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({ action: "rebuildQuestionStats", labels: labels }),
+    }).catch(function(){ /* 조용히 무시 — 다음에 다시 시도됨 */ });
+  }, 300);
+}
 
 /* ---------- 새로고침 / 초기화 ---------- */
 document.getElementById("btn-teacher-refresh").addEventListener("click", ()=>{
