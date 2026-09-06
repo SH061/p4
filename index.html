@@ -308,6 +308,11 @@
      블록 사이 간격도 더 넉넉하게(1.3배) 잡는다. */
   .tq-note-blocks.tq-note-blocks-chem{ gap:23px; }
   .tq-note-blocks-chem .tq-note-block{ font-size:58px; }
+  .tq-note-plain{
+    background:var(--panel-2); border:1px solid var(--line); border-radius:12px;
+    padding:18px 22px; font-size:23px; line-height:1.75; font-weight:600;
+    white-space:pre-wrap; word-break:keep-all;
+  }
   .tq-split-right{
     background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:20px 26px;
     display:flex; flex-direction:column;
@@ -1059,6 +1064,11 @@ const QUESTIONS = [
   { id:"s2_p6", page:34, type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"③", tag:"기출 문제",
     text:"[2023 실시 3월 학력평가 화학Ⅰ(고2) 14번]",
     image:"images/s2-past-06.png", imageSize:"small" },
+
+  /* ── 2026 실시 9월 학력평가 통합과학(고2) — 학습지 밖 추가 기출 (성찰 질문 앞) ── */
+  { id:"q_2026sep_20", type:"choice", options:["①","②","③","④","⑤"], correctAnswer:"②", tag:"기출 문제",
+    text:"[2026 실시 9월 학평 20번 통합과학(고2)]",
+    image:"images/q-2026sep-20.png", imageSize:"small" },
 ];
 
 const REFLECT_QUESTIONS = [
@@ -1105,7 +1115,7 @@ const SPLIT_TAG_SET = (function(){
     // 반응식 나열(참고자료 역할)이 있으면 tag 이름과 무관하게 분할 레이아웃으로 통일한다
     // — 활동마다 이 계열 문항의 tag 이름이 "깨알 개념 체크 문제"/"스스로 확인하기"처럼
     // 다를 수 있기 때문(문항 데이터는 그대로 두고 판정 로직만 내용 기반으로 일반화).
-    const hasReactionListNote = item => item.note && /\(가\)|\(나\)|\(다\)|\(라\)/.test(item.note);
+    const hasReactionListNote = item => item.note && /\(가\)|\(나\)|\(다\)|\(라\)/.test(item.note) && /→|⟶|⟵|↔|⇌/.test(item.note);
     if(list.some(item => (item.image && item.note) || hasReactionListNote(item))) forced.add(tag);
   });
   return forced;
@@ -1917,15 +1927,32 @@ function renderTeacherQuestionView(showReveal){
     // note를 왼쪽 참고자료 칸에 (가)(나)(다)(라) 등 항목/줄 단위로 나눠서 표시하고,
     // 오른쪽에는 원본 note 텍스트를 중복 표시하지 않는다.
     noteEl.classList.add("hidden");
-    noteBlocksEl.innerHTML = buildNoteBlocksHtml(q.note);
     noteBlocksEl.classList.remove("hidden");
-    // (가)(나)(다)(라) 화학 반응식 나열(스스로 확인하기)은 다른 확인문제 note보다
-    // 더 크게/여유 있게 — 반응식 표기 여부로 판정(문항 데이터 수정 없이 판정만).
-    noteBlocksEl.classList.toggle("tq-note-blocks-chem", /\(가\)|\(나\)|\(다\)|\(라\)/.test(q.note || ""));
+    const isReactionList = /→|⟶|⟵|↔|⇌/.test(q.note || "") && /(?:\(가\)|\(나\)|\(다\)|\(라\))/.test(q.note || "");
+    if(isReactionList){
+      noteBlocksEl.innerHTML = buildNoteBlocksHtml(q.note);
+      noteBlocksEl.classList.add("tq-note-blocks-chem");
+    } else {
+      noteBlocksEl.classList.remove("tq-note-blocks-chem");
+      noteBlocksEl.innerHTML = '<div class="tq-note-plain"></div>';
+      noteBlocksEl.querySelector(".tq-note-plain").textContent = q.note;
+      // 왼쪽 참고자료 칸이 세로로 남으면 글자를 키워 빈 공간을 채운다(칸 밖으로는
+      // 안 넘치는 선까지만). 레이아웃이 잡힌 다음 프레임에 계산.
+      if(typeof requestAnimationFrame === "function"){
+        requestAnimationFrame(function(){ fitNoteBox(document.getElementById("tq-split-image")); });
+      } else fitNoteBox(document.getElementById("tq-split-image"));
+    }
   } else {
     noteBlocksEl.classList.add("hidden");
     noteBlocksEl.innerHTML = "";
+    noteEl.style.fontSize = "";
     if(q.note){ noteEl.textContent = q.note; noteEl.classList.remove("hidden"); } else noteEl.classList.add("hidden");
+    // 일반(비분할) 레이아웃에서만 #tq-note 글자를 카드 여유에 맞춰 키운다.
+    // 분할+이미지 문항(오른쪽 칸의 note)은 선택지·정답통계와 공간을 다투므로 건드리지 않는다.
+    if(q.note && !isSplit){
+      if(typeof requestAnimationFrame === "function") requestAnimationFrame(fitNormalNote);
+      else fitNormalNote();
+    }
   }
 
   // 교사용 이미지 컨테이너 — 문항마다 원본 크기가 달라도 항상 같은 박스(.tq-img-box)
@@ -2052,6 +2079,7 @@ function resetMetaTitleStyle(titleEl){
   const row = titleEl.closest(".qmeta-left");
   titleEl.style.whiteSpace = "";
   titleEl.style.fontSize = "";
+  titleEl.style.textWrap = "";
   if(row) row.style.flexWrap = "";
 }
 
@@ -2076,6 +2104,7 @@ function fitMetaTitle(titleEl, _retry){
     // 때(아주 긴 단어 등)만 조금씩 더 줄인다.
     row.style.flexWrap = "wrap";
     titleEl.style.whiteSpace = "normal";
+    titleEl.style.textWrap = "balance";
     size = WRAP_FONT;
     titleEl.style.fontSize = size + "px";
     while(size > MIN_FONT_WRAP && row.scrollWidth > row.clientWidth + 1){
@@ -2088,11 +2117,46 @@ function fitMetaTitle(titleEl, _retry){
     // 버그의 안전장치. 여유 있으면 그대로 한 줄, 아슬아슬하면 자연히 줄바꿈된다.
     row.style.flexWrap = "wrap";
     titleEl.style.whiteSpace = "normal";
+    titleEl.style.textWrap = "pretty";
   }
   // 렌더 직후 그리드 트랙 폭이 아직 확정되지 않아 측정이 어긋날 수 있으므로,
   // 레이아웃이 안정된 다음 프레임에 한 번만 더 계산한다(무한 반복 방지).
   if(!_retry && typeof requestAnimationFrame === "function"){
     requestAnimationFrame(function(){ fitMetaTitle(titleEl, true); });
+  }
+}
+
+// 분할 레이아웃 왼쪽 참고자료 칸(.tq-split-image.note-mode)에 prose note(.tq-note-plain)를
+// 넣었을 때, 칸(고정 높이 = 화면 높이 - 여백)이 세로로 남으면 글자를 키워 공간을 채운다.
+// "보기/설명을 너무 작게 쓰지 말 것"이라는 요구사항 — 다만 칸 밖으로 넘치면(세로든
+// 가로든) 그 직전 크기까지만. fitAnswerBig()과 같은 "큰 값에서 시작해 넘치면 줄이기" 방식.
+function fitNoteBox(container){
+  if(!container) return;
+  const targets = container.querySelectorAll(".tq-note-plain");
+  if(!targets.length) return;
+  const MAX = 46, MIN = 15, STEP = 1;
+  let size = MAX;
+  const apply = s => targets.forEach(t=>{ t.style.fontSize = s + "px"; });
+  apply(size);
+  while(size > MIN && (container.scrollHeight > container.clientHeight + 1 || container.scrollWidth > container.clientWidth + 1)){
+    size -= STEP;
+    apply(size);
+  }
+}
+
+// 일반(비분할) 레이아웃의 공용 보기 박스(#tq-note)도 카드에 여유가 있으면 글자를 키운다.
+// 단, 같은 카드 안 아래쪽 선택지(①~⑤)가 화면 밖으로 밀리지 않도록 카드(#tq-card-normal)가
+// 스크롤을 만들기 직전 크기까지만(최대 32px). 분할 레이아웃 note는 fitNoteBox가 담당한다.
+function fitNormalNote(){
+  const noteEl = document.getElementById("tq-note");
+  const card = document.getElementById("tq-card-normal");
+  if(!noteEl || !card || noteEl.classList.contains("hidden")) return;
+  const MAX = 32, MIN = 15, STEP = 1;
+  let size = MAX;
+  noteEl.style.fontSize = size + "px";
+  while(size > MIN && (card.scrollHeight > card.clientHeight + 1 || card.scrollWidth > card.clientWidth + 1)){
+    size -= STEP;
+    noteEl.style.fontSize = size + "px";
   }
 }
 
